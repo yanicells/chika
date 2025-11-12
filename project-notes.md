@@ -16,11 +16,12 @@ This is basically just like NGL where like you can send notes. But they are only
 
 ## Tech Stack
 - Basically I will use next js with react ts with this.
-- I will use neon for the serverless postgres and I will also use their auth.
+- I will use neon for the serverless postgres.
+- I will learn better auth for this project.
 - I will use drizzle for this.
 
 ## Learning Goals
-I guess the main learning experience here is using neon, using schemas (since i just raw dogged postgres before), applying auth, and some next server actions.
+I guess the main learning experience here is using neon, using schemas (since i just raw dogged postgres before), applying auth (better), and some next server actions.
 
 ## Possible Additional Features
 *(if i will apply this, this would be after its deployed already, so really, just additional if ever)*
