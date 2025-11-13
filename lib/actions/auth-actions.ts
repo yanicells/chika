@@ -9,7 +9,7 @@ export const signOut = async () => {
   return result;
 };
 
-export const signInSocial = async (provider: "google") => {
+export const signInSocial = async (provider: "github") => {
   const { url } = await auth.api.signInSocial({
     body: {
       provider,
