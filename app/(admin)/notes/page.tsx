@@ -1,16 +1,10 @@
-import React from "react";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth";
+import { getCurrentSession, requireAdmin } from "@/lib/auth-helper";
 
 const Notes = async () => {
-  const session = await auth.api.getSession({ headers: await headers() });
+  await requireAdmin();
 
-  if (!session) {
-    redirect("/");
-  }
-
-  const user = session.user;
+  const session = await getCurrentSession();
+  const user = session!.user;
 
   return(
     <div>

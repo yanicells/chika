@@ -15,5 +15,20 @@ export const auth = betterAuth({
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     },
   },
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        required: false,
+        defaultValue: "user",
+        returned: true,
+      }
+    }
+  },
+  session: {
+    cookieCache: {
+      maxAge: 60 * 60 // 1 hour
+    }
+  },
   plugins: [nextCookies()],
 });
