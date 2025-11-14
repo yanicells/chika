@@ -30,3 +30,4 @@ I guess the main learning experience here is using neon, using schemas (since i 
 - **Color Themes:** Let the sender pick a background color for their note from a small palette. This adds a visual, personal touch to the public feed.
 - **Word Cloud:** Automatically generate and display a word cloud from the text of all public notes. This gives a fun, at-a-glance visualization of what people are talking about.
 - Being able to send pictures.
+- Have a blog section, where I can write about my learnings, and random stuff. Basically a personal blog while people can interact with the notes app.
