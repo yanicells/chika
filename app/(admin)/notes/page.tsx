@@ -10,6 +10,7 @@ const Notes = async () => {
     <div>
       Notes Page - Welcome {user.email}
       User Details: {JSON.stringify(user)}
+      Role: {user.role}
     </div>
   )
 };
