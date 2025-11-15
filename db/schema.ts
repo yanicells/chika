@@ -1,4 +1,15 @@
-import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  text,
+  timestamp,
+  boolean,
+  integer,
+} from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
+import { isAdmin } from "@/lib/auth-helper";
+import { time } from "console";
+import { title } from "process";
+import { create } from "domain";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -61,11 +72,112 @@ export const verification = pgTable("verification", {
     .notNull(),
 });
 
+export const notes = pgTable("notes", {
+  id: text("id").primaryKey(),
+  title: text("title"),
+  content: text("content").notNull(),
+  userName: text("userName"),
+  isAdmin: boolean("isAdmin").notNull().default(false),
+  imageUrl: text("imageUrl"),
+  color: text("color").notNull().default("#ffffff"),
+  isPrivate: boolean("isPrivate").notNull().default(false),
+  isPinned: boolean("isPinned").notNull().default(false),
+  isDeleted: boolean("isDeleted").notNull().default(false),
+  createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt", { mode: "date" }).notNull().defaultNow(),
+});
 
+export const comments = pgTable("comments", {
+  id: text("id").primaryKey(),
+  noteId: text("noteId")
+    .notNull()
+    .references(() => notes.id, { onDelete: "cascade" }),
+  userName: text("userName"),
+  isAdmin: boolean("isAdmin").notNull().default(false),
+  content: text("content").notNull(),
+  isDeleted: boolean("isDeleted").notNull().default(false),
+  createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+});
+
+export const blogPosts = pgTable("blogPosts", {
+  id: text("id").primaryKey(),
+  title: text("title").notNull(),
+  slug: text("slug").notNull().unique(),
+  content: text("content").notNull(),
+  excerpt: text("excerpt"),
+  coverImageUrl: text("coverImageUrl"),
+  isPublished: boolean("isPublished").notNull().default(false),
+  isPinned: boolean("isPinned").notNull().default(false),
+  isDeleted: boolean("isDeleted").notNull().default(false),
+  createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt", { mode: "date" }).notNull().defaultNow(),
+  publishedAt: timestamp("publishedAt", { mode: "date" }),
+});
+
+export const reactions = pgTable("reactions", {
+  id: text("id").primaryKey(),
+  noteId: text("noteId").references(() => notes.id, { onDelete: "cascade" }),
+  commentId: text("commentId").references(() => comments.id, {
+    onDelete: "cascade",
+  }),
+  blogPostId: text("blogPostId").references(() => blogPosts.id, {
+    onDelete: "cascade",
+  }),
+  isAdmin: boolean("isAdmin").notNull().default(false),
+  createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
+});
+
+export const notesRelations = relations(notes, ({ many }) => ({
+  comments: many(comments),
+  reactions: many(reactions),
+}));
+
+export const commentsRelations = relations(comments, ({ one, many }) => ({
+  note: one(notes, {
+    fields: [comments.noteId],
+    references: [notes.id],
+  }),
+  reactions: many(reactions),
+}));
+
+export const blogPostsRelations = relations(blogPosts, ({ many }) => ({
+  reactions: many(reactions),
+}));
+
+export const reactionsRelations = relations(reactions, ({ one }) => ({
+  note: one(notes, {
+    fields: [reactions.noteId],
+    references: [notes.id],
+  }),
+  comment: one(comments, {
+    fields: [reactions.commentId],
+    references: [comments.id],
+  }),
+  blogPost: one(blogPosts, {
+    fields: [reactions.blogPostId],
+    references: [blogPosts.id],
+  })
+}));
+
+export type Note = typeof notes.$inferSelect;
+export type NewNote = typeof notes.$inferInsert;
+
+export type Comment = typeof comments.$inferSelect;
+export type NewComment = typeof comments.$inferInsert;
+
+export type BlogPost = typeof blogPosts.$inferSelect;
+export type NewBlogPost = typeof blogPosts.$inferInsert;
+
+export type Reaction = typeof reactions.$inferSelect;
+export type NewReaction = typeof reactions.$inferInsert;
 
 export const schema = {
   user,
   session,
   account,
   verification,
+  notes,
+  comments,
+  blogPosts,
+  reactions,
 };
