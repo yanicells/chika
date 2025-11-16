@@ -6,6 +6,7 @@ import NoteList from "@/components/notes/note-list";
 import BlogList from "@/components/blog/blog-list";
 import Container from "@/components/shared/container";
 import Link from "next/link";
+import Button from "@/components/ui/button";
 import { isAdmin } from "@/lib/auth-helper";
 
 export default async function HomePage() {
@@ -31,17 +32,34 @@ export default async function HomePage() {
       <div className="max-w-[85rem] mx-auto px-4 lg:px-8">
         {/* Notes Section */}
         <section className="my-12">
-          <div className="flex items-center justify-between mb-6">
-            <Link href="/notes" className="group">
-              <h2 className="text-2xl font-bold text-text group-hover:text-blue transition-colors">
-                Notes
-              </h2>
-            </Link>
-            <Link
-              href="/notes"
-              className="text-sm text-blue hover:underline transition-colors"
-            >
-              View all →
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <Link href="/notes" className="group inline-block">
+                <h2 className="text-2xl font-bold text-text underline decoration-2 underline-offset-4 decoration-subtext0 group-hover:decoration-blue transition-colors inline-flex items-center gap-2">
+                  Notes
+                  <svg
+                    className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </h2>
+              </Link>
+              <p className="text-sm text-subtext1 mt-1">
+                Chika's people have sent
+              </p>
+            </div>
+            <Link href="/create">
+              <Button variant="primary" size="sm">
+                ✍️ Send Note
+              </Button>
             </Link>
           </div>
 
@@ -54,17 +72,32 @@ export default async function HomePage() {
 
         {/* Blog Section */}
         <section className="my-12">
-          <div className="flex items-center justify-between mb-6">
-            <Link href="/blog" className="group">
-              <h2 className="text-2xl font-bold text-text group-hover:text-blue transition-colors">
-                Blog
-              </h2>
-            </Link>
-            <Link
-              href="/blog"
-              className="text-sm text-blue hover:underline transition-colors"
-            >
-              View all →
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <Link href="/blog" className="group inline-block">
+                <h2 className="text-2xl font-bold text-text underline decoration-2 underline-offset-4 decoration-subtext0 group-hover:decoration-blue transition-colors inline-flex items-center gap-2">
+                  Blog
+                  <svg
+                    className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </h2>
+              </Link>
+              <p className="text-sm text-subtext1 mt-1">My blog posts</p>
+            </div>
+            <Link href="/create">
+              <Button variant="secondary" size="sm">
+                ✍️ Send Note
+              </Button>
             </Link>
           </div>
 

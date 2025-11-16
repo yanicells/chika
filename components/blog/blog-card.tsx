@@ -5,7 +5,6 @@ import { BlogPost } from "@/db/schema";
 import Card from "@/components/ui/card";
 import Badge from "@/components/ui/badge";
 import EditButton from "@/components/ui/edit-button";
-import ReactionDisplay from "@/components/reactions/reaction-display";
 import ReactionButton from "@/components/reactions/reaction-button";
 
 interface BlogCardProps {
@@ -29,7 +28,7 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
       className="h-full flex flex-col border-t-4 relative transition-shadow duration-200"
       style={{
         borderTopColor: backgroundColor,
-        backgroundColor: `${backgroundColor}25`,
+        backgroundColor: `${backgroundColor}20`,
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.boxShadow = `0 4px 12px ${backgroundColor}40`;
@@ -38,10 +37,6 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
         e.currentTarget.style.boxShadow = "";
       }}
     >
-      <div
-        className="absolute top-3 right-3 w-3 h-3 rounded-full"
-        style={{ backgroundColor }}
-      />
       <Link href={`/blog/${post.slug}`} className="flex-1">
         <div className="flex-1">
           <div className="flex items-start justify-between gap-2 mb-3">
@@ -85,8 +80,14 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
 
       {post.reactions && (
         <div className="flex items-center gap-3 mb-3">
-          <ReactionDisplay reactions={post.reactions} />
-          <ReactionButton type="blogPost" id={post.id} hasReacted={false} />
+          <ReactionButton
+            type="blogPost"
+            id={post.id}
+            initialCount={post.reactions}
+            color={backgroundColor}
+            isAdmin={isUserAdmin}
+            hasReacted={false}
+          />
         </div>
       )}
 

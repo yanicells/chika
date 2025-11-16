@@ -8,9 +8,22 @@ export default async function BlogPage() {
   const adminStatus = await isAdmin();
 
   return (
-    <div className="max-w-[85rem] mx-auto px-4 lg:px-8 my-12">
-      <h1>Blog</h1>
-      <BlogList posts={posts} isUserAdmin={adminStatus} />
+    <div className="max-w-[85rem] mx-auto px-4 lg:px-8">
+      <div className="pt-12 pb-8">
+        {/* Page Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-text mb-2">My Blog Posts</h1>
+          <p className="text-lg text-subtext1">
+            Thoughts, learnings, and updates
+          </p>
+        </div>
+
+        {posts.length > 0 ? (
+          <BlogList posts={posts} isUserAdmin={adminStatus} />
+        ) : (
+          <p className="text-center text-subtext0 py-8">No blog posts yet.</p>
+        )}
+      </div>
 
       {/* Bottom Spacing */}
       <div className="pb-32" />

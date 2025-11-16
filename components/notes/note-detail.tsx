@@ -1,9 +1,12 @@
-import { Note } from '@/db/schema';
-import Card from '@/components/ui/card';
-import Badge from '@/components/ui/badge';
-import AdminBadge from '@/components/admin/admin-badge';
-import ReactionDisplay from '@/components/reactions/reaction-display';
-import ReactionButton from '@/components/reactions/reaction-button';
+"use client";
+
+import Link from "next/link";
+import { Note } from "@/db/schema";
+import Card from "@/components/ui/card";
+import Badge from "@/components/ui/badge";
+import Button from "@/components/ui/button";
+import AdminBadge from "@/components/admin/admin-badge";
+import ReactionButton from "@/components/reactions/reaction-button";
 
 interface NoteDetailProps {
   note: Note & {
@@ -13,15 +16,32 @@ interface NoteDetailProps {
     };
   };
   hasReacted?: boolean;
+  isUserAdmin?: boolean;
 }
 
-export default function NoteDetail({ note, hasReacted = false }: NoteDetailProps) {
-  const displayName = note.userName || 'Anonymous';
-  const backgroundColor = note.color || '#ffffff';
+export default function NoteDetail({
+  note,
+  hasReacted = false,
+  isUserAdmin = false,
+}: NoteDetailProps) {
+  const displayName = note.userName || "Anonymous";
+  const backgroundColor = note.color || "#ffffff";
 
   return (
-    <Card style={{ backgroundColor }} className="max-w-7xl mx-auto">
-      <div className="space-y-4">
+    <Card
+      className="max-w-[85rem] mx-auto border-t-4 relative transition-shadow duration-200"
+      style={{
+        borderTopColor: backgroundColor,
+        backgroundColor: `${backgroundColor}20`,
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = `0 4px 12px ${backgroundColor}40`;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = "";
+      }}
+    >
+      <div className="space-y-6">
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
             {note.isPinned && (
@@ -36,52 +56,55 @@ export default function NoteDetail({ note, hasReacted = false }: NoteDetailProps
               </Badge>
             )}
           </div>
+          {isUserAdmin && (
+            <Link href={`/admin/notes/edit/${note.id}`}>
+              <Button variant="secondary" size="sm">
+                Edit
+              </Button>
+            </Link>
+          )}
         </div>
 
         {note.title && (
-          <h1 className="text-3xl font-bold text-gray-900">{note.title}</h1>
+          <h1 className="text-4xl font-bold text-text">{note.title}</h1>
         )}
-
-        <div className="prose max-w-none">
-          <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
-            {note.content}
-          </p>
-        </div>
 
         {note.imageUrl && (
           <div>
             <img
               src={note.imageUrl}
-              alt={note.title || 'Note image'}
+              alt={note.title || "Note image"}
               className="w-full max-h-96 object-cover rounded-lg"
             />
           </div>
         )}
 
-        <div className="flex items-center justify-between text-sm text-gray-600 pt-4 border-t border-gray-200">
-          <span>By {displayName}</span>
-          <div className="flex flex-col items-end gap-1">
-            <span>Created: {new Date(note.createdAt).toLocaleDateString()}</span>
-            {note.updatedAt && note.updatedAt.getTime() !== note.createdAt.getTime() && (
-              <span>Updated: {new Date(note.updatedAt).toLocaleDateString()}</span>
-            )}
-          </div>
+        <div className="prose max-w-none">
+          <p className="text-subtext1 whitespace-pre-wrap leading-relaxed">
+            {note.content}
+          </p>
         </div>
 
-        <div className="flex items-center gap-4 pt-4 border-t border-gray-200">
+        <div className="flex items-center justify-between pt-4 border-t border-overlay0">
+          <div className="text-sm text-subtext0 font-mono">
+            <span>
+              {displayName} | {new Date(note.createdAt).toLocaleDateString()}
+            </span>
+          </div>
           {note.reactions && (
-            <>
-              <ReactionDisplay reactions={note.reactions} />
+            <div className="flex items-center gap-3">
               <ReactionButton
                 type="note"
                 id={note.id}
+                initialCount={note.reactions}
+                color={backgroundColor}
+                isAdmin={isUserAdmin}
                 hasReacted={hasReacted}
               />
-            </>
+            </div>
           )}
         </div>
       </div>
     </Card>
   );
 }
-

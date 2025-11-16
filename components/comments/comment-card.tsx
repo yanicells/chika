@@ -5,7 +5,6 @@ import Card from "@/components/ui/card";
 import Badge from "@/components/ui/badge";
 import Button from "@/components/ui/button";
 import AdminBadge from "@/components/admin/admin-badge";
-import ReactionDisplay from "@/components/reactions/reaction-display";
 import ReactionButton from "@/components/reactions/reaction-button";
 import { deleteComment } from "@/lib/actions/comments-actions";
 import { useState } from "react";
@@ -57,7 +56,7 @@ export default function CommentCard({
       className="border-t-4 relative transition-shadow duration-200"
       style={{
         borderTopColor: backgroundColor,
-        backgroundColor: `${backgroundColor}25`,
+        backgroundColor: `${backgroundColor}20`,
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.boxShadow = `0 4px 12px ${backgroundColor}40`;
@@ -66,10 +65,6 @@ export default function CommentCard({
         e.currentTarget.style.boxShadow = "";
       }}
     >
-      <div
-        className="absolute top-3 right-3 w-3 h-3 rounded-full"
-        style={{ backgroundColor }}
-      />
       <div className="space-y-2">
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
@@ -81,7 +76,7 @@ export default function CommentCard({
             )}
             <span className="text-sm font-medium text-text">{displayName}</span>
           </div>
-          <span className="text-xs text-subtext0 font-mono mr-6">
+          <span className="text-xs text-subtext0 font-mono">
             {new Date(comment.createdAt).toLocaleDateString()}
           </span>
         </div>
@@ -91,11 +86,11 @@ export default function CommentCard({
         </p>
 
         {comment.imageUrl && (
-          <div className="mt-2">
+          <div className="mt-3">
             <img
               src={comment.imageUrl}
-              alt="Comment image"
-              className="w-full max-h-48 object-cover rounded-md"
+              alt="Comment attachment"
+              className="max-w-md w-full h-auto rounded-lg border border-overlay0 object-cover"
             />
           </div>
         )}
@@ -103,14 +98,14 @@ export default function CommentCard({
         <div className="flex items-center justify-between pt-2 border-t border-overlay0">
           <div className="flex items-center gap-3">
             {comment.reactions && (
-              <>
-                <ReactionDisplay reactions={comment.reactions} />
-                <ReactionButton
-                  type="comment"
-                  id={comment.id}
-                  hasReacted={hasReacted}
-                />
-              </>
+              <ReactionButton
+                type="comment"
+                id={comment.id}
+                initialCount={comment.reactions}
+                color={backgroundColor}
+                isAdmin={isUserAdmin}
+                hasReacted={hasReacted}
+              />
             )}
           </div>
 

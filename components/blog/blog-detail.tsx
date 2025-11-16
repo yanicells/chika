@@ -5,9 +5,7 @@ import { BlogPost } from "@/db/schema";
 import Card from "@/components/ui/card";
 import Badge from "@/components/ui/badge";
 import Button from "@/components/ui/button";
-import ReactionDisplay from "@/components/reactions/reaction-display";
 import ReactionButton from "@/components/reactions/reaction-button";
-import EditButton from "@/components/ui/edit-button";
 
 interface BlogDetailProps {
   post: BlogPost & {
@@ -29,10 +27,10 @@ export default function BlogDetail({
 
   return (
     <Card
-      className="max-w-7xl mx-auto border-t-4 relative transition-shadow duration-200"
+      className="max-w-[85rem] mx-auto border-t-4 relative transition-shadow duration-200"
       style={{
         borderTopColor: backgroundColor,
-        backgroundColor: `${backgroundColor}25`,
+        backgroundColor: `${backgroundColor}20`,
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.boxShadow = `0 4px 12px ${backgroundColor}40`;
@@ -41,10 +39,6 @@ export default function BlogDetail({
         e.currentTarget.style.boxShadow = "";
       }}
     >
-      <div
-        className="absolute top-3 right-3 w-3 h-3 rounded-full"
-        style={{ backgroundColor }}
-      />
       <div className="space-y-6">
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
@@ -90,36 +84,25 @@ export default function BlogDetail({
           </div>
         </div>
 
-        <div className="flex items-center justify-between text-sm text-subtext0 pt-4 border-t border-overlay0 font-mono">
-          <div className="flex flex-col gap-1">
+        <div className="flex items-center justify-between pt-4 border-t border-overlay0">
+          <div className="text-sm text-subtext0 font-mono">
             <span>
-              Published:{" "}
               {post.publishedAt
                 ? new Date(post.publishedAt).toLocaleDateString()
-                : "Not published"}
+                : new Date(post.createdAt).toLocaleDateString()}
             </span>
-            <span>
-              Created: {new Date(post.createdAt).toLocaleDateString()}
-            </span>
-            {post.updatedAt &&
-              post.updatedAt.getTime() !== post.createdAt.getTime() && (
-                <span>
-                  Updated: {new Date(post.updatedAt).toLocaleDateString()}
-                </span>
-              )}
           </div>
-        </div>
-
-        <div className="flex items-center gap-4 pt-4 border-t border-overlay0">
           {post.reactions && (
-            <>
-              <ReactionDisplay reactions={post.reactions} />
+            <div className="flex items-center gap-3">
               <ReactionButton
                 type="blogPost"
                 id={post.id}
+                initialCount={post.reactions}
+                color={backgroundColor}
+                isAdmin={isUserAdmin}
                 hasReacted={hasReacted}
               />
-            </>
+            </div>
           )}
         </div>
       </div>

@@ -8,9 +8,7 @@ interface HeroSectionProps {
   textContent: string; // For word cloud
 }
 
-export default function HeroSection({
-  textContent,
-}: HeroSectionProps) {
+export default function HeroSection({ textContent }: HeroSectionProps) {
   return (
     <section className="py-12 px-4 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -24,8 +22,12 @@ export default function HeroSection({
 
             {/* Description */}
             <p className="text-base sm:text-lg text-subtext0 mb-8">
-              Send messages privately, anonymously, or comment on others&apos;
-              notes
+              Send messages{" "}
+              <span className="text-mauve font-semibold">privately</span>,{" "}
+              <span className="text-pink font-semibold">anonymously</span>, and{" "}
+              <span className="text-peach font-semibold">comment</span> on my{" "}
+              <span className="text-blue font-semibold">blog</span> or
+              others&apos; notes
             </p>
 
             {/* Action Buttons */}
@@ -61,4 +63,3 @@ export default function HeroSection({
     </section>
   );
 }
-

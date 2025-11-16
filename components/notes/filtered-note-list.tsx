@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { Note } from "@/db/schema";
 import NoteCard from "./note-card";
-import NoteFilter, { FilterType } from "./note-filter";
+import { FilterType } from "./note-filter";
 import Link from "next/link";
 import Button from "@/components/ui/button";
 
@@ -54,16 +54,23 @@ export default function FilteredNoteList({
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-center">
+      <div className="flex items-center justify-between">
         <Link href="/create">
-          <Button>Send Note</Button>
+          <Button variant="primary">✍️ Send Note</Button>
         </Link>
-      </div>
 
-      <NoteFilter
-        onFilterChange={setActiveFilter}
-        activeFilter={activeFilter}
-      />
+        <select
+          value={activeFilter}
+          onChange={(e) => setActiveFilter(e.target.value as FilterType)}
+          className="px-4 py-2 bg-surface0 border border-overlay0 rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-blue transition-colors"
+        >
+          <option value="all">All Notes</option>
+          <option value="pinned">Pinned</option>
+          <option value="admin">Yanicells</option>
+          <option value="username">Not Anonymous</option>
+          <option value="anonymous">Anonymous</option>
+        </select>
+      </div>
 
       {filteredNotes.length === 0 ? (
         <div className="text-center py-12">

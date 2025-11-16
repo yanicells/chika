@@ -14,7 +14,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Chika",
+  title: "chika",
   description: "Yani's freedom wall.",
 };
 

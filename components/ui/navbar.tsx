@@ -7,7 +7,7 @@ const navLinks = [
   { name: "Home", href: "/" },
   { name: "Notes", href: "/notes" },
   { name: "Blog", href: "/blog" },
-  { name: "Create", href: "/create" },
+  { name: "Send Note", href: "/create" },
 ];
 
 export default function Navigation() {
@@ -30,7 +30,7 @@ export default function Navigation() {
           : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+      <div className="max-w-[86rem] mx-auto px-6 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between h-16">
           <Link
             href="/"
