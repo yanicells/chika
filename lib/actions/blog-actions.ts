@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "../../db/drizzle";
-import { blogPosts } from "../../db/schema";
+import { blogPosts, NewBlogPost } from "../../db/schema";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { revalidatePath } from "next/cache";
@@ -86,7 +86,7 @@ export async function updateBlogPost(
   try {
     await requireAdmin();
 
-    const updateData: any = {
+    const updateData: Partial<NewBlogPost> = {
       ...data,
       updatedAt: new Date(),
     };
@@ -185,7 +185,7 @@ export async function togglePublishBlogPost(
   try {
     await requireAdmin();
 
-    const updateData: any = {
+    const updateData: Partial<NewBlogPost> = {
       isPublished,
       updatedAt: new Date(),
     };
