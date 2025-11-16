@@ -1,4 +1,3 @@
-// lib/queries/blog.ts
 import { db } from "../../db/drizzle";
 import { blogPosts, reactions } from "../../db/schema";
 import { eq, and, desc, sql } from "drizzle-orm";

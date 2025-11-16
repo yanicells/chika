@@ -1,4 +1,3 @@
-// lib/queries/comments.ts
 import { db } from "../../db/drizzle";
 import { comments, reactions } from "../../db/schema";
 import { eq, and, desc, sql } from "drizzle-orm";

@@ -1,4 +1,3 @@
-// lib/queries/reactions.ts
 import { db } from "../../db/drizzle";
 import { reactions } from "../../db/schema";
 import { eq, and, sql } from "drizzle-orm";
