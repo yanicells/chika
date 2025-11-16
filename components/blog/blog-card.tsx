@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { BlogPost } from "@/db/schema";
 import Card from "@/components/ui/card";
@@ -23,7 +25,23 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
   const backgroundColor = post.color || "#ffffff";
 
   return (
-    <Card className="h-full flex flex-col" style={{ backgroundColor }}>
+    <Card
+      className="h-full flex flex-col border-t-4 relative transition-shadow duration-200"
+      style={{
+        borderTopColor: backgroundColor,
+        backgroundColor: `${backgroundColor}25`,
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = `0 4px 12px ${backgroundColor}40`;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = "";
+      }}
+    >
+      <div
+        className="absolute top-3 right-3 w-3 h-3 rounded-full"
+        style={{ backgroundColor }}
+      />
       <Link href={`/blog/${post.slug}`} className="flex-1">
         <div className="flex-1">
           <div className="flex items-start justify-between gap-2 mb-3">
@@ -62,15 +80,15 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
               ? new Date(post.publishedAt).toLocaleDateString()
               : new Date(post.createdAt).toLocaleDateString()}
           </div>
-
-          {post.reactions && (
-            <div className="flex items-center gap-3 mb-3">
-              <ReactionDisplay reactions={post.reactions} />
-              <ReactionButton type="blogPost" id={post.id} hasReacted={false} />
-            </div>
-          )}
         </div>
       </Link>
+
+      {post.reactions && (
+        <div className="flex items-center gap-3 mb-3">
+          <ReactionDisplay reactions={post.reactions} />
+          <ReactionButton type="blogPost" id={post.id} hasReacted={false} />
+        </div>
+      )}
 
       {isUserAdmin && (
         <div className="mt-auto pt-4 border-t border-overlay0">

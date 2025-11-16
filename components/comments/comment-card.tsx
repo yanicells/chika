@@ -52,7 +52,24 @@ export default function CommentCard({
   };
 
   return (
-    <Card padding="sm" style={{ backgroundColor }}>
+    <Card
+      padding="sm"
+      className="border-t-4 relative transition-shadow duration-200"
+      style={{
+        borderTopColor: backgroundColor,
+        backgroundColor: `${backgroundColor}25`,
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = `0 4px 12px ${backgroundColor}40`;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = "";
+      }}
+    >
+      <div
+        className="absolute top-3 right-3 w-3 h-3 rounded-full"
+        style={{ backgroundColor }}
+      />
       <div className="space-y-2">
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">

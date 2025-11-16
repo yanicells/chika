@@ -29,7 +29,23 @@ export default function NoteCard({ note, isUserAdmin = false }: NoteCardProps) {
   const backgroundColor = note.color || "#ffffff";
 
   return (
-    <Card className="h-full flex flex-col" style={{ backgroundColor }}>
+    <Card
+      className="h-full flex flex-col border-t-4 relative transition-shadow duration-200"
+      style={{
+        borderTopColor: backgroundColor,
+        backgroundColor: `${backgroundColor}25`,
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = `0 4px 12px ${backgroundColor}40`;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = "";
+      }}
+    >
+      <div
+        className="absolute top-3 right-3 w-3 h-3 rounded-full"
+        style={{ backgroundColor }}
+      />
       <Link href={`/notes/${note.id}`} className="flex-1">
         <div className="flex-1">
           {note.isPinned && (
@@ -73,15 +89,15 @@ export default function NoteCard({ note, isUserAdmin = false }: NoteCardProps) {
             <span>By {displayName}</span>
             <span>{new Date(note.createdAt).toLocaleDateString()}</span>
           </div>
-
-          {note.reactions && (
-            <div className="mb-3 flex items-center gap-3">
-              <ReactionDisplay reactions={note.reactions} />
-              <ReactionButton type="note" id={note.id} hasReacted={false} />
-            </div>
-          )}
         </div>
       </Link>
+
+      {note.reactions && (
+        <div className="mb-3 flex items-center gap-3">
+          <ReactionDisplay reactions={note.reactions} />
+          <ReactionButton type="note" id={note.id} hasReacted={false} />
+        </div>
+      )}
 
       {isUserAdmin && (
         <div className="mt-auto pt-3 border-t border-overlay0">

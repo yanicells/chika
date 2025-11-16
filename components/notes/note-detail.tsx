@@ -1,3 +1,5 @@
+"use client";
+
 import { Note } from "@/db/schema";
 import Card from "@/components/ui/card";
 import Badge from "@/components/ui/badge";
@@ -26,7 +28,23 @@ export default function NoteDetail({
   const backgroundColor = note.color || "#ffffff";
 
   return (
-    <Card style={{ backgroundColor }} className="max-w-6xl mx-auto">
+    <Card
+      className="max-w-6xl mx-auto border-t-4 relative transition-shadow duration-200"
+      style={{
+        borderTopColor: backgroundColor,
+        backgroundColor: `${backgroundColor}25`,
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = `0 4px 12px ${backgroundColor}40`;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = "";
+      }}
+    >
+      <div
+        className="absolute top-3 right-3 w-3 h-3 rounded-full"
+        style={{ backgroundColor }}
+      />
       <div className="space-y-4">
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
