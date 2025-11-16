@@ -13,9 +13,9 @@ export default async function HomePage() {
   return (
     <Container>
       <h1 className="mt-16">Recent Notes</h1>
-      <NoteList notes={notes} isUserAdmin={adminStatus} />
+      <NoteList notes={notes.slice(0, 6)} isUserAdmin={adminStatus} />
       <h1 className="mt-16">Recent Blog Posts</h1>
-      <BlogList posts={blogs} isUserAdmin={adminStatus} />
+      <BlogList posts={blogs.slice(0, 6)} isUserAdmin={adminStatus} />
     </Container>
   );
 }

@@ -1,15 +1,16 @@
 import { requireAdmin } from "@/lib/auth-helper";
-import { getPrivateNotes } from "@/lib/queries/notes";
-import NoteList from "@/components/notes/note-list";
+import { getAllNotes } from "@/lib/queries/notes";
+import AdminNotes from "@/components/notes/admin-notes";
+import Container from "@/components/shared/container";
 
 export default async function PrivateNotesPage() {
   await requireAdmin();
-  const notes = await getPrivateNotes();
+  const allNotes = await getAllNotes();
 
   return (
-    <div>
-      <h1>Private Notes</h1>
-      <NoteList notes={notes} isUserAdmin={true} />
-    </div>
+    <Container>
+      <h1>Notes</h1>
+      <AdminNotes initialNotes={allNotes} />
+    </Container>
   );
 }

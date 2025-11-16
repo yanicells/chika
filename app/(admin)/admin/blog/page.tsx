@@ -3,13 +3,14 @@ import { getAllBlogPosts } from "@/lib/queries/blog";
 import BlogList from "@/components/blog/blog-list";
 import Link from "next/link";
 import Button from "@/components/ui/button";
+import Container from "@/components/shared/container";
 
 export default async function ManageBlogPage() {
   await requireAdmin();
-  const posts = await getAllBlogPosts(); // Includes drafts
+  const posts = await getAllBlogPosts(); 
 
   return (
-    <div>
+    <Container>
       <div className="flex justify-between">
         <h1>Manage Blog</h1>
         <Link href="/admin/blog/create">
@@ -17,6 +18,6 @@ export default async function ManageBlogPage() {
         </Link>
       </div>
       <BlogList posts={posts} isUserAdmin={true} />
-    </div>
+    </Container>
   );
 }

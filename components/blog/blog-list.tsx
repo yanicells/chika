@@ -1,5 +1,5 @@
-import { BlogPost } from '@/db/schema';
-import BlogCard from './blog-card';
+import { BlogPost } from "@/db/schema";
+import BlogCard from "./blog-card";
 
 interface BlogListProps {
   posts: BlogPost[];
@@ -13,17 +13,20 @@ export default function BlogList({
   if (posts.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-600 text-lg">No blog posts yet. Check back soon!</p>
+        <p className="text-gray-600 text-lg">
+          No blog posts yet. Check back soon!
+        </p>
       </div>
     );
-  }   
+  }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-0">
       {posts.map((post) => (
-        <BlogCard key={post.id} post={post} isUserAdmin={isUserAdmin} />
+        <div key={post.id} className="break-inside-avoid mb-6">
+          <BlogCard post={post} isUserAdmin={isUserAdmin} />
+        </div>
       ))}
     </div>
   );
 }
-
