@@ -56,19 +56,34 @@ export default function FilteredNoteList({
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <Link href="/create">
-          <Button variant="primary">✍️ Send Note</Button>
+          <Button variant="primary">+ Send Note</Button>
         </Link>
 
         <select
           value={activeFilter}
           onChange={(e) => setActiveFilter(e.target.value as FilterType)}
-          className="px-4 py-2 bg-surface0 border border-overlay0 rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-blue transition-colors"
+          className="px-4 py-2 bg-surface0 border-2 border-overlay0 rounded-lg text-text focus:outline-none focus:border-blue hover:border-subtext0 transition-colors cursor-pointer appearance-none bg-no-repeat bg-right pr-10"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236c7086'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+            backgroundSize: "1.5rem",
+            backgroundPosition: "right 0.5rem center",
+          }}
         >
-          <option value="all">All Notes</option>
-          <option value="pinned">Pinned</option>
-          <option value="admin">Yanicells</option>
-          <option value="username">Not Anonymous</option>
-          <option value="anonymous">Anonymous</option>
+          <option value="all" className="bg-surface0 text-text">
+            All Notes
+          </option>
+          <option value="pinned" className="bg-surface0 text-text">
+            Pinned
+          </option>
+          <option value="admin" className="bg-surface0 text-text">
+            Yanicells
+          </option>
+          <option value="username" className="bg-surface0 text-text">
+            Not Anonymous
+          </option>
+          <option value="anonymous" className="bg-surface0 text-text">
+            Anonymous
+          </option>
         </select>
       </div>
 
