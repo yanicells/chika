@@ -89,9 +89,10 @@ export const notes = pgTable("notes", {
 
 export const comments = pgTable("comments", {
   id: text("id").primaryKey(),
-  noteId: text("noteId")
-    .notNull()
-    .references(() => notes.id, { onDelete: "cascade" }),
+  blogPostId: text("blogPostId").references(() => blogPosts.id, {
+    onDelete: "cascade",
+  }),
+  noteId: text("noteId").references(() => notes.id, { onDelete: "cascade" }),
   userName: text("userName"),
   isAdmin: boolean("isAdmin").notNull().default(false),
   content: text("content").notNull(),
@@ -137,10 +138,15 @@ export const commentsRelations = relations(comments, ({ one, many }) => ({
     fields: [comments.noteId],
     references: [notes.id],
   }),
+  blogPost: one(blogPosts, {
+    fields: [comments.blogPostId],
+    references: [blogPosts.id],
+  }),
   reactions: many(reactions),
 }));
 
 export const blogPostsRelations = relations(blogPosts, ({ many }) => ({
+  comments: many(comments), 
   reactions: many(reactions),
 }));
 
@@ -156,7 +162,7 @@ export const reactionsRelations = relations(reactions, ({ one }) => ({
   blogPost: one(blogPosts, {
     fields: [reactions.blogPostId],
     references: [blogPosts.id],
-  })
+  }),
 }));
 
 export type Note = typeof notes.$inferSelect;

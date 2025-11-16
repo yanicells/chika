@@ -81,3 +81,76 @@ export async function getCommentCount(noteId: string) {
 
   return Number(result[0]?.count || 0);
 }
+
+/**
+ * Get all comments for a blog post
+ */
+export async function getCommentsByBlogPostId(blogPostId: string) {
+  return await db
+    .select()
+    .from(comments)
+    .where(
+      and(
+        eq(comments.blogPostId, blogPostId),
+        eq(comments.isDeleted, false)
+      )
+    )
+    .orderBy(desc(comments.createdAt));
+}
+
+/**
+ * Get comments with reactions for a blog post
+ */
+export async function getBlogCommentsWithReactions(blogPostId: string) {
+  const blogComments = await getCommentsByBlogPostId(blogPostId);
+  
+  const commentIds = blogComments.map(c => c.id);
+  
+  if (commentIds.length === 0) {
+    return [];
+  }
+
+  const reactionCounts = await db
+    .select({
+      commentId: reactions.commentId,
+      regularCount: sql<number>`count(*) filter (where ${reactions.isAdmin} = false)`,
+      adminCount: sql<number>`count(*) filter (where ${reactions.isAdmin} = true)`,
+    })
+    .from(reactions)
+    .where(sql`${reactions.commentId} IN ${commentIds}`)
+    .groupBy(reactions.commentId);
+
+  const reactionMap = new Map(
+    reactionCounts.map(r => [
+      r.commentId,
+      {
+        regular: Number(r.regularCount || 0),
+        admin: Number(r.adminCount || 0),
+      }
+    ])
+  );
+
+  return blogComments.map(comment => ({
+    ...comment,
+    reactions: reactionMap.get(comment.id) || { regular: 0, admin: 0 },
+  }));
+}
+
+/**
+ * Get total comment count for a blog post
+ */
+export async function getBlogCommentCount(blogPostId: string) {
+  const result = await db
+    .select({
+      count: sql<number>`count(*)`,
+    })
+    .from(comments)
+    .where(
+      and(
+        eq(comments.blogPostId, blogPostId),
+        eq(comments.isDeleted, false)
+      )
+    );
+  
+  return Number(result[0]?.count || 0);
+}
