@@ -12,6 +12,7 @@ import Input from "@/components/ui/input";
 import Textarea from "@/components/ui/textarea";
 import Card from "@/components/ui/card";
 import type { Note } from "@/db/schema";
+import ImageUpload from "../ui/image-upload";
 
 interface EditNoteFormProps {
   note: Note;
@@ -129,13 +130,10 @@ export default function EditNoteForm({ note }: EditNoteFormProps) {
           placeholder="Leave blank for anonymous"
         />
 
-        <Input
-          label="Image URL (optional)"
+        <ImageUpload
           value={formData.imageUrl}
-          onChange={(e) =>
-            setFormData({ ...formData, imageUrl: e.target.value })
-          }
-          placeholder="https://..."
+          onChange={(url) => setFormData({ ...formData, imageUrl: url })}
+          disabled={isLoading}
         />
 
         <div className="flex items-center gap-2">

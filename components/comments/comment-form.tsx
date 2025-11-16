@@ -10,6 +10,7 @@ import {
   createNoteComment,
   createBlogComment,
 } from "@/lib/actions/comments-actions";
+import ImageUpload from "../ui/image-upload";
 
 interface CommentFormProps {
   noteId?: string;
@@ -123,14 +124,10 @@ export default function CommentForm({ noteId, blogPostId }: CommentFormProps) {
           required
         />
 
-        <Input
-          label="Image URL (optional)"
-          type="url"
+        <ImageUpload
           value={formData.imageUrl}
-          onChange={(e) =>
-            setFormData({ ...formData, imageUrl: e.target.value })
-          }
-          placeholder="https://..."
+          onChange={(url) => setFormData({ ...formData, imageUrl: url })}
+          disabled={isLoading}
         />
 
         <div>

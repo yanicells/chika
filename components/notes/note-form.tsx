@@ -8,6 +8,7 @@ import Button from '@/components/ui/button';
 import Card from '@/components/ui/card';
 import { createNote } from '@/lib/actions/notes-actions';
 import Container from '@/components/shared/container';
+import ImageUpload from '../ui/image-upload';
 
 export default function NoteForm() {
   const router = useRouter();
@@ -135,14 +136,10 @@ export default function NoteForm() {
             </div>
           </div>
 
-          <Input
-            label="Image URL (optional)"
-            type="url"
+          <ImageUpload
             value={formData.imageUrl}
-            onChange={(e) =>
-              setFormData({ ...formData, imageUrl: e.target.value })
-            }
-            placeholder="https://example.com/image.jpg"
+            onChange={(url) => setFormData({ ...formData, imageUrl: url })}
+            disabled={isLoading}
           />
 
           <div className="flex items-center">

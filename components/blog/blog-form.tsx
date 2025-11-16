@@ -8,6 +8,7 @@ import Textarea from "@/components/ui/textarea";
 import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
 import { createBlogPost, updateBlogPost } from "@/lib/actions/blog-actions";
+import ImageUpload from "../ui/image-upload";
 
 interface BlogFormProps {
   mode: "create" | "edit";
@@ -137,14 +138,10 @@ export default function BlogForm({ mode, post }: BlogFormProps) {
           required
         />
 
-        <Input
-          label="Cover Image URL (optional)"
-          type="url"
+        <ImageUpload
           value={formData.coverImageUrl}
-          onChange={(e) =>
-            setFormData({ ...formData, coverImageUrl: e.target.value })
-          }
-          placeholder="https://example.com/image.jpg"
+          onChange={(url) => setFormData({ ...formData, coverImageUrl: url })}
+          disabled={isLoading}
         />
 
         <div>
