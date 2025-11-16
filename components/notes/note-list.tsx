@@ -1,6 +1,7 @@
-import { Note } from '@/db/schema';
-import NoteCard from './note-card';
-import { isAdmin } from '@/lib/auth-helper';
+import { Note } from "@/db/schema";
+import NoteCard from "./note-card";
+import Link from "next/link";
+import Button from "@/components/ui/button";
 
 interface NoteListProps {
   notes: (Note & {
@@ -9,24 +10,35 @@ interface NoteListProps {
       admin: number;
     };
   })[];
+  isUserAdmin?: boolean;
 }
 
-export default async function NoteList({ notes }: NoteListProps) {
-  const adminStatus = await isAdmin();
+export default async function NoteList({
+  notes,
+  isUserAdmin = false,
+}: NoteListProps) {
   if (notes.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-600 text-lg">No notes yet. Be the first to share!</p>
+        <p className="text-gray-600 text-lg">
+          No notes yet. Be the first to share!
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {notes.map((note) => (
-        <NoteCard key={note.id} note={note} isAdmin={adminStatus} />
-      ))}
+    <div className="space-y-6">
+      <div className="flex justify-center">
+        <Link href="/create">
+          <Button>Send Note</Button>
+        </Link>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {notes.map((note) => (
+          <NoteCard key={note.id} note={note} isUserAdmin={isUserAdmin} />
+        ))}
+      </div>
     </div>
   );
 }
-

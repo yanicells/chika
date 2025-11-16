@@ -9,7 +9,7 @@ export default async function PrivateNotesPage() {
   return (
     <div>
       <h1>Private Notes</h1>
-      <NoteList notes={notes} />
+      <NoteList notes={notes} isUserAdmin={true} />
     </div>
   );
 }

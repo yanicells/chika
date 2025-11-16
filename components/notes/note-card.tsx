@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { Note } from '@/db/schema';
-import Card from '@/components/ui/card';
-import Badge from '@/components/ui/badge';
-import Button from '@/components/ui/button';
-import ReactionDisplay from '@/components/reactions/reaction-display';
-import AdminBadge from '@/components/admin/admin-badge';
-import EditButton from '@/components/ui/edit-button';
+import Link from "next/link";
+import { Note } from "@/db/schema";
+import Card from "@/components/ui/card";
+import Badge from "@/components/ui/badge";
+import Button from "@/components/ui/button";
+import ReactionDisplay from "@/components/reactions/reaction-display";
+import AdminBadge from "@/components/admin/admin-badge";
+import EditButton from "@/components/ui/edit-button";
 
 interface NoteCardProps {
   note: Note & {
@@ -16,17 +16,17 @@ interface NoteCardProps {
       admin: number;
     };
   };
-  isAdmin: boolean;
+  isUserAdmin?: boolean;
 }
 
-export default function NoteCard({ note, isAdmin }: NoteCardProps) {
+export default function NoteCard({ note, isUserAdmin = false }: NoteCardProps) {
   const truncatedContent =
     note.content.length > 150
       ? `${note.content.substring(0, 150)}...`
       : note.content;
 
-  const displayName = note.userName || 'Anonymous';
-  const backgroundColor = note.color || '#ffffff';
+  const displayName = note.userName || "Anonymous";
+  const backgroundColor = note.color || "#ffffff";
 
   return (
     <Card className="h-full flex flex-col" style={{ backgroundColor }}>
@@ -86,9 +86,8 @@ export default function NoteCard({ note, isAdmin }: NoteCardProps) {
             Read More
           </Button>
         </Link>
-        <div>{isAdmin && <EditButton type="note" id={note.id} />}</div>
+        <div>{isUserAdmin && <EditButton type="note" id={note.id} />}</div>
       </div>
     </Card>
   );
 }
-
