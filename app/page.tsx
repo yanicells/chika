@@ -1,5 +1,5 @@
 import HeroSection from "@/components/shared/hero-section";
-import WordCloudSection from "@/components/shared/word-cloud.section";
+import { getAllTextContent } from "@/lib/queries/wordcloud";
 import { getPublicNotes } from "@/lib/queries/notes";
 import { getPublishedBlogPosts } from "@/lib/queries/blog";
 import NoteList from "@/components/notes/note-list";
@@ -9,7 +9,10 @@ import Link from "next/link";
 import { isAdmin } from "@/lib/auth-helper";
 
 export default async function HomePage() {
-  // Get pinned notes first, then recent notes (limit 6 total)
+  // Get text content for word cloud
+  const textContent = await getAllTextContent();
+
+  // Get notes and blogs (pinned first, then recent, max 6 each)
   const allNotes = await getPublicNotes();
   const pinnedNotes = allNotes.filter((note) => note.isPinned);
   const recentNotes = allNotes
@@ -23,12 +26,9 @@ export default async function HomePage() {
   return (
     <div>
       {/* Hero Section */}
-      <HeroSection />
+      <HeroSection textContent={textContent} />
 
-      <Container>
-        {/* Word Cloud */}
-        <WordCloudSection />
-
+      <div className="max-w-[85rem] mx-auto px-4 lg:px-8">
         {/* Notes Section */}
         <section className="my-12">
           <div className="flex items-center justify-between mb-6">
@@ -71,12 +71,13 @@ export default async function HomePage() {
           {recentBlogs.length > 0 ? (
             <BlogList posts={recentBlogs} isUserAdmin={adminStatus} />
           ) : (
-            <p className="text-center text-subtext0 py-8">
-              No blog posts yet.
-            </p>
+            <p className="text-center text-subtext0 py-8">No blog posts yet.</p>
           )}
         </section>
-      </Container>
+      </div>
+
+      {/* Bottom Spacing */}
+      <div className="pb-32" />
     </div>
   );
 }

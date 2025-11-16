@@ -8,9 +8,12 @@ export default async function NotesPage() {
   const adminStatus = await isAdmin();
 
   return (
-    <Container className="m-12">
+    <div className="max-w-[85rem] mx-auto px-4 lg:px-8 my-12">
       <h1>All Notes</h1>
       <FilteredNoteList notes={notes} isUserAdmin={adminStatus} />
-    </Container>
+
+      {/* Bottom Spacing */}
+      <div className="pb-32" />
+    </div>
   );
 }

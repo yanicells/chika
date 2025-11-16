@@ -8,9 +8,12 @@ export default async function BlogPage() {
   const adminStatus = await isAdmin();
 
   return (
-    <Container className="m-12">
+    <div className="max-w-[85rem] mx-auto px-4 lg:px-8 my-12">
       <h1>Blog</h1>
       <BlogList posts={posts} isUserAdmin={adminStatus} />
-    </Container>
+
+      {/* Bottom Spacing */}
+      <div className="pb-32" />
+    </div>
   );
 }

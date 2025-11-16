@@ -18,7 +18,7 @@ export default async function EditBlogPage({
   }
 
   return (
-    <Container size="md">
+    <Container>
       <div className="py-8">
         <h1 className="text-3xl font-bold text-text mb-2">Edit Blog Post</h1>
         <p className="text-subtext1 mb-8">

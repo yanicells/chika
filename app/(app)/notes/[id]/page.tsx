@@ -23,12 +23,15 @@ export default async function NotePage({
   const comments = await getCommentsWithReactions(id);
 
   return (
-    <Container className="m-12">
+    <div className="max-w-[85rem] mx-auto px-4 lg:px-8 my-12">
       <NoteDetail note={note} isAdmin={adminStatus} />
 
       <h2>Comments</h2>
       <CommentList comments={comments} />
       <CommentForm noteId={id} />
-    </Container>
+
+      {/* Bottom Spacing */}
+      <div className="pb-32" />
+    </div>
   );
 }

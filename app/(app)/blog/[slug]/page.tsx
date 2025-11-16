@@ -23,12 +23,15 @@ export default async function BlogPostPage({
   const comments = await getBlogCommentsWithReactions(post.id);
 
   return (
-    <Container className="m-12">
+    <div className="max-w-[85rem] mx-auto px-4 lg:px-8 my-12">
       <BlogDetail post={post} isUserAdmin={adminStatus} />
 
       <h2>Comments</h2>
       <CommentList comments={comments} />
       <CommentForm blogPostId={post.id} />
-    </Container>
+
+      {/* Bottom Spacing */}
+      <div className="pb-32" />
+    </div>
   );
 }

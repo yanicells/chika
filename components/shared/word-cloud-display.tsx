@@ -99,14 +99,14 @@ export default function WordCloudDisplay({
   }
 
   return (
-    <div className="w-full bg-surface0 rounded-lg shadow-sm p-4 overflow-hidden">
+    <div className="w-full rounded-lg p-4 overflow-hidden">
       <div className="w-full h-[500px] flex items-center justify-center">
         <WordCloud
           words={words}
           width={
             typeof window !== "undefined"
-              ? Math.min(window.innerWidth - 100, 900)
-              : 900
+              ? Math.min(window.innerWidth - 100, 700)
+              : 700
           }
           height={500}
           font={resolveFont}

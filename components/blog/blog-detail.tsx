@@ -29,7 +29,7 @@ export default function BlogDetail({
 
   return (
     <Card
-      className="max-w-6xl mx-auto border-t-4 relative transition-shadow duration-200"
+      className="max-w-7xl mx-auto border-t-4 relative transition-shadow duration-200"
       style={{
         borderTopColor: backgroundColor,
         backgroundColor: `${backgroundColor}25`,
