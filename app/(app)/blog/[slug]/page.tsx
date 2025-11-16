@@ -4,13 +4,17 @@ import BlogDetail from "@/components/blog/blog-detail";
 import CommentList from "@/components/comments/comment-list";
 import CommentForm from "@/components/comments/comment-form";
 import { notFound } from "next/navigation";
+import Container from "@/components/shared/container";
+import { isAdmin } from "@/lib/auth-helper";
 
 export default async function BlogPostPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const post = await getBlogPostBySlug(params.slug);
+  const { slug } = await params; 
+  const post = await getBlogPostBySlug(slug);
+  const adminStatus = await isAdmin();
 
   if (!post) {
     notFound();
@@ -19,12 +23,11 @@ export default async function BlogPostPage({
   const comments = await getBlogCommentsWithReactions(post.id);
 
   return (
-    <div>
-      <BlogDetail post={post} />
-
+    <Container>
+      <BlogDetail post={post} isUserAdmin={adminStatus} />
       <h2>Comments</h2>
       <CommentList comments={comments} />
       <CommentForm blogPostId={post.id} />
-    </div>
+    </Container>
   );
 }

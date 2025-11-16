@@ -1,5 +1,6 @@
 import { Note } from '@/db/schema';
 import NoteCard from './note-card';
+import { isAdmin } from '@/lib/auth-helper';
 
 interface NoteListProps {
   notes: (Note & {
@@ -10,7 +11,8 @@ interface NoteListProps {
   })[];
 }
 
-export default function NoteList({ notes }: NoteListProps) {
+export default async function NoteList({ notes }: NoteListProps) {
+  const adminStatus = await isAdmin();
   if (notes.length === 0) {
     return (
       <div className="text-center py-12">
@@ -22,7 +24,7 @@ export default function NoteList({ notes }: NoteListProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {notes.map((note) => (
-        <NoteCard key={note.id} note={note} />
+        <NoteCard key={note.id} note={note} isAdmin={adminStatus} />
       ))}
     </div>
   );

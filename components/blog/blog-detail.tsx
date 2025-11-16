@@ -5,6 +5,7 @@ import Badge from '@/components/ui/badge';
 import Button from '@/components/ui/button';
 import ReactionDisplay from '@/components/reactions/reaction-display';
 import ReactionButton from '@/components/reactions/reaction-button';
+import EditButton from "@/components/ui/edit-button";
 
 interface BlogDetailProps {
   post: BlogPost & {
@@ -13,7 +14,7 @@ interface BlogDetailProps {
       admin: number;
     };
   };
-  isUserAdmin?: boolean;
+  isUserAdmin: boolean;
   hasReacted?: boolean;
 }
 

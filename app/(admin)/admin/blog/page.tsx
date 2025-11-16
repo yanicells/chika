@@ -16,7 +16,7 @@ export default async function ManageBlogPage() {
           <Button>Create Post</Button>
         </Link>
       </div>
-      <BlogList posts={posts} />
+      <BlogList posts={posts} isUserAdmin={true} />
     </div>
   );
 }

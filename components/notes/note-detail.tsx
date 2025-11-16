@@ -4,6 +4,7 @@ import Badge from '@/components/ui/badge';
 import AdminBadge from '@/components/admin/admin-badge';
 import ReactionDisplay from '@/components/reactions/reaction-display';
 import ReactionButton from '@/components/reactions/reaction-button';
+import EditButton from "@/components/ui/edit-button";
 
 interface NoteDetailProps {
   note: Note & {
@@ -13,9 +14,10 @@ interface NoteDetailProps {
     };
   };
   hasReacted?: boolean;
+  isAdmin: boolean;
 }
 
-export default function NoteDetail({ note, hasReacted = false }: NoteDetailProps) {
+export default function NoteDetail({ note, hasReacted = false, isAdmin }: NoteDetailProps) {
   const displayName = note.userName || 'Anonymous';
   const backgroundColor = note.color || '#ffffff';
 
@@ -66,6 +68,9 @@ export default function NoteDetail({ note, hasReacted = false }: NoteDetailProps
               <span>Updated: {new Date(note.updatedAt).toLocaleDateString()}</span>
             )}
           </div>
+        </div>
+        <div>
+          {isAdmin && <EditButton type="note" id={note.id} />}
         </div>
 
         <div className="flex items-center gap-4 pt-4 border-t border-gray-200">

@@ -3,6 +3,7 @@ import { BlogPost } from '@/db/schema';
 import Card from '@/components/ui/card';
 import Badge from '@/components/ui/badge';
 import Button from '@/components/ui/button';
+import EditButton from "@/components/ui/edit-button";
 
 interface BlogCardProps {
   post: BlogPost;
@@ -61,6 +62,7 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
             Read More
           </Button>
         </Link>
+        <div>{isUserAdmin && <EditButton type="blog" id={post.id} />}</div>
       </div>
     </Card>
   );

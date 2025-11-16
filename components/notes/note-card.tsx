@@ -7,6 +7,7 @@ import Badge from '@/components/ui/badge';
 import Button from '@/components/ui/button';
 import ReactionDisplay from '@/components/reactions/reaction-display';
 import AdminBadge from '@/components/admin/admin-badge';
+import EditButton from '@/components/ui/edit-button';
 
 interface NoteCardProps {
   note: Note & {
@@ -15,9 +16,10 @@ interface NoteCardProps {
       admin: number;
     };
   };
+  isAdmin: boolean;
 }
 
-export default function NoteCard({ note }: NoteCardProps) {
+export default function NoteCard({ note, isAdmin }: NoteCardProps) {
   const truncatedContent =
     note.content.length > 150
       ? `${note.content.substring(0, 150)}...`
@@ -27,10 +29,7 @@ export default function NoteCard({ note }: NoteCardProps) {
   const backgroundColor = note.color || '#ffffff';
 
   return (
-    <Card
-      className="h-full flex flex-col"
-      style={{ backgroundColor }}
-    >
+    <Card className="h-full flex flex-col" style={{ backgroundColor }}>
       <div className="flex-1">
         {note.isPinned && (
           <div className="mb-2">
@@ -63,7 +62,7 @@ export default function NoteCard({ note }: NoteCardProps) {
           <div className="mb-3">
             <img
               src={note.imageUrl}
-              alt={note.title || 'Note image'}
+              alt={note.title || "Note image"}
               className="w-full h-48 object-cover rounded-md"
             />
           </div>
@@ -71,9 +70,7 @@ export default function NoteCard({ note }: NoteCardProps) {
 
         <div className="flex items-center justify-between text-sm text-gray-600 mb-3">
           <span>By {displayName}</span>
-          <span>
-            {new Date(note.createdAt).toLocaleDateString()}
-          </span>
+          <span>{new Date(note.createdAt).toLocaleDateString()}</span>
         </div>
 
         {note.reactions && (
@@ -89,6 +86,7 @@ export default function NoteCard({ note }: NoteCardProps) {
             Read More
           </Button>
         </Link>
+        <div>{isAdmin && <EditButton type="note" id={note.id} />}</div>
       </div>
     </Card>
   );
