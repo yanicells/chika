@@ -1,11 +1,94 @@
 import { db } from "../../db/drizzle";
-import { notes } from "../../db/schema";
-import { and, desc, eq } from "drizzle-orm";
+import { notes, reactions } from "../../db/schema";
+import { and, desc, eq, sql } from "drizzle-orm";
 
+/**
+ * Get all public notes (not deleted, not private)
+ * Ordered by pinned first, then newest
+ */
 export async function getPublicNotes() {
   return await db
     .select()
     .from(notes)
     .where(and(eq(notes.isDeleted, false), eq(notes.isPrivate, false)))
     .orderBy(desc(notes.isPinned), desc(notes.createdAt));
+}
+
+/**
+ * Get all private notes (admin only)
+ * Should only be called after auth check
+ */
+export async function getPrivateNotes() {
+  return await db
+    .select()
+    .from(notes)
+    .where(and(eq(notes.isDeleted, false), eq(notes.isPrivate, true)))
+    .orderBy(desc(notes.isPinned), desc(notes.createdAt));
+}
+
+/**
+ * Get all notes (public + private, admin only)
+ * Should only be called after auth check
+ */
+export async function getAllNotes() {
+  return await db
+    .select()
+    .from(notes)
+    .where(eq(notes.isDeleted, false))
+    .orderBy(desc(notes.isPinned), desc(notes.createdAt));
+}
+
+/**
+ * Get single note by ID
+ * Returns null if not found or deleted
+ */
+export async function getNoteById(id: string) {
+  const result = await db
+    .select()
+    .from(notes)
+    .where(and(eq(notes.id, id), eq(notes.isDeleted, false)))
+    .limit(1);
+
+  return result[0] || null;
+}
+
+/**
+ * Get note with reaction count
+ */
+export async function getNoteWithReactions(id: string) {
+  const note = await getNoteById(id);
+  if (!note) return null;
+
+  const reactionCounts = await db
+    .select({
+      regularCount: sql<number>`count(*) filter (where ${reactions.isAdmin} = false)`,
+      adminCount: sql<number>`count(*) filter (where ${reactions.isAdmin} = true)`,
+    })
+    .from(reactions)
+    .where(eq(reactions.noteId, id));
+
+  return {
+    ...note,
+    reactions: {
+      regular: Number(reactionCounts[0]?.regularCount || 0),
+      admin: Number(reactionCounts[0]?.adminCount || 0),
+    },
+  };
+}
+
+/**
+ * Get pinned notes only (public)
+ */
+export async function getPinnedNotes() {
+  return await db
+    .select()
+    .from(notes)
+    .where(
+      and(
+        eq(notes.isDeleted, false),
+        eq(notes.isPrivate, false),
+        eq(notes.isPinned, true)
+      )
+    )
+    .orderBy(desc(notes.createdAt));
 }
