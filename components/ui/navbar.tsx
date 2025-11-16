@@ -73,8 +73,8 @@ export default function Navigation() {
             isMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
           }`}
         >
-          <div className="border-t border-[#45475a]/50 py-4">
-            <div className="flex flex-col space-y-4">
+          <div className="border-t border-[#45475a]/50 py-2">
+            <div className="flex flex-col space-y-2">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
@@ -82,8 +82,8 @@ export default function Navigation() {
                   onClick={() => setIsMenuOpen(false)}
                   className={
                     link.name === "Send Note"
-                      ? "text-base font-sans px-4 py-2 rounded-md bg-blue text-[#1e1e2e] border-2 border-blue hover:bg-[#74a7f5] hover:border-[#74a7f5] transition-all duration-200 text-center"
-                      : "text-sm font-sans text-[#cdd6f4] hover:text-[#89b4fa] transition-colors duration-200 py-2"
+                      ? "text-sm font-sans px-3 py-1.5 rounded-md bg-blue text-[#1e1e2e] border-2 border-blue hover:bg-[#74a7f5] hover:border-[#74a7f5] transition-all duration-200 text-center"
+                      : "text-sm font-sans text-[#cdd6f4] hover:text-[#89b4fa] transition-colors duration-200 py-1.5"
                   }
                 >
                   {link.name}

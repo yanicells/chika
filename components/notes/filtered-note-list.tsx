@@ -63,14 +63,19 @@ export default function FilteredNoteList({
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <Link href="/create">
-          <Button variant="primary">+ Send Note</Button>
+          <Button
+            variant="primary"
+            className="text-xs px-2 py-1 sm:px-3 sm:py-1.5 sm:text-sm"
+          >
+            + Send Note
+          </Button>
         </Link>
 
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <button
               type="button"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-surface0 border-2 border-overlay0 rounded-lg text-text hover:border-subtext0 focus:outline-none focus:border-blue cursor-pointer"
+              className="inline-flex items-center gap-2 px-2 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm bg-surface0 border-2 border-overlay0 rounded-lg text-text hover:border-subtext0 focus:outline-none focus:border-blue cursor-pointer"
             >
               {activeFilter === "all" && "All Notes"}
               {activeFilter === "pinned" && "Pinned"}
@@ -87,31 +92,31 @@ export default function FilteredNoteList({
           >
             <DropdownMenuItem
               onSelect={() => setActiveFilter("all")}
-              className="text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
+              className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
             >
               All Notes
             </DropdownMenuItem>
             <DropdownMenuItem
               onSelect={() => setActiveFilter("pinned")}
-              className="text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
+              className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
             >
               Pinned
             </DropdownMenuItem>
             <DropdownMenuItem
               onSelect={() => setActiveFilter("admin")}
-              className="text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
+              className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
             >
               Yanicells
             </DropdownMenuItem>
             <DropdownMenuItem
               onSelect={() => setActiveFilter("username")}
-              className="text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
+              className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
             >
               Not Anonymous
             </DropdownMenuItem>
             <DropdownMenuItem
               onSelect={() => setActiveFilter("anonymous")}
-              className="text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
+              className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
             >
               Anonymous
             </DropdownMenuItem>
