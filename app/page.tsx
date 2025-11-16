@@ -35,10 +35,10 @@ export default async function HomePage() {
           <div className="flex items-center justify-between mb-4">
             <div>
               <Link href="/notes" className="group inline-block">
-                <h2 className="text-4xl font-bold underline decoration-2 underline-offset-4 decoration-subtext0 group-hover:decoration-blue text-text group-hover:text-blue transition-colors inline-flex items-center gap-2">
+                <h2 className="text-2xl sm:text-4xl font-bold underline decoration-2 underline-offset-4 decoration-subtext0 group-hover:decoration-blue text-text group-hover:text-blue transition-colors inline-flex items-center gap-2">
                   Notes
                   <svg
-                    className="w-6 h-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="w-5 h-5 sm:w-6 sm:h-6 opacity-0 group-hover:opacity-100 transition-opacity"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -52,7 +52,7 @@ export default async function HomePage() {
                   </svg>
                 </h2>
               </Link>
-              <p className="text-lg text-subtext1 mt-1 mb-0 pb-0">
+              <p className="text-sm sm:text-lg text-subtext1 mt-1 mb-0 pb-0">
                 Chika&apos;s people have sent
               </p>
             </div>
@@ -75,10 +75,10 @@ export default async function HomePage() {
           <div className="flex items-center justify-between mb-4">
             <div>
               <Link href="/blog" className="group inline-block">
-                <h2 className="text-4xl font-bold underline decoration-2 underline-offset-4 decoration-subtext0 group-hover:decoration-blue text-text group-hover:text-blue transition-colors inline-flex items-center gap-2">
+                <h2 className="text-2xl sm:text-4xl font-bold underline decoration-2 underline-offset-4 decoration-subtext0 group-hover:decoration-blue text-text group-hover:text-blue transition-colors inline-flex items-center gap-2">
                   Blog
                   <svg
-                    className="w-6 h-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="w-5 h-5 sm:w-6 sm:h-6 opacity-0 group-hover:opacity-100 transition-opacity"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -92,7 +92,9 @@ export default async function HomePage() {
                   </svg>
                 </h2>
               </Link>
-              <p className="text-lg text-subtext1 mt-1">My blog posts</p>
+              <p className="text-sm sm:text-lg text-subtext1 mt-1">
+                My blog posts
+              </p>
             </div>
           </div>
 

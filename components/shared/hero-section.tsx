@@ -31,21 +31,21 @@ export default function HeroSection({ textContent }: HeroSectionProps) {
             </p>
 
             {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-              <Link href="/create" className="w-full sm:w-auto">
-                <Button variant="primary" size="lg" className="w-full">
+            <div className="flex flex-row flex-wrap gap-3 justify-center lg:justify-start">
+              <Link href="/create" className="flex-shrink-0">
+                <Button variant="primary" size="sm">
                   + Send Note
                 </Button>
               </Link>
 
-              <Link href="/notes" className="w-full sm:w-auto">
-                <Button variant="secondary" size="lg" className="w-full">
+              <Link href="/notes" className="flex-shrink-0">
+                <Button variant="secondary" size="sm">
                   Notes
                 </Button>
               </Link>
 
-              <Link href="/blog" className="w-full sm:w-auto">
-                <Button variant="secondary" size="lg" className="w-full">
+              <Link href="/blog" className="flex-shrink-0">
+                <Button variant="secondary" size="sm">
                   Blog
                 </Button>
               </Link>
