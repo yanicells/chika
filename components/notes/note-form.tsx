@@ -7,6 +7,7 @@ import Textarea from '@/components/ui/textarea';
 import Button from '@/components/ui/button';
 import Card from '@/components/ui/card';
 import { createNote } from '@/lib/actions/notes-actions';
+import Container from '@/components/shared/container';
 
 export default function NoteForm() {
   const router = useRouter();
@@ -71,114 +72,120 @@ export default function NoteForm() {
   };
 
   return (
-    <Card>
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Create New Note</h2>
+    <Container>
+      <Card>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">
+          Create New Note
+        </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <Input
-          label="Title (optional)"
-          type="text"
-          value={formData.title}
-          onChange={(e) =>
-            setFormData({ ...formData, title: e.target.value })
-          }
-          placeholder="Enter note title..."
-        />
-
-        <Textarea
-          label="Content *"
-          value={formData.content}
-          onChange={(e) =>
-            setFormData({ ...formData, content: e.target.value })
-          }
-          placeholder="Write your note here..."
-          rows={6}
-          required
-        />
-
-        <Input
-          label="Your Name (optional)"
-          type="text"
-          value={formData.userName}
-          onChange={(e) =>
-            setFormData({ ...formData, userName: e.target.value })
-          }
-          placeholder="Anonymous"
-        />
-
-        <div>
-          <label className="block mb-1.5 text-sm font-medium text-gray-700">
-            Background Color
-          </label>
-          <div className="flex items-center gap-3">
-            <input
-              type="color"
-              value={formData.color}
-              onChange={(e) =>
-                setFormData({ ...formData, color: e.target.value })
-              }
-              className="h-10 w-20 rounded-md border border-gray-300 cursor-pointer"
-            />
-            <Input
-              type="text"
-              value={formData.color}
-              onChange={(e) =>
-                setFormData({ ...formData, color: e.target.value })
-              }
-              placeholder="#ffffff"
-              className="flex-1"
-            />
-          </div>
-        </div>
-
-        <Input
-          label="Image URL (optional)"
-          type="url"
-          value={formData.imageUrl}
-          onChange={(e) =>
-            setFormData({ ...formData, imageUrl: e.target.value })
-          }
-          placeholder="https://example.com/image.jpg"
-        />
-
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="isPrivate"
-            checked={formData.isPrivate}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <Input
+            label="Title (optional)"
+            type="text"
+            value={formData.title}
             onChange={(e) =>
-              setFormData({ ...formData, isPrivate: e.target.checked })
+              setFormData({ ...formData, title: e.target.value })
             }
-            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            placeholder="Enter note title..."
           />
-          <label htmlFor="isPrivate" className="ml-2 text-sm text-gray-700">
-            Make this note private (admin only)
-          </label>
-        </div>
 
-        {error && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded-md">
-            <p className="text-sm text-red-600">{error}</p>
+          <Textarea
+            label="Content *"
+            value={formData.content}
+            onChange={(e) =>
+              setFormData({ ...formData, content: e.target.value })
+            }
+            placeholder="Write your note here..."
+            rows={6}
+            required
+          />
+
+          <Input
+            label="Your Name (optional)"
+            type="text"
+            value={formData.userName}
+            onChange={(e) =>
+              setFormData({ ...formData, userName: e.target.value })
+            }
+            placeholder="Anonymous"
+          />
+
+          <div>
+            <label className="block mb-1.5 text-sm font-medium text-gray-700">
+              Background Color
+            </label>
+            <div className="flex items-center gap-3">
+              <input
+                type="color"
+                value={formData.color}
+                onChange={(e) =>
+                  setFormData({ ...formData, color: e.target.value })
+                }
+                className="h-10 w-20 rounded-md border border-gray-300 cursor-pointer"
+              />
+              <Input
+                type="text"
+                value={formData.color}
+                onChange={(e) =>
+                  setFormData({ ...formData, color: e.target.value })
+                }
+                placeholder="#ffffff"
+                className="flex-1"
+              />
+            </div>
           </div>
-        )}
 
-        {success && (
-          <div className="p-3 bg-green-50 border border-green-200 rounded-md">
-            <p className="text-sm text-green-600">Note created successfully!</p>
+          <Input
+            label="Image URL (optional)"
+            type="url"
+            value={formData.imageUrl}
+            onChange={(e) =>
+              setFormData({ ...formData, imageUrl: e.target.value })
+            }
+            placeholder="https://example.com/image.jpg"
+          />
+
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="isPrivate"
+              checked={formData.isPrivate}
+              onChange={(e) =>
+                setFormData({ ...formData, isPrivate: e.target.checked })
+              }
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            />
+            <label htmlFor="isPrivate" className="ml-2 text-sm text-gray-700">
+              Make this note private (admin only)
+            </label>
           </div>
-        )}
 
-        <Button
-          type="submit"
-          variant="primary"
-          size="lg"
-          isLoading={isLoading}
-          className="w-full"
-        >
-          Create Note
-        </Button>
-      </form>
-    </Card>
+          {error && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-md">
+              <p className="text-sm text-red-600">{error}</p>
+            </div>
+          )}
+
+          {success && (
+            <div className="p-3 bg-green-50 border border-green-200 rounded-md">
+              <p className="text-sm text-green-600">
+                Note created successfully!
+              </p>
+            </div>
+          )}
+
+          <Button
+            type="submit"
+            variant="primary"
+            size="lg"
+            isLoading={isLoading}
+            className="w-full"
+          >
+            Create Note
+          </Button>
+        </form>
+      </Card>
+    </Container>
   );
 }
 
