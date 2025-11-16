@@ -6,6 +6,13 @@ import NoteCard from "./note-card";
 import { FilterType } from "./note-filter";
 import Link from "next/link";
 import Button from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ChevronDownIcon } from "lucide-react";
 
 interface FilteredNoteListProps {
   notes: (Note & {
@@ -59,32 +66,57 @@ export default function FilteredNoteList({
           <Button variant="primary">+ Send Note</Button>
         </Link>
 
-        <select
-          value={activeFilter}
-          onChange={(e) => setActiveFilter(e.target.value as FilterType)}
-          className="px-4 py-2 bg-surface0 border-2 border-overlay0 rounded-lg text-text focus:outline-none focus:border-blue hover:border-subtext0 transition-colors cursor-pointer appearance-none bg-no-repeat bg-right pr-10"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236c7086'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
-            backgroundSize: "1.5rem",
-            backgroundPosition: "right 0.5rem center",
-          }}
-        >
-          <option value="all" className="bg-surface0 text-text">
-            All Notes
-          </option>
-          <option value="pinned" className="bg-surface0 text-text">
-            Pinned
-          </option>
-          <option value="admin" className="bg-surface0 text-text">
-            Yanicells
-          </option>
-          <option value="username" className="bg-surface0 text-text">
-            Not Anonymous
-          </option>
-          <option value="anonymous" className="bg-surface0 text-text">
-            Anonymous
-          </option>
-        </select>
+        <DropdownMenu modal={false}>
+          <DropdownMenuTrigger asChild>
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-surface0 border-2 border-overlay0 rounded-lg text-text hover:border-subtext0 focus:outline-none focus:border-blue cursor-pointer"
+            >
+              {activeFilter === "all" && "All Notes"}
+              {activeFilter === "pinned" && "Pinned"}
+              {activeFilter === "admin" && "Yanicells"}
+              {activeFilter === "username" && "Not Anonymous"}
+              {activeFilter === "anonymous" && "Anonymous"}
+              <ChevronDownIcon className="w-4 h-4 text-overlay0" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="bg-surface0 border-2 border-overlay0 rounded-lg z-50 min-w-[160px]"
+            align="end"
+            sideOffset={8}
+          >
+            <DropdownMenuItem
+              onSelect={() => setActiveFilter("all")}
+              className="text-text hover:bg-surface1 focus:bg-surface1 cursor-pointer"
+            >
+              All Notes
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() => setActiveFilter("pinned")}
+              className="text-text hover:bg-surface1 focus:bg-surface1 cursor-pointer"
+            >
+              Pinned
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() => setActiveFilter("admin")}
+              className="text-text hover:bg-surface1 focus:bg-surface1 cursor-pointer"
+            >
+              Yanicells
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() => setActiveFilter("username")}
+              className="text-text hover:bg-surface1 focus:bg-surface1 cursor-pointer"
+            >
+              Not Anonymous
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() => setActiveFilter("anonymous")}
+              className="text-text hover:bg-surface1 focus:bg-surface1 cursor-pointer"
+            >
+              Anonymous
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {filteredNotes.length === 0 ? (
