@@ -6,6 +6,7 @@ import Card from "@/components/ui/card";
 import Badge from "@/components/ui/badge";
 import Button from "@/components/ui/button";
 import ReactionDisplay from "@/components/reactions/reaction-display";
+import ReactionButton from "@/components/reactions/reaction-button";
 import AdminBadge from "@/components/admin/admin-badge";
 import EditButton from "@/components/ui/edit-button";
 
@@ -74,8 +75,9 @@ export default function NoteCard({ note, isUserAdmin = false }: NoteCardProps) {
         </div>
 
         {note.reactions && (
-          <div className="mb-3">
+          <div className="mb-3 flex items-center gap-3">
             <ReactionDisplay reactions={note.reactions} />
+            <ReactionButton type="note" id={note.id} hasReacted={false} />
           </div>
         )}
       </div>

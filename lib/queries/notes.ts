@@ -7,11 +7,18 @@ import { and, desc, eq, sql } from "drizzle-orm";
  * Ordered by pinned first, then newest
  */
 export async function getPublicNotes() {
-  return await db
+  const notesData = await db
     .select()
     .from(notes)
     .where(and(eq(notes.isDeleted, false), eq(notes.isPrivate, false)))
     .orderBy(desc(notes.isPinned), desc(notes.createdAt));
+
+  // Use existing getNoteWithReactions for each note
+  const notesWithReactions = await Promise.all(
+    notesData.map((note) => getNoteWithReactions(note.id))
+  );
+
+  return notesWithReactions.filter((note) => note !== null);
 }
 
 /**

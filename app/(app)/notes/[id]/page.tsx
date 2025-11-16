@@ -1,4 +1,4 @@
-import { getNoteById } from "@/lib/queries/notes";
+import { getNoteWithReactions } from "@/lib/queries/notes";
 import { getCommentsWithReactions } from "@/lib/queries/comments";
 import NoteDetail from "@/components/notes/note-detail";
 import CommentList from "@/components/comments/comment-list";
@@ -10,10 +10,10 @@ import { isAdmin } from "@/lib/auth-helper";
 export default async function NotePage({
   params,
 }: {
-  params: Promise<{ id: string }>; 
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = await params; 
-  const note = await getNoteById(id);
+  const { id } = await params;
+  const note = await getNoteWithReactions(id);
   const adminStatus = await isAdmin();
 
   if (!note) {

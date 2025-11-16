@@ -7,11 +7,18 @@ import { eq, and, desc, sql } from "drizzle-orm";
  * Ordered by pinned first, then newest
  */
 export async function getPublishedBlogPosts() {
-  return await db
+  const posts = await db
     .select()
     .from(blogPosts)
     .where(and(eq(blogPosts.isDeleted, false), eq(blogPosts.isPublished, true)))
     .orderBy(desc(blogPosts.isPinned), desc(blogPosts.publishedAt));
+
+  // Use helper function to get reactions for each post
+  const postsWithReactions = await Promise.all(
+    posts.map((post) => getBlogPostWithReactionsById(post.id))
+  );
+
+  return postsWithReactions.filter((post) => post !== null);
 }
 
 /**
@@ -55,6 +62,30 @@ export async function getBlogPostById(id: string) {
     .limit(1);
 
   return result[0] || null;
+}
+
+/**
+ * Get blog post with reactions by ID
+ */
+async function getBlogPostWithReactionsById(id: string) {
+  const post = await getBlogPostById(id);
+  if (!post) return null;
+
+  const reactionCounts = await db
+    .select({
+      regularCount: sql<number>`count(*) filter (where ${reactions.isAdmin} = false)`,
+      adminCount: sql<number>`count(*) filter (where ${reactions.isAdmin} = true)`,
+    })
+    .from(reactions)
+    .where(eq(reactions.blogPostId, post.id));
+
+  return {
+    ...post,
+    reactions: {
+      regular: Number(reactionCounts[0]?.regularCount || 0),
+      admin: Number(reactionCounts[0]?.adminCount || 0),
+    },
+  };
 }
 
 /**

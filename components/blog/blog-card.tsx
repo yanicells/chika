@@ -1,12 +1,19 @@
-import Link from 'next/link';
-import { BlogPost } from '@/db/schema';
-import Card from '@/components/ui/card';
-import Badge from '@/components/ui/badge';
-import Button from '@/components/ui/button';
+import Link from "next/link";
+import { BlogPost } from "@/db/schema";
+import Card from "@/components/ui/card";
+import Badge from "@/components/ui/badge";
+import Button from "@/components/ui/button";
 import EditButton from "@/components/ui/edit-button";
+import ReactionDisplay from "@/components/reactions/reaction-display";
+import ReactionButton from "@/components/reactions/reaction-button";
 
 interface BlogCardProps {
-  post: BlogPost;
+  post: BlogPost & {
+    reactions?: {
+      regular: number;
+      admin: number;
+    };
+  };
   isUserAdmin?: boolean;
 }
 
@@ -49,11 +56,18 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
 
         <p className="text-gray-700 mb-4 line-clamp-3">{truncatedExcerpt}</p>
 
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-gray-600 mb-3">
           {post.publishedAt
             ? new Date(post.publishedAt).toLocaleDateString()
             : new Date(post.createdAt).toLocaleDateString()}
         </div>
+
+        {post.reactions && (
+          <div className="flex items-center gap-3 mb-3">
+            <ReactionDisplay reactions={post.reactions} />
+            <ReactionButton type="blogPost" id={post.id} hasReacted={false} />
+          </div>
+        )}
       </div>
 
       <div className="mt-auto pt-4 border-t border-gray-200">
@@ -67,4 +81,3 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
     </Card>
   );
 }
-

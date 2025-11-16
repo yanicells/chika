@@ -1,4 +1,4 @@
-import { getBlogPostBySlug } from "@/lib/queries/blog";
+import { getBlogPostWithReactions } from "@/lib/queries/blog";
 import { getBlogCommentsWithReactions } from "@/lib/queries/comments";
 import BlogDetail from "@/components/blog/blog-detail";
 import CommentList from "@/components/comments/comment-list";
@@ -12,8 +12,8 @@ export default async function BlogPostPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params; 
-  const post = await getBlogPostBySlug(slug);
+  const { slug } = await params;
+  const post = await getBlogPostWithReactions(slug);
   const adminStatus = await isAdmin();
 
   if (!post) {
