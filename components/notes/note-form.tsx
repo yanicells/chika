@@ -86,7 +86,17 @@ export default function NoteForm() {
             onChange={(e) =>
               setFormData({ ...formData, title: e.target.value })
             }
-            placeholder="Enter note title..."
+            placeholder="Give your note a title"
+          />
+
+          <Input
+            label="Your Name (optional)"
+            type="text"
+            value={formData.userName}
+            onChange={(e) =>
+              setFormData({ ...formData, userName: e.target.value })
+            }
+            placeholder="Anonymous"
           />
 
           <Textarea
@@ -100,15 +110,23 @@ export default function NoteForm() {
             required
           />
 
-          <Input
-            label="Your Name (optional)"
-            type="text"
-            value={formData.userName}
-            onChange={(e) =>
-              setFormData({ ...formData, userName: e.target.value })
-            }
-            placeholder="Anonymous"
-          />
+          <div className="flex items-center gap-3 p-4 bg-surface0 border border-overlay0 rounded-lg">
+            <input
+              type="checkbox"
+              id="isPrivate"
+              checked={formData.isPrivate}
+              onChange={(e) =>
+                setFormData({ ...formData, isPrivate: e.target.checked })
+              }
+              className="w-5 h-5 accent-blue rounded cursor-pointer"
+            />
+            <label
+              htmlFor="isPrivate"
+              className="text-sm font-medium text-text cursor-pointer"
+            >
+              Send privately (only I can see this)
+            </label>
+          </div>
 
           <CatppuccinColorPicker
             value={formData.color}
@@ -120,21 +138,6 @@ export default function NoteForm() {
             onChange={(url) => setFormData({ ...formData, imageUrl: url })}
             disabled={isLoading}
           />
-
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="isPrivate"
-              checked={formData.isPrivate}
-              onChange={(e) =>
-                setFormData({ ...formData, isPrivate: e.target.checked })
-              }
-              className="h-4 w-4 text-blue focus:ring-blue border-overlay0 rounded"
-            />
-            <label htmlFor="isPrivate" className="ml-2 text-sm text-text">
-              Make this note private (admin only)
-            </label>
-          </div>
 
           {error && (
             <div className="p-3 bg-red/20 border border-red rounded-md">

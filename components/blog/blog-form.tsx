@@ -103,98 +103,94 @@ export default function BlogForm({ mode, post }: BlogFormProps) {
   };
 
   return (
-    <Card>
-      <h2 className="text-2xl font-bold text-text mb-6">
-        {mode === "create" ? "Create New Blog Post" : "Edit Blog Post"}
-      </h2>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <Input
-          label="Title *"
-          type="text"
-          value={formData.title}
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          placeholder="Enter blog post title..."
-          required
-        />
-
-        <Textarea
-          label="Excerpt (optional)"
-          value={formData.excerpt}
-          onChange={(e) =>
-            setFormData({ ...formData, excerpt: e.target.value })
-          }
-          placeholder="Brief summary of the post..."
-          rows={3}
-        />
-
-        <Textarea
-          label="Content *"
-          value={formData.content}
-          onChange={(e) =>
-            setFormData({ ...formData, content: e.target.value })
-          }
-          placeholder="Write your blog post here..."
-          rows={12}
-          required
-        />
-
-        <ImageUpload
-          value={formData.coverImageUrl}
-          onChange={(url) => setFormData({ ...formData, coverImageUrl: url })}
-          disabled={isLoading}
-        />
-
-        <CatppuccinColorPicker
-          value={formData.color}
-          onChange={(color) => setFormData({ ...formData, color })}
-        />
-
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="isPublished"
-            checked={formData.isPublished}
+    <Card className="p-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="space-y-4">
+          <Input
+            label="Title *"
+            type="text"
+            value={formData.title}
             onChange={(e) =>
-              setFormData({ ...formData, isPublished: e.target.checked })
+              setFormData({ ...formData, title: e.target.value })
             }
-            className="h-4 w-4 accent-blue rounded"
+            placeholder="Enter blog post title..."
+            required
           />
-          <label htmlFor="isPublished" className="ml-2 text-sm text-text">
-            Publish this post
-          </label>
+
+          <Textarea
+            label="Excerpt (optional)"
+            value={formData.excerpt}
+            onChange={(e) =>
+              setFormData({ ...formData, excerpt: e.target.value })
+            }
+            placeholder="Brief summary of the post..."
+            rows={3}
+          />
+
+          <Textarea
+            label="Content *"
+            value={formData.content}
+            onChange={(e) =>
+              setFormData({ ...formData, content: e.target.value })
+            }
+            placeholder="Write your blog post here..."
+            rows={12}
+            required
+          />
+
+          <ImageUpload
+            value={formData.coverImageUrl}
+            onChange={(url) => setFormData({ ...formData, coverImageUrl: url })}
+            disabled={isLoading}
+          />
+
+          <CatppuccinColorPicker
+            value={formData.color}
+            onChange={(color) => setFormData({ ...formData, color })}
+          />
+
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="isPublished"
+              checked={formData.isPublished}
+              onChange={(e) =>
+                setFormData({ ...formData, isPublished: e.target.checked })
+              }
+              className="h-4 w-4 accent-blue rounded"
+            />
+            <label htmlFor="isPublished" className="ml-2 text-sm text-text">
+              Publish this post
+            </label>
+          </div>
         </div>
 
         {error && (
-          <div className="p-3 bg-red/10 border border-red rounded-md">
-            <p className="text-sm text-red">{error}</p>
+          <div className="bg-red/10 text-red border border-red rounded-lg p-4">
+            {error}
           </div>
         )}
 
         {success && (
-          <div className="p-3 bg-green/10 border border-green rounded-md">
-            <p className="text-sm text-green">
-              Blog post {mode === "create" ? "created" : "updated"}{" "}
-              successfully!
-            </p>
+          <div className="bg-green/10 text-green border border-green rounded-lg p-4">
+            Blog post {mode === "create" ? "created" : "updated"} successfully!
           </div>
         )}
 
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3 pt-6 border-t border-overlay0">
           <Button
             type="submit"
             variant="primary"
-            size="lg"
             isLoading={isLoading}
-            className="flex-1"
+            disabled={isLoading}
           >
             {mode === "create" ? "Create Post" : "Update Post"}
           </Button>
           <Button
             type="button"
             variant="secondary"
-            size="lg"
             onClick={() => router.back()}
+            disabled={isLoading}
           >
             Cancel
           </Button>

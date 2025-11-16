@@ -81,7 +81,7 @@ export default function CommentCard({
             )}
             <span className="text-sm font-medium text-text">{displayName}</span>
           </div>
-          <span className="text-xs text-subtext0 font-mono">
+          <span className="text-xs text-subtext0 font-mono mr-6">
             {new Date(comment.createdAt).toLocaleDateString()}
           </span>
         </div>

@@ -2,6 +2,7 @@ import { requireAdmin } from "@/lib/auth-helper";
 import { getBlogPostById } from "@/lib/queries/blog";
 import { notFound } from "next/navigation";
 import EditBlogForm from "@/components/blog/edit-blog-form";
+import Container from "@/components/shared/container";
 
 export default async function EditBlogPage({
   params,
@@ -17,9 +18,15 @@ export default async function EditBlogPage({
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Edit Blog Post</h1>
-      <EditBlogForm post={post} />
-    </div>
+    <Container size="md">
+      <div className="py-8">
+        <h1 className="text-3xl font-bold text-text mb-2">Edit Blog Post</h1>
+        <p className="text-subtext1 mb-8">
+          Update the content and settings for this post
+        </p>
+
+        <EditBlogForm post={post} />
+      </div>
+    </Container>
   );
 }

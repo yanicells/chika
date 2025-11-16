@@ -92,74 +92,81 @@ export default function EditNoteForm({ note }: EditNoteFormProps) {
   };
 
   return (
-    <Card>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <Card className="p-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
-          <div className="bg-red/10 text-red p-3 rounded-md border border-red">
+          <div className="bg-red/10 text-red border border-red rounded-lg p-4">
             {error}
           </div>
         )}
 
         {success && (
-          <div className="bg-green/10 text-green p-3 rounded-md border border-green">
+          <div className="bg-green/10 text-green border border-green rounded-lg p-4">
             {success}
           </div>
         )}
 
-        <Input
-          label="Title (optional)"
-          value={formData.title}
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          placeholder="Enter note title..."
-        />
-
-        <Textarea
-          label="Content"
-          value={formData.content}
-          onChange={(e) =>
-            setFormData({ ...formData, content: e.target.value })
-          }
-          placeholder="Enter note content..."
-          required
-          rows={6}
-        />
-
-        <Input
-          label="Name (optional)"
-          value={formData.userName}
-          onChange={(e) =>
-            setFormData({ ...formData, userName: e.target.value })
-          }
-          placeholder="Leave blank for anonymous"
-        />
-
-        <ImageUpload
-          value={formData.imageUrl}
-          onChange={(url) => setFormData({ ...formData, imageUrl: url })}
-          disabled={isLoading}
-        />
-
-        <CatppuccinColorPicker
-          value={formData.color}
-          onChange={(color) => setFormData({ ...formData, color })}
-        />
-
-        <div className="flex items-center gap-2">
-          <input
-            id="isPrivate"
-            type="checkbox"
-            checked={formData.isPrivate}
+        <div className="space-y-4">
+          <Input
+            label="Title (optional)"
+            value={formData.title}
             onChange={(e) =>
-              setFormData({ ...formData, isPrivate: e.target.checked })
+              setFormData({ ...formData, title: e.target.value })
             }
-            className="w-4 h-4 accent-blue rounded"
+            placeholder="Enter note title..."
           />
-          <label htmlFor="isPrivate" className="text-sm font-medium text-text">
-            Private (only visible to admin)
-          </label>
+
+          <Textarea
+            label="Content"
+            value={formData.content}
+            onChange={(e) =>
+              setFormData({ ...formData, content: e.target.value })
+            }
+            placeholder="Enter note content..."
+            required
+            rows={6}
+          />
+
+          <Input
+            label="Name (optional)"
+            value={formData.userName}
+            onChange={(e) =>
+              setFormData({ ...formData, userName: e.target.value })
+            }
+            placeholder="Leave blank for anonymous"
+          />
+
+          <ImageUpload
+            value={formData.imageUrl}
+            onChange={(url) => setFormData({ ...formData, imageUrl: url })}
+            disabled={isLoading}
+          />
+
+          <CatppuccinColorPicker
+            value={formData.color}
+            onChange={(color) => setFormData({ ...formData, color })}
+          />
+
+          <div className="flex items-center gap-2">
+            <input
+              id="isPrivate"
+              type="checkbox"
+              checked={formData.isPrivate}
+              onChange={(e) =>
+                setFormData({ ...formData, isPrivate: e.target.checked })
+              }
+              className="w-4 h-4 accent-blue rounded"
+            />
+            <label
+              htmlFor="isPrivate"
+              className="text-sm font-medium text-text"
+            >
+              Private (only visible to admin)
+            </label>
+          </div>
         </div>
 
-        <div className="flex gap-3 pt-4 border-t border-overlay0">
+        <div className="flex flex-wrap gap-3 pt-6 border-t border-overlay0">
           <Button
             type="submit"
             variant="primary"

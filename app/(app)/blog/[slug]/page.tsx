@@ -23,8 +23,9 @@ export default async function BlogPostPage({
   const comments = await getBlogCommentsWithReactions(post.id);
 
   return (
-    <Container>
+    <Container className="m-12">
       <BlogDetail post={post} isUserAdmin={adminStatus} />
+
       <h2>Comments</h2>
       <CommentList comments={comments} />
       <CommentForm blogPostId={post.id} />

@@ -105,82 +105,86 @@ export default function EditBlogForm({ post }: EditBlogFormProps) {
   };
 
   return (
-    <Card>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <Card className="p-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
-          <div className="bg-red/10 text-red p-3 rounded-md border border-red">
+          <div className="bg-red/10 text-red border border-red rounded-lg p-4">
             {error}
           </div>
         )}
 
         {success && (
-          <div className="bg-green/10 text-green p-3 rounded-md border border-green">
+          <div className="bg-green/10 text-green border border-green rounded-lg p-4">
             {success}
           </div>
         )}
 
-        <Input
-          label="Title"
-          value={formData.title}
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          placeholder="Enter blog title..."
-          required
-        />
-
-        <Textarea
-          label="Content"
-          value={formData.content}
-          onChange={(e) =>
-            setFormData({ ...formData, content: e.target.value })
-          }
-          placeholder="Enter blog content (markdown supported)..."
-          required
-          rows={12}
-        />
-
-        <Textarea
-          label="Excerpt (optional)"
-          value={formData.excerpt}
-          onChange={(e) =>
-            setFormData({ ...formData, excerpt: e.target.value })
-          }
-          placeholder="Short summary for preview..."
-          rows={3}
-        />
-
-        <Input
-          label="Cover Image URL (optional)"
-          value={formData.coverImageUrl}
-          onChange={(e) =>
-            setFormData({ ...formData, coverImageUrl: e.target.value })
-          }
-          placeholder="https://..."
-        />
-
-        <CatppuccinColorPicker
-          value={formData.color}
-          onChange={(color) => setFormData({ ...formData, color })}
-        />
-
-        <div className="flex items-center gap-2">
-          <input
-            id="isPublished"
-            type="checkbox"
-            checked={formData.isPublished}
+        <div className="space-y-4">
+          <Input
+            label="Title"
+            value={formData.title}
             onChange={(e) =>
-              setFormData({ ...formData, isPublished: e.target.checked })
+              setFormData({ ...formData, title: e.target.value })
             }
-            className="w-4 h-4 accent-blue rounded"
+            placeholder="Enter blog title..."
+            required
           />
-          <label
-            htmlFor="isPublished"
-            className="text-sm font-medium text-text"
-          >
-            Published (visible to public)
-          </label>
+
+          <Textarea
+            label="Content"
+            value={formData.content}
+            onChange={(e) =>
+              setFormData({ ...formData, content: e.target.value })
+            }
+            placeholder="Enter blog content (markdown supported)..."
+            required
+            rows={12}
+          />
+
+          <Textarea
+            label="Excerpt (optional)"
+            value={formData.excerpt}
+            onChange={(e) =>
+              setFormData({ ...formData, excerpt: e.target.value })
+            }
+            placeholder="Short summary for preview..."
+            rows={3}
+          />
+
+          <Input
+            label="Cover Image URL (optional)"
+            value={formData.coverImageUrl}
+            onChange={(e) =>
+              setFormData({ ...formData, coverImageUrl: e.target.value })
+            }
+            placeholder="https://..."
+          />
+
+          <CatppuccinColorPicker
+            value={formData.color}
+            onChange={(color) => setFormData({ ...formData, color })}
+          />
+
+          <div className="flex items-center gap-2">
+            <input
+              id="isPublished"
+              type="checkbox"
+              checked={formData.isPublished}
+              onChange={(e) =>
+                setFormData({ ...formData, isPublished: e.target.checked })
+              }
+              className="w-4 h-4 accent-blue rounded"
+            />
+            <label
+              htmlFor="isPublished"
+              className="text-sm font-medium text-text"
+            >
+              Published (visible to public)
+            </label>
+          </div>
         </div>
 
-        <div className="flex gap-3 pt-4 border-t border-overlay0">
+        <div className="flex flex-wrap gap-3 pt-6 border-t border-overlay0">
           <Button
             type="submit"
             variant="primary"
