@@ -9,6 +9,7 @@ import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
 import { createBlogPost, updateBlogPost } from "@/lib/actions/blog-actions";
 import ImageUpload from "../ui/image-upload";
+import CatppuccinColorPicker from "../ui/catppuccin-color-picker";
 
 interface BlogFormProps {
   mode: "create" | "edit";
@@ -26,7 +27,7 @@ export default function BlogForm({ mode, post }: BlogFormProps) {
     content: "",
     excerpt: "",
     coverImageUrl: "",
-    color: "#ffffff",
+    color: "#89b4fa",
     isPublished: false,
   });
 
@@ -37,7 +38,7 @@ export default function BlogForm({ mode, post }: BlogFormProps) {
         content: post.content,
         excerpt: post.excerpt || "",
         coverImageUrl: post.coverImageUrl || "",
-        color: post.color || "#ffffff",
+        color: post.color || "#89b4fa",
         isPublished: post.isPublished,
       });
     }
@@ -103,7 +104,7 @@ export default function BlogForm({ mode, post }: BlogFormProps) {
 
   return (
     <Card>
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">
+      <h2 className="text-2xl font-bold text-text mb-6">
         {mode === "create" ? "Create New Blog Post" : "Edit Blog Post"}
       </h2>
 
@@ -144,23 +145,10 @@ export default function BlogForm({ mode, post }: BlogFormProps) {
           disabled={isLoading}
         />
 
-        <div>
-          <label
-            htmlFor="color"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Background Color
-          </label>
-          <input
-            type="color"
-            id="color"
-            value={formData.color}
-            onChange={(e) =>
-              setFormData({ ...formData, color: e.target.value })
-            }
-            className="h-10 w-20 rounded border border-gray-300 cursor-pointer"
-          />
-        </div>
+        <CatppuccinColorPicker
+          value={formData.color}
+          onChange={(color) => setFormData({ ...formData, color })}
+        />
 
         <div className="flex items-center">
           <input
@@ -170,22 +158,22 @@ export default function BlogForm({ mode, post }: BlogFormProps) {
             onChange={(e) =>
               setFormData({ ...formData, isPublished: e.target.checked })
             }
-            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            className="h-4 w-4 accent-blue rounded"
           />
-          <label htmlFor="isPublished" className="ml-2 text-sm text-gray-700">
+          <label htmlFor="isPublished" className="ml-2 text-sm text-text">
             Publish this post
           </label>
         </div>
 
         {error && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded-md">
-            <p className="text-sm text-red-600">{error}</p>
+          <div className="p-3 bg-red/10 border border-red rounded-md">
+            <p className="text-sm text-red">{error}</p>
           </div>
         )}
 
         {success && (
-          <div className="p-3 bg-green-50 border border-green-200 rounded-md">
-            <p className="text-sm text-green-600">
+          <div className="p-3 bg-green/10 border border-green rounded-md">
+            <p className="text-sm text-green">
               Blog post {mode === "create" ? "created" : "updated"}{" "}
               successfully!
             </p>

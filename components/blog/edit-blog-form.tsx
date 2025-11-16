@@ -13,6 +13,7 @@ import Input from "@/components/ui/input";
 import Textarea from "@/components/ui/textarea";
 import Card from "@/components/ui/card";
 import type { BlogPost } from "@/db/schema";
+import CatppuccinColorPicker from "../ui/catppuccin-color-picker";
 
 interface EditBlogFormProps {
   post: BlogPost;
@@ -29,7 +30,7 @@ export default function EditBlogForm({ post }: EditBlogFormProps) {
     content: post.content,
     excerpt: post.excerpt || "",
     coverImageUrl: post.coverImageUrl || "",
-    color: post.color || "#ffffff",
+    color: post.color || "#89b4fa",
     isPublished: post.isPublished,
   });
 
@@ -107,11 +108,13 @@ export default function EditBlogForm({ post }: EditBlogFormProps) {
     <Card>
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="bg-red-50 text-red-600 p-3 rounded-md">{error}</div>
+          <div className="bg-red/10 text-red p-3 rounded-md border border-red">
+            {error}
+          </div>
         )}
 
         {success && (
-          <div className="bg-green-50 text-green-600 p-3 rounded-md">
+          <div className="bg-green/10 text-green p-3 rounded-md border border-green">
             {success}
           </div>
         )}
@@ -154,23 +157,10 @@ export default function EditBlogForm({ post }: EditBlogFormProps) {
           placeholder="https://..."
         />
 
-        <div>
-          <label
-            htmlFor="color"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Background Color
-          </label>
-          <input
-            type="color"
-            id="color"
-            value={formData.color}
-            onChange={(e) =>
-              setFormData({ ...formData, color: e.target.value })
-            }
-            className="h-10 w-20 rounded border border-gray-300 cursor-pointer"
-          />
-        </div>
+        <CatppuccinColorPicker
+          value={formData.color}
+          onChange={(color) => setFormData({ ...formData, color })}
+        />
 
         <div className="flex items-center gap-2">
           <input
@@ -180,14 +170,17 @@ export default function EditBlogForm({ post }: EditBlogFormProps) {
             onChange={(e) =>
               setFormData({ ...formData, isPublished: e.target.checked })
             }
-            className="w-4 h-4 rounded"
+            className="w-4 h-4 accent-blue rounded"
           />
-          <label htmlFor="isPublished" className="text-sm font-medium">
+          <label
+            htmlFor="isPublished"
+            className="text-sm font-medium text-text"
+          >
             Published (visible to public)
           </label>
         </div>
 
-        <div className="flex gap-3 pt-4 border-t">
+        <div className="flex gap-3 pt-4 border-t border-overlay0">
           <Button
             type="submit"
             variant="primary"

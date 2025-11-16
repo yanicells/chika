@@ -1,5 +1,5 @@
-import { Comment } from '@/db/schema';
-import CommentCard from './comment-card';
+import { Comment } from "@/db/schema";
+import CommentCard from "./comment-card";
 
 interface CommentListProps {
   comments: (Comment & {
@@ -18,7 +18,9 @@ export default function CommentList({
   if (comments.length === 0) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-600">No comments yet. Be the first to comment!</p>
+        <p className="text-subtext0">
+          No comments yet. Be the first to comment!
+        </p>
       </div>
     );
   }
@@ -35,4 +37,3 @@ export default function CommentList({
     </div>
   );
 }
-

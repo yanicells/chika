@@ -31,3 +31,4 @@ I guess the main learning experience here is using neon, using schemas (since i 
 - **Word Cloud:** Automatically generate and display a word cloud from the text of all public notes. This gives a fun, at-a-glance visualization of what people are talking about.
 - Being able to send pictures.
 - Have a blog section, where I can write about my learnings, and random stuff. Basically a personal blog while people can interact with the notes app.
+- Maybe have comment under a comment (nested comments).

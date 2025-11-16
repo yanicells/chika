@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Badge from "@/components/ui/badge";
 
-export type FilterType = "all" | "admin" | "username" | "anonymous";
+export type FilterType = "all" | "admin" | "username" | "anonymous" | "pinned";
 
 interface NoteFilterProps {
   onFilterChange: (filter: FilterType) => void;
@@ -16,9 +16,10 @@ export default function NoteFilter({
 }: NoteFilterProps) {
   const filters: { value: FilterType; label: string }[] = [
     { value: "all", label: "All" },
-    { value: "admin", label: "Admin" },
+    { value: "admin", label: "Yanicells" },
     { value: "username", label: "With Username" },
     { value: "anonymous", label: "Anonymous" },
+    { value: "pinned", label: "Pinned" },
   ];
 
   return (
@@ -29,8 +30,8 @@ export default function NoteFilter({
           onClick={() => onFilterChange(filter.value)}
           className={`px-4 py-2 rounded-lg transition-colors ${
             activeFilter === filter.value
-              ? "bg-blue-600 text-white"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              ? "bg-blue text-base"
+              : "bg-surface1 text-subtext1 hover:bg-surface2"
           }`}
         >
           {filter.label}

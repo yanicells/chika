@@ -1,14 +1,15 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Input from '@/components/ui/input';
-import Textarea from '@/components/ui/textarea';
-import Button from '@/components/ui/button';
-import Card from '@/components/ui/card';
-import { createNote } from '@/lib/actions/notes-actions';
-import Container from '@/components/shared/container';
-import ImageUpload from '../ui/image-upload';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Input from "@/components/ui/input";
+import Textarea from "@/components/ui/textarea";
+import Button from "@/components/ui/button";
+import Card from "@/components/ui/card";
+import { createNote } from "@/lib/actions/notes-actions";
+import Container from "@/components/shared/container";
+import ImageUpload from "../ui/image-upload";
+import CatppuccinColorPicker from "../ui/catppuccin-color-picker";
 
 export default function NoteForm() {
   const router = useRouter();
@@ -17,12 +18,12 @@ export default function NoteForm() {
   const [success, setSuccess] = useState(false);
 
   const [formData, setFormData] = useState({
-    title: '',
-    content: '',
-    userName: '',
-    color: '#ffffff',
+    title: "",
+    content: "",
+    userName: "",
+    color: "#89b4fa",
     isPrivate: false,
-    imageUrl: '',
+    imageUrl: "",
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -32,7 +33,7 @@ export default function NoteForm() {
     setSuccess(false);
 
     if (!formData.content.trim()) {
-      setError('Content is required');
+      setError("Content is required");
       setIsLoading(false);
       return;
     }
@@ -50,23 +51,23 @@ export default function NoteForm() {
       if (result.success) {
         setSuccess(true);
         setFormData({
-          title: '',
-          content: '',
-          userName: '',
-          color: '#ffffff',
+          title: "",
+          content: "",
+          userName: "",
+          color: "#89b4fa",
           isPrivate: false,
-          imageUrl: '',
+          imageUrl: "",
         });
         router.refresh();
         setTimeout(() => {
           setSuccess(false);
         }, 3000);
       } else {
-        setError(result.error || 'Failed to create note');
+        setError(result.error || "Failed to create note");
       }
     } catch (err) {
-      setError('An unexpected error occurred');
-      console.error('Note form error:', err);
+      setError("An unexpected error occurred");
+      console.error("Note form error:", err);
     } finally {
       setIsLoading(false);
     }
@@ -75,9 +76,7 @@ export default function NoteForm() {
   return (
     <Container>
       <Card>
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          Create New Note
-        </h2>
+        <h2 className="text-2xl font-bold text-text mb-6">Create New Note</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
@@ -111,30 +110,10 @@ export default function NoteForm() {
             placeholder="Anonymous"
           />
 
-          <div>
-            <label className="block mb-1.5 text-sm font-medium text-gray-700">
-              Background Color
-            </label>
-            <div className="flex items-center gap-3">
-              <input
-                type="color"
-                value={formData.color}
-                onChange={(e) =>
-                  setFormData({ ...formData, color: e.target.value })
-                }
-                className="h-10 w-20 rounded-md border border-gray-300 cursor-pointer"
-              />
-              <Input
-                type="text"
-                value={formData.color}
-                onChange={(e) =>
-                  setFormData({ ...formData, color: e.target.value })
-                }
-                placeholder="#ffffff"
-                className="flex-1"
-              />
-            </div>
-          </div>
+          <CatppuccinColorPicker
+            value={formData.color}
+            onChange={(color) => setFormData({ ...formData, color })}
+          />
 
           <ImageUpload
             value={formData.imageUrl}
@@ -150,24 +129,22 @@ export default function NoteForm() {
               onChange={(e) =>
                 setFormData({ ...formData, isPrivate: e.target.checked })
               }
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              className="h-4 w-4 text-blue focus:ring-blue border-overlay0 rounded"
             />
-            <label htmlFor="isPrivate" className="ml-2 text-sm text-gray-700">
+            <label htmlFor="isPrivate" className="ml-2 text-sm text-text">
               Make this note private (admin only)
             </label>
           </div>
 
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-md">
-              <p className="text-sm text-red-600">{error}</p>
+            <div className="p-3 bg-red/20 border border-red rounded-md">
+              <p className="text-sm text-red">{error}</p>
             </div>
           )}
 
           {success && (
-            <div className="p-3 bg-green-50 border border-green-200 rounded-md">
-              <p className="text-sm text-green-600">
-                Note created successfully!
-              </p>
+            <div className="p-3 bg-green/20 border border-green rounded-md">
+              <p className="text-sm text-green">Note created successfully!</p>
             </div>
           )}
 
@@ -185,4 +162,3 @@ export default function NoteForm() {
     </Container>
   );
 }
-

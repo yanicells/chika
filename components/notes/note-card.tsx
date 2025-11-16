@@ -52,7 +52,7 @@ export default function NoteCard({ note, isUserAdmin = false }: NoteCardProps) {
           </div>
 
           {note.title && (
-            <h3 className="text-lg font-semibold text-gray-900 mb-2 hover:text-blue-600 transition-colors">
+            <h3 className="text-lg font-semibold text-text mb-2 hover:text-blue transition-colors">
               {note.title}
             </h3>
           )}
@@ -67,9 +67,9 @@ export default function NoteCard({ note, isUserAdmin = false }: NoteCardProps) {
             </div>
           )}
 
-          <p className="text-gray-700 mb-3 line-clamp-3">{truncatedContent}</p>
+          <p className="text-subtext1 mb-3 line-clamp-3">{truncatedContent}</p>
 
-          <div className="flex items-center justify-between text-sm text-gray-600 mb-3">
+          <div className="flex items-center justify-between text-sm text-subtext0 mb-3 font-mono">
             <span>By {displayName}</span>
             <span>{new Date(note.createdAt).toLocaleDateString()}</span>
           </div>
@@ -84,7 +84,7 @@ export default function NoteCard({ note, isUserAdmin = false }: NoteCardProps) {
       </Link>
 
       {isUserAdmin && (
-        <div className="mt-auto pt-3 border-t border-gray-200">
+        <div className="mt-auto pt-3 border-t border-overlay0">
           <EditButton type="note" id={note.id} />
         </div>
       )}

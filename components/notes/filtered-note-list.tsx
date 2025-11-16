@@ -35,6 +35,8 @@ export default function FilteredNoteList({
         return notes.filter(
           (note) => !note.userName || note.userName.trim() === ""
         );
+      case "pinned":
+        return notes.filter((note) => note.isPinned);
       default:
         return notes;
     }
@@ -43,7 +45,7 @@ export default function FilteredNoteList({
   if (notes.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-600 text-lg">
+        <p className="text-subtext0 text-lg">
           No notes yet. Be the first to share!
         </p>
       </div>
@@ -65,7 +67,7 @@ export default function FilteredNoteList({
 
       {filteredNotes.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-gray-600 text-lg">
+          <p className="text-subtext0 text-lg">
             No notes found with the selected filter.
           </p>
         </div>

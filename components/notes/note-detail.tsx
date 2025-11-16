@@ -26,7 +26,7 @@ export default function NoteDetail({
   const backgroundColor = note.color || "#ffffff";
 
   return (
-    <Card style={{ backgroundColor }} className="max-w-4xl mx-auto">
+    <Card style={{ backgroundColor }} className="max-w-6xl mx-auto">
       <div className="space-y-4">
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
@@ -45,7 +45,7 @@ export default function NoteDetail({
         </div>
 
         {note.title && (
-          <h1 className="text-3xl font-bold text-gray-900">{note.title}</h1>
+          <h1 className="text-3xl font-bold text-text">{note.title}</h1>
         )}
 
         {note.imageUrl && (
@@ -59,12 +59,12 @@ export default function NoteDetail({
         )}
 
         <div className="prose max-w-none">
-          <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
+          <p className="text-subtext1 whitespace-pre-wrap leading-relaxed">
             {note.content}
           </p>
         </div>
 
-        <div className="flex items-center justify-between text-sm text-gray-600 pt-4 border-t border-gray-200">
+        <div className="flex items-center justify-between text-sm text-subtext0 pt-4 border-t border-overlay0 font-mono">
           <span>By {displayName}</span>
           <div className="flex flex-col items-end gap-1">
             <span>
@@ -80,7 +80,7 @@ export default function NoteDetail({
         </div>
         <div>{isAdmin && <EditButton type="note" id={note.id} />}</div>
 
-        <div className="flex items-center gap-4 pt-4 border-t border-gray-200">
+        <div className="flex items-center gap-4 pt-4 border-t border-overlay0">
           {note.reactions && (
             <>
               <ReactionDisplay reactions={note.reactions} />

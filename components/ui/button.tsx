@@ -1,39 +1,53 @@
-import React from 'react';
+import React from "react";
 
 /**
  * Button component with multiple variants and sizes
- * 
+ *
  * @param variant - Button style variant: 'primary', 'secondary', 'ghost', or 'danger'
  * @param size - Button size: 'sm', 'md', or 'lg'
  * @param isLoading - Shows loading spinner and disables button
  * @param children - Button content
  */
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
+  variant?: "primary" | "secondary" | "ghost" | "danger";
+  size?: "sm" | "md" | "lg";
   isLoading?: boolean;
   children: React.ReactNode;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = 'primary', size = 'md', isLoading, children, className = '', disabled, ...props }, ref) => {
-    const baseStyles = 'inline-flex items-center justify-center font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
-    
+  (
+    {
+      variant = "primary",
+      size = "md",
+      isLoading,
+      children,
+      className = "",
+      disabled,
+      ...props
+    },
+    ref
+  ) => {
+    const baseStyles =
+      "inline-flex items-center justify-center font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-base disabled:opacity-50 disabled:cursor-not-allowed";
+
     const variantStyles = {
-      primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
-      secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500',
-      ghost: 'bg-transparent text-gray-700 hover:bg-gray-100 focus:ring-gray-500',
-      danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
+      primary: "bg-blue text-base hover:bg-[#74a7f5] focus:ring-blue",
+      secondary: "bg-surface0 text-text hover:bg-surface1 focus:ring-overlay0",
+      ghost:
+        "bg-transparent text-subtext1 hover:bg-surface0 focus:ring-overlay0",
+      danger: "bg-red text-base hover:bg-[#f17497] focus:ring-red",
     };
-    
+
     const sizeStyles = {
-      sm: 'px-3 py-1.5 text-sm',
-      md: 'px-4 py-2 text-base',
-      lg: 'px-6 py-3 text-lg',
+      sm: "px-3 py-1.5 text-sm",
+      md: "px-4 py-2 text-base",
+      lg: "px-6 py-3 text-lg",
     };
-    
-    const combinedClassName = `${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${className}`.trim();
-    
+
+    const combinedClassName =
+      `${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${className}`.trim();
+
     return (
       <button
         ref={ref}
@@ -73,7 +87,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   }
 );
 
-Button.displayName = 'Button';
+Button.displayName = "Button";
 
 export default Button;
-

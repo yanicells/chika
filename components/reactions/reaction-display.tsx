@@ -9,13 +9,13 @@ export default function ReactionDisplay({ reactions }: ReactionDisplayProps) {
   return (
     <div className="flex items-center gap-3 text-sm">
       {reactions.regular >= 0 && (
-        <span className="flex items-center gap-1 text-gray-700">
+        <span className="flex items-center gap-1 text-red">
           <span>❤️</span>
           <span>{reactions.regular}</span>
         </span>
       )}
       {reactions.admin > 0 && (
-        <span className="flex items-center gap-1 text-gray-700">
+        <span className="flex items-center gap-1 text-yellow">
           <span>⭐</span>
           <span>{reactions.admin}</span>
         </span>
@@ -23,4 +23,3 @@ export default function ReactionDisplay({ reactions }: ReactionDisplayProps) {
     </div>
   );
 }
-

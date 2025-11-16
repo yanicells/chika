@@ -1,26 +1,74 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Catppuccin Mocha - Base Colors */
+  --color-base: #1e1e2e;
+  --color-surface0: #313244;
+  --color-surface1: #45475a;
+  --color-surface2: #585b70;
+  --color-overlay0: #6c7086;
+
+  /* Catppuccin Mocha - Text Colors */
+  --color-text: #cdd6f4;
+  --color-subtext1: #bac2de;
+  --color-subtext0: #a6adc8;
+
+  /* Catppuccin Mocha - Accent Colors */
+  --color-blue: #89b4fa;
+  --color-mauve: #cba6f7;
+  --color-pink: #f5c2e7;
+  --color-red: #f38ba8;
+  --color-peach: #fab387;
+  --color-yellow: #f9e2af;
+  --color-green: #a6e3a1;
+  --color-teal: #94e2d5;
+  --color-lavender: #b4befe;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  /* Semantic Color Names */
+  --color-background: var(--color-base);
+  --color-foreground: var(--color-text);
+  --color-card: var(--color-surface0);
+  --color-primary: var(--color-blue);
+  --color-destructive: var(--color-red);
+  --color-muted: var(--color-subtext0);
+  --color-border: var(--color-overlay0);
+
+  /* All Catppuccin Colors Available */
+  --color-base: var(--color-base);
+  --color-surface0: var(--color-surface0);
+  --color-surface1: var(--color-surface1);
+  --color-surface2: var(--color-surface2);
+  --color-overlay0: var(--color-overlay0);
+  --color-text: var(--color-text);
+  --color-subtext1: var(--color-subtext1);
+  --color-subtext0: var(--color-subtext0);
+  --color-blue: var(--color-blue);
+  --color-mauve: var(--color-mauve);
+  --color-pink: var(--color-pink);
+  --color-red: var(--color-red);
+  --color-peach: var(--color-peach);
+  --color-yellow: var(--color-yellow);
+  --color-green: var(--color-green);
+  --color-teal: var(--color-teal);
+  --color-lavender: var(--color-lavender);
+
+  /* Font Families */
+  --font-sans: var(--font-inter);
   --font-mono: var(--font-jetbrains-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #ffffff;
-    --foreground: #171717;
-  }
+body {
+  background: var(--color-base);
+  color: var(--color-text);
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-jetbrains-mono), Arial, Helvetica, sans-serif;
+/* Ensure smooth hover transitions */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
 }

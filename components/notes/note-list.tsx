@@ -20,7 +20,7 @@ export default function NoteList({
   if (notes.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-600 text-lg">
+        <p className="text-subtext0 text-lg">
           No notes yet. Be the first to share!
         </p>
       </div>

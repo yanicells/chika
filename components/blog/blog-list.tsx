@@ -13,7 +13,7 @@ export default function BlogList({
   if (posts.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-600 text-lg">
+        <p className="text-subtext0 text-lg">
           No blog posts yet. Check back soon!
         </p>
       </div>

@@ -41,7 +41,7 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
             </div>
           </div>
 
-          <h3 className="text-xl font-semibold text-gray-900 mb-2 hover:text-blue-600 transition-colors">
+          <h3 className="text-xl font-semibold text-text mb-2 hover:text-blue transition-colors">
             {post.title}
           </h3>
 
@@ -55,9 +55,9 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
             </div>
           )}
 
-          <p className="text-gray-700 mb-4 line-clamp-3">{truncatedExcerpt}</p>
+          <p className="text-subtext1 mb-4 line-clamp-3">{truncatedExcerpt}</p>
 
-          <div className="text-sm text-gray-600 mb-3">
+          <div className="text-sm text-subtext0 mb-3 font-mono">
             {post.publishedAt
               ? new Date(post.publishedAt).toLocaleDateString()
               : new Date(post.createdAt).toLocaleDateString()}
@@ -73,7 +73,7 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
       </Link>
 
       {isUserAdmin && (
-        <div className="mt-auto pt-4 border-t border-gray-200">
+        <div className="mt-auto pt-4 border-t border-overlay0">
           <EditButton type="blog" id={post.id} />
         </div>
       )}

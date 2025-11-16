@@ -62,16 +62,14 @@ export default function CommentCard({
                 🔒 Private
               </Badge>
             )}
-            <span className="text-sm font-medium text-gray-900">
-              {displayName}
-            </span>
+            <span className="text-sm font-medium text-text">{displayName}</span>
           </div>
-          <span className="text-xs text-gray-500">
+          <span className="text-xs text-subtext0 font-mono">
             {new Date(comment.createdAt).toLocaleDateString()}
           </span>
         </div>
 
-        <p className="text-gray-700 text-sm whitespace-pre-wrap">
+        <p className="text-subtext1 text-sm whitespace-pre-wrap">
           {comment.content}
         </p>
 
@@ -85,7 +83,7 @@ export default function CommentCard({
           </div>
         )}
 
-        <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+        <div className="flex items-center justify-between pt-2 border-t border-overlay0">
           <div className="flex items-center gap-3">
             {comment.reactions && (
               <>

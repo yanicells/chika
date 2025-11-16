@@ -1,31 +1,32 @@
-import React from 'react';
+import React from "react";
 
 /**
  * Loading spinner component for indicating loading states
- * 
+ *
  * @param size - Spinner size: 'sm', 'md', or 'lg'
  * @param className - Additional CSS classes
  */
 interface LoadingSpinnerProps extends React.HTMLAttributes<HTMLDivElement> {
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
 }
 
 const LoadingSpinner = React.forwardRef<HTMLDivElement, LoadingSpinnerProps>(
-  ({ size = 'md', className = '', ...props }, ref) => {
+  ({ size = "md", className = "", ...props }, ref) => {
     const sizeStyles = {
-      sm: 'h-4 w-4',
-      md: 'h-8 w-8',
-      lg: 'h-12 w-12',
+      sm: "h-4 w-4",
+      md: "h-8 w-8",
+      lg: "h-12 w-12",
     };
-    
+
     const borderStyles = {
-      sm: 'border-2',
-      md: 'border-2',
-      lg: 'border-4',
+      sm: "border-2",
+      md: "border-2",
+      lg: "border-4",
     };
-    
-    const combinedClassName = `inline-block animate-spin rounded-full border-solid border-blue-600 border-t-transparent ${sizeStyles[size]} ${borderStyles[size]} ${className}`.trim();
-    
+
+    const combinedClassName =
+      `inline-block animate-spin rounded-full border-solid border-blue border-t-transparent ${sizeStyles[size]} ${borderStyles[size]} ${className}`.trim();
+
     return (
       <div
         ref={ref}
@@ -40,7 +41,6 @@ const LoadingSpinner = React.forwardRef<HTMLDivElement, LoadingSpinnerProps>(
   }
 );
 
-LoadingSpinner.displayName = 'LoadingSpinner';
+LoadingSpinner.displayName = "LoadingSpinner";
 
 export default LoadingSpinner;
-

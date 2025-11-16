@@ -50,16 +50,16 @@ export default function Dialog({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70"
       onClick={onClose}
     >
       <div
         ref={dialogRef}
-        className="bg-white rounded-lg shadow-lg max-w-md w-full mx-4 p-6"
+        className="bg-surface0 rounded-lg shadow-lg max-w-md w-full mx-4 p-6 border border-overlay0"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-xl font-bold mb-2">{title}</h2>
-        <p className="text-gray-600 mb-6">{description}</p>
+        <h2 className="text-xl font-bold mb-2 text-text">{title}</h2>
+        <p className="text-subtext1 mb-6">{description}</p>
 
         <div className="flex gap-3 justify-end">
           <Button variant="ghost" onClick={onClose}>

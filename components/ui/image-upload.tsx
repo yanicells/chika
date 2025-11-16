@@ -74,7 +74,7 @@ export default function ImageUpload({
 
   return (
     <div className="space-y-3">
-      <label className="block text-sm font-medium text-gray-700">
+      <label className="block text-sm font-medium text-text">
         Image (optional)
       </label>
 
@@ -84,7 +84,7 @@ export default function ImageUpload({
           <img
             src={value}
             alt="Upload preview"
-            className="w-full h-48 object-cover rounded-lg border border-gray-300"
+            className="w-full h-48 object-cover rounded-lg border border-overlay0"
           />
           <Button
             type="button"
@@ -122,12 +122,12 @@ export default function ImageUpload({
               {isUploading ? "Uploading..." : "Upload Image"}
             </Button>
           </label>
-          <span className="text-sm text-gray-500">Max 4MB, JPG/PNG/GIF</span>
+          <span className="text-sm text-subtext0">Max 4MB, JPG/PNG/GIF</span>
         </div>
       )}
 
       {/* Error Message */}
-      {error && <div className="text-sm text-red-600">{error}</div>}
+      {error && <div className="text-sm text-red">{error}</div>}
     </div>
   );
 }

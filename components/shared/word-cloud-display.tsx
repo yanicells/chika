@@ -10,7 +10,7 @@ const WordCloud = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="animate-pulse bg-gray-200 h-96 rounded-lg" />
+      <div className="animate-pulse bg-surface1 h-96 rounded-lg" />
     ),
   }
 );
@@ -92,14 +92,14 @@ export default function WordCloudDisplay({
 
   if (words.length === 0) {
     return (
-      <div className="text-center py-12 text-gray-500">
+      <div className="text-center py-12 text-subtext0">
         No words to display yet. Add some notes or blog posts!
       </div>
     );
   }
 
   return (
-    <div className="w-full bg-white rounded-lg shadow-sm p-4 overflow-hidden">
+    <div className="w-full bg-surface0 rounded-lg shadow-sm p-4 overflow-hidden">
       <div className="w-full h-[500px] flex items-center justify-center">
         <WordCloud
           words={words}
@@ -117,12 +117,12 @@ export default function WordCloudDisplay({
           random={Math.random}
           fill={(_, index) => {
             const colors = [
-              "#3b82f6", // blue
-              "#8b5cf6", // purple
-              "#ec4899", // pink
-              "#f59e0b", // amber
-              "#10b981", // green
-              "#06b6d4", // cyan
+              "#89b4fa", // blue
+              "#cba6f7", // mauve
+              "#f5c2e7", // pink
+              "#fab387", // peach
+              "#a6e3a1", // green
+              "#94e2d5", // teal
             ];
             return colors[index % colors.length];
           }}

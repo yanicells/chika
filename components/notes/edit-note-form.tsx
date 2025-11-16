@@ -13,6 +13,7 @@ import Textarea from "@/components/ui/textarea";
 import Card from "@/components/ui/card";
 import type { Note } from "@/db/schema";
 import ImageUpload from "../ui/image-upload";
+import CatppuccinColorPicker from "../ui/catppuccin-color-picker";
 
 interface EditNoteFormProps {
   note: Note;
@@ -94,11 +95,13 @@ export default function EditNoteForm({ note }: EditNoteFormProps) {
     <Card>
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="bg-red-50 text-red-600 p-3 rounded-md">{error}</div>
+          <div className="bg-red/10 text-red p-3 rounded-md border border-red">
+            {error}
+          </div>
         )}
 
         {success && (
-          <div className="bg-green-50 text-green-600 p-3 rounded-md">
+          <div className="bg-green/10 text-green p-3 rounded-md border border-green">
             {success}
           </div>
         )}
@@ -136,21 +139,10 @@ export default function EditNoteForm({ note }: EditNoteFormProps) {
           disabled={isLoading}
         />
 
-        <div className="flex items-center gap-2">
-          <label htmlFor="color" className="text-sm font-medium">
-            Background Color:
-          </label>
-          <input
-            id="color"
-            type="color"
-            value={formData.color}
-            onChange={(e) =>
-              setFormData({ ...formData, color: e.target.value })
-            }
-            className="w-20 h-10 rounded cursor-pointer"
-          />
-          <span className="text-sm text-gray-600">{formData.color}</span>
-        </div>
+        <CatppuccinColorPicker
+          value={formData.color}
+          onChange={(color) => setFormData({ ...formData, color })}
+        />
 
         <div className="flex items-center gap-2">
           <input
@@ -160,14 +152,14 @@ export default function EditNoteForm({ note }: EditNoteFormProps) {
             onChange={(e) =>
               setFormData({ ...formData, isPrivate: e.target.checked })
             }
-            className="w-4 h-4 rounded"
+            className="w-4 h-4 accent-blue rounded"
           />
-          <label htmlFor="isPrivate" className="text-sm font-medium">
+          <label htmlFor="isPrivate" className="text-sm font-medium text-text">
             Private (only visible to admin)
           </label>
         </div>
 
-        <div className="flex gap-3 pt-4 border-t">
+        <div className="flex gap-3 pt-4 border-t border-overlay0">
           <Button
             type="submit"
             variant="primary"
