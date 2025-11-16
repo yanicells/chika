@@ -28,7 +28,7 @@ interface WordCloudDisplayProps {
 }
 
 // Common words to filter out (stopwords)
-const STOP_WORDS = new Set(["anonymous"]);
+const STOP_WORDS = new Set(["anonymous", "admin"]);
 
 // Array of fonts to rotate through
 const FONTS = [

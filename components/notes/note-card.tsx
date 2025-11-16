@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Note } from "@/db/schema";
 import Card from "@/components/ui/card";
 import Badge from "@/components/ui/badge";
-import Button from "@/components/ui/button";
 import ReactionDisplay from "@/components/reactions/reaction-display";
 import ReactionButton from "@/components/reactions/reaction-button";
 import AdminBadge from "@/components/admin/admin-badge";
@@ -31,65 +30,64 @@ export default function NoteCard({ note, isUserAdmin = false }: NoteCardProps) {
 
   return (
     <Card className="h-full flex flex-col" style={{ backgroundColor }}>
-      <div className="flex-1">
-        {note.isPinned && (
-          <div className="mb-2">
-            <Badge variant="warning" size="sm">
-              📌 Pinned
-            </Badge>
-          </div>
-        )}
-
-        <div className="flex items-start justify-between gap-2 mb-2">
-          <div className="flex flex-wrap items-center gap-2">
-            {note.isAdmin && <AdminBadge />}
-            {note.isPrivate && (
-              <Badge variant="default" size="sm">
-                🔒 Private
+      <Link href={`/notes/${note.id}`} className="flex-1">
+        <div className="flex-1">
+          {note.isPinned && (
+            <div className="mb-2">
+              <Badge variant="warning" size="sm">
+                📌 Pinned
               </Badge>
-            )}
+            </div>
+          )}
+
+          <div className="flex items-start justify-between gap-2 mb-2">
+            <div className="flex flex-wrap items-center gap-2">
+              {note.isAdmin && <AdminBadge />}
+              {note.isPrivate && (
+                <Badge variant="default" size="sm">
+                  🔒 Private
+                </Badge>
+              )}
+            </div>
           </div>
+
+          {note.title && (
+            <h3 className="text-lg font-semibold text-gray-900 mb-2 hover:text-blue-600 transition-colors">
+              {note.title}
+            </h3>
+          )}
+
+          {note.imageUrl && (
+            <div className="mb-3">
+              <img
+                src={note.imageUrl}
+                alt={note.title || "Note image"}
+                className="w-full h-48 object-cover rounded-md"
+              />
+            </div>
+          )}
+
+          <p className="text-gray-700 mb-3 line-clamp-3">{truncatedContent}</p>
+
+          <div className="flex items-center justify-between text-sm text-gray-600 mb-3">
+            <span>By {displayName}</span>
+            <span>{new Date(note.createdAt).toLocaleDateString()}</span>
+          </div>
+
+          {note.reactions && (
+            <div className="mb-3 flex items-center gap-3">
+              <ReactionDisplay reactions={note.reactions} />
+              <ReactionButton type="note" id={note.id} hasReacted={false} />
+            </div>
+          )}
         </div>
+      </Link>
 
-        {note.title && (
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            {note.title}
-          </h3>
-        )}
-
-        {note.imageUrl && (
-          <div className="mb-3">
-            <img
-              src={note.imageUrl}
-              alt={note.title || "Note image"}
-              className="w-full h-48 object-cover rounded-md"
-            />
-          </div>
-        )}
-
-        <p className="text-gray-700 mb-3 line-clamp-3">{truncatedContent}</p>
-
-        <div className="flex items-center justify-between text-sm text-gray-600 mb-3">
-          <span>By {displayName}</span>
-          <span>{new Date(note.createdAt).toLocaleDateString()}</span>
+      {isUserAdmin && (
+        <div className="mt-auto pt-3 border-t border-gray-200">
+          <EditButton type="note" id={note.id} />
         </div>
-
-        {note.reactions && (
-          <div className="mb-3 flex items-center gap-3">
-            <ReactionDisplay reactions={note.reactions} />
-            <ReactionButton type="note" id={note.id} hasReacted={false} />
-          </div>
-        )}
-      </div>
-
-      <div className="mt-auto pt-3 border-t border-gray-200">
-        <Link href={`/notes/${note.id}`}>
-          <Button variant="secondary" size="sm" className="w-full">
-            Read More
-          </Button>
-        </Link>
-        <div>{isUserAdmin && <EditButton type="note" id={note.id} />}</div>
-      </div>
+      )}
     </Card>
   );
 }

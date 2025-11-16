@@ -1,10 +1,9 @@
-import Badge from '@/components/ui/badge';
+import Badge from "@/components/ui/badge";
 
 export default function AdminBadge() {
   return (
     <Badge variant="primary" size="sm">
-      Admin
+      yanicells
     </Badge>
   );
 }
-

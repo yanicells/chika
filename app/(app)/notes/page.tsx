@@ -1,5 +1,5 @@
 import { getPublicNotes } from "@/lib/queries/notes";
-import NoteList from "@/components/notes/note-list";
+import FilteredNoteList from "@/components/notes/filtered-note-list";
 import Container from "@/components/shared/container";
 import { isAdmin } from "@/lib/auth-helper";
 
@@ -10,7 +10,7 @@ export default async function NotesPage() {
   return (
     <Container className="m-12">
       <h1>All Notes</h1>
-      <NoteList notes={notes} isUserAdmin={adminStatus} />
+      <FilteredNoteList notes={notes} isUserAdmin={adminStatus} />
     </Container>
   );
 }
