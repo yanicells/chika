@@ -84,7 +84,7 @@ export default function ImageUpload({
           <img
             src={value}
             alt="Upload preview"
-            className="w-full h-48 object-cover rounded-lg border border-overlay0"
+            className="w-full h-48 object-cover rounded-lg border-2 border-overlay0"
           />
           <Button
             type="button"
@@ -101,7 +101,7 @@ export default function ImageUpload({
 
       {/* Upload Button */}
       {!value && (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 p-4 border-2 border-dashed border-overlay0 rounded-lg hover:border-subtext0 transition-colors">
           <input
             ref={fileInputRef}
             type="file"
@@ -111,7 +111,7 @@ export default function ImageUpload({
             className="hidden"
             id="image-upload"
           />
-          <label htmlFor="image-upload">
+          <label htmlFor="image-upload" className="flex-1">
             <Button
               type="button"
               variant="secondary"

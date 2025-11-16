@@ -74,9 +74,9 @@ export default function NoteForm() {
   };
 
   return (
-    <Container>
+    <Container className="mt-12 mb-16">
       <Card>
-        <h2 className="text-2xl font-bold text-text mb-6">Create New Note</h2>
+        <h2 className="text-2xl font-bold text-text mb-4">Create New Note</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input

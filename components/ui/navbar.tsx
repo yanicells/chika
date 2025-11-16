@@ -43,10 +43,16 @@ export default function Navigation() {
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-sm font-sans text-[#cdd6f4] hover:text-[#89b4fa] transition-colors duration-200 relative group"
+                className={
+                  link.name === "Send Note"
+                    ? "text-sm font-sans px-4 py-2 rounded-md bg-blue text-base border-2 border-blue hover:bg-[#74a7f5] hover:border-[#74a7f5] transition-all duration-200"
+                    : "text-sm font-sans text-[#cdd6f4] hover:text-[#89b4fa] transition-colors duration-200 relative group"
+                }
               >
                 {link.name}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#89b4fa] group-hover:w-full transition-all duration-300" />
+                {link.name !== "Send Note" && (
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#89b4fa] group-hover:w-full transition-all duration-300" />
+                )}
               </Link>
             ))}
           </div>
@@ -74,7 +80,11 @@ export default function Navigation() {
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className="text-sm font-sans text-[#cdd6f4] hover:text-[#89b4fa] transition-colors duration-200 py-2"
+                  className={
+                    link.name === "Send Note"
+                      ? "text-sm font-sans px-4 py-2 rounded-md bg-blue text-base border-2 border-blue hover:bg-[#74a7f5] hover:border-[#74a7f5] transition-all duration-200 text-center"
+                      : "text-sm font-sans text-[#cdd6f4] hover:text-[#89b4fa] transition-colors duration-200 py-2"
+                  }
                 >
                   {link.name}
                 </Link>
