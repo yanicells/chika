@@ -87,31 +87,31 @@ export default function FilteredNoteList({
           >
             <DropdownMenuItem
               onSelect={() => setActiveFilter("all")}
-              className="text-text hover:bg-surface1 focus:bg-surface1 cursor-pointer"
+              className="text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
             >
               All Notes
             </DropdownMenuItem>
             <DropdownMenuItem
               onSelect={() => setActiveFilter("pinned")}
-              className="text-text hover:bg-surface1 focus:bg-surface1 cursor-pointer"
+              className="text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
             >
               Pinned
             </DropdownMenuItem>
             <DropdownMenuItem
               onSelect={() => setActiveFilter("admin")}
-              className="text-text hover:bg-surface1 focus:bg-surface1 cursor-pointer"
+              className="text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
             >
               Yanicells
             </DropdownMenuItem>
             <DropdownMenuItem
               onSelect={() => setActiveFilter("username")}
-              className="text-text hover:bg-surface1 focus:bg-surface1 cursor-pointer"
+              className="text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
             >
               Not Anonymous
             </DropdownMenuItem>
             <DropdownMenuItem
               onSelect={() => setActiveFilter("anonymous")}
-              className="text-text hover:bg-surface1 focus:bg-surface1 cursor-pointer"
+              className="text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
             >
               Anonymous
             </DropdownMenuItem>
