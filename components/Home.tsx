@@ -1,17 +1,17 @@
-import React from 'react';
-import Navbar from './ui/navbar';
+import React from "react";
+import Navbar from "./ui/navbar";
 
 const Home = () => {
   return (
     <div>
-      <Navbar 
+      <Navbar
         links={[
-          { href: '/notes', label: 'Notes' },
-          { href: '/blog', label: 'Blog' },
+          { href: "/notes", label: "Notes" },
+          { href: "/blog", label: "Blog" },
         ]}
       />
     </div>
-  )
+  );
 };
 
 export default Home;
