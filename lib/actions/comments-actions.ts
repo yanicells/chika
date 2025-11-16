@@ -15,6 +15,7 @@ export async function createNoteComment(data: {
   noteId: string;
   content: string;
   userName?: string;
+  isPrivate?: boolean;
 }) {
   try {
     const session = await getCurrentSession();
@@ -29,6 +30,7 @@ export async function createNoteComment(data: {
       userName: data.userName || null,
       isAdmin,
       content: data.content,
+      isPrivate: data.isPrivate || false,
       isDeleted: false,
       createdAt: new Date(),
     });
@@ -51,6 +53,7 @@ export async function createBlogComment(data: {
   blogPostId: string;
   content: string;
   userName?: string;
+  isPrivate?: boolean;
 }) {
   try {
     const session = await getCurrentSession();
@@ -65,6 +68,7 @@ export async function createBlogComment(data: {
       userName: data.userName || null,
       isAdmin,
       content: data.content,
+      isPrivate: data.isPrivate || false,
       isDeleted: false,
       createdAt: new Date(),
     });
@@ -81,17 +85,20 @@ export async function createBlogComment(data: {
 /**
  * Update a comment (admin only)
  */
-export async function updateComment(commentId: string, content: string) {
+export async function updateComment(
+  commentId: string,
+  data: {
+    content?: string;
+    isPrivate?: boolean;
+  }
+) {
   try {
     const session = await getCurrentSession();
     if (session?.user?.role !== "admin") {
       return { success: false, error: "Unauthorized" };
     }
 
-    await db
-      .update(comments)
-      .set({ content })
-      .where(eq(comments.id, commentId));
+    await db.update(comments).set(data).where(eq(comments.id, commentId));
 
     revalidatePath("/");
 

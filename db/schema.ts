@@ -95,6 +95,7 @@ export const comments = pgTable("comments", {
   noteId: text("noteId").references(() => notes.id, { onDelete: "cascade" }),
   userName: text("userName"),
   isAdmin: boolean("isAdmin").notNull().default(false),
+  isPrivate: boolean("isPrivate").notNull().default(false),
   content: text("content").notNull(),
   isDeleted: boolean("isDeleted").notNull().default(false),
   createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
