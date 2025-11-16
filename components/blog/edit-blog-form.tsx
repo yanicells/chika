@@ -29,6 +29,7 @@ export default function EditBlogForm({ post }: EditBlogFormProps) {
     content: post.content,
     excerpt: post.excerpt || "",
     coverImageUrl: post.coverImageUrl || "",
+    color: post.color || "#ffffff",
     isPublished: post.isPublished,
   });
 
@@ -43,6 +44,7 @@ export default function EditBlogForm({ post }: EditBlogFormProps) {
       content: formData.content,
       excerpt: formData.excerpt || undefined,
       coverImageUrl: formData.coverImageUrl || undefined,
+      color: formData.color,
       isPublished: formData.isPublished,
     });
 
@@ -151,6 +153,24 @@ export default function EditBlogForm({ post }: EditBlogFormProps) {
           }
           placeholder="https://..."
         />
+
+        <div>
+          <label
+            htmlFor="color"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
+            Background Color
+          </label>
+          <input
+            type="color"
+            id="color"
+            value={formData.color}
+            onChange={(e) =>
+              setFormData({ ...formData, color: e.target.value })
+            }
+            className="h-10 w-20 rounded border border-gray-300 cursor-pointer"
+          />
+        </div>
 
         <div className="flex items-center gap-2">
           <input

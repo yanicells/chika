@@ -21,9 +21,10 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
   const excerpt = post.excerpt || post.content.substring(0, 150);
   const truncatedExcerpt =
     excerpt.length > 150 ? `${excerpt.substring(0, 150)}...` : excerpt;
+  const backgroundColor = post.color || "#ffffff";
 
   return (
-    <Card className="h-full flex flex-col">
+    <Card className="h-full flex flex-col" style={{ backgroundColor }}>
       <div className="flex-1">
         <div className="flex items-start justify-between gap-2 mb-3">
           <div className="flex flex-wrap items-center gap-2">

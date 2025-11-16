@@ -1,10 +1,10 @@
-import Link from 'next/link';
-import { BlogPost } from '@/db/schema';
-import Card from '@/components/ui/card';
-import Badge from '@/components/ui/badge';
-import Button from '@/components/ui/button';
-import ReactionDisplay from '@/components/reactions/reaction-display';
-import ReactionButton from '@/components/reactions/reaction-button';
+import Link from "next/link";
+import { BlogPost } from "@/db/schema";
+import Card from "@/components/ui/card";
+import Badge from "@/components/ui/badge";
+import Button from "@/components/ui/button";
+import ReactionDisplay from "@/components/reactions/reaction-display";
+import ReactionButton from "@/components/reactions/reaction-button";
 import EditButton from "@/components/ui/edit-button";
 
 interface BlogDetailProps {
@@ -23,8 +23,10 @@ export default function BlogDetail({
   isUserAdmin = false,
   hasReacted = false,
 }: BlogDetailProps) {
+  const backgroundColor = post.color || "#ffffff";
+
   return (
-    <Card className="max-w-4xl mx-auto">
+    <Card className="max-w-4xl mx-auto" style={{ backgroundColor }}>
       <div className="space-y-6">
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
@@ -73,15 +75,19 @@ export default function BlogDetail({
         <div className="flex items-center justify-between text-sm text-gray-600 pt-4 border-t border-gray-200">
           <div className="flex flex-col gap-1">
             <span>
-              Published:{' '}
+              Published:{" "}
               {post.publishedAt
                 ? new Date(post.publishedAt).toLocaleDateString()
-                : 'Not published'}
+                : "Not published"}
             </span>
-            <span>Created: {new Date(post.createdAt).toLocaleDateString()}</span>
+            <span>
+              Created: {new Date(post.createdAt).toLocaleDateString()}
+            </span>
             {post.updatedAt &&
               post.updatedAt.getTime() !== post.createdAt.getTime() && (
-                <span>Updated: {new Date(post.updatedAt).toLocaleDateString()}</span>
+                <span>
+                  Updated: {new Date(post.updatedAt).toLocaleDateString()}
+                </span>
               )}
           </div>
         </div>
@@ -102,4 +108,3 @@ export default function BlogDetail({
     </Card>
   );
 }
-

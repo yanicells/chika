@@ -1,19 +1,16 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { BlogPost } from '@/db/schema';
-import Input from '@/components/ui/input';
-import Textarea from '@/components/ui/textarea';
-import Button from '@/components/ui/button';
-import Card from '@/components/ui/card';
-import {
-  createBlogPost,
-  updateBlogPost,
-} from '@/lib/actions/blog-actions';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { BlogPost } from "@/db/schema";
+import Input from "@/components/ui/input";
+import Textarea from "@/components/ui/textarea";
+import Button from "@/components/ui/button";
+import Card from "@/components/ui/card";
+import { createBlogPost, updateBlogPost } from "@/lib/actions/blog-actions";
 
 interface BlogFormProps {
-  mode: 'create' | 'edit';
+  mode: "create" | "edit";
   post?: BlogPost;
 }
 
@@ -24,20 +21,22 @@ export default function BlogForm({ mode, post }: BlogFormProps) {
   const [success, setSuccess] = useState(false);
 
   const [formData, setFormData] = useState({
-    title: '',
-    content: '',
-    excerpt: '',
-    coverImageUrl: '',
+    title: "",
+    content: "",
+    excerpt: "",
+    coverImageUrl: "",
+    color: "#ffffff",
     isPublished: false,
   });
 
   useEffect(() => {
-    if (mode === 'edit' && post) {
+    if (mode === "edit" && post) {
       setFormData({
         title: post.title,
         content: post.content,
-        excerpt: post.excerpt || '',
-        coverImageUrl: post.coverImageUrl || '',
+        excerpt: post.excerpt || "",
+        coverImageUrl: post.coverImageUrl || "",
+        color: post.color || "#ffffff",
         isPublished: post.isPublished,
       });
     }
@@ -50,25 +49,26 @@ export default function BlogForm({ mode, post }: BlogFormProps) {
     setSuccess(false);
 
     if (!formData.title.trim()) {
-      setError('Title is required');
+      setError("Title is required");
       setIsLoading(false);
       return;
     }
 
     if (!formData.content.trim()) {
-      setError('Content is required');
+      setError("Content is required");
       setIsLoading(false);
       return;
     }
 
     try {
       const result =
-        mode === 'create'
+        mode === "create"
           ? await createBlogPost({
               title: formData.title,
               content: formData.content,
               excerpt: formData.excerpt || undefined,
               coverImageUrl: formData.coverImageUrl || undefined,
+              color: formData.color,
               isPublished: formData.isPublished,
             })
           : await updateBlogPost(post!.id, {
@@ -76,14 +76,15 @@ export default function BlogForm({ mode, post }: BlogFormProps) {
               content: formData.content,
               excerpt: formData.excerpt || undefined,
               coverImageUrl: formData.coverImageUrl || undefined,
+              color: formData.color,
               isPublished: formData.isPublished,
             });
 
       if (result.success) {
         setSuccess(true);
         router.refresh();
-        if (mode === 'create') {
-          router.push('/admin/blog');
+        if (mode === "create") {
+          router.push("/admin/blog");
         }
         setTimeout(() => {
           setSuccess(false);
@@ -92,8 +93,8 @@ export default function BlogForm({ mode, post }: BlogFormProps) {
         setError(result.error || `Failed to ${mode} blog post`);
       }
     } catch (err) {
-      setError('An unexpected error occurred');
-      console.error('Blog form error:', err);
+      setError("An unexpected error occurred");
+      console.error("Blog form error:", err);
     } finally {
       setIsLoading(false);
     }
@@ -102,7 +103,7 @@ export default function BlogForm({ mode, post }: BlogFormProps) {
   return (
     <Card>
       <h2 className="text-2xl font-bold text-gray-900 mb-6">
-        {mode === 'create' ? 'Create New Blog Post' : 'Edit Blog Post'}
+        {mode === "create" ? "Create New Blog Post" : "Edit Blog Post"}
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -110,9 +111,7 @@ export default function BlogForm({ mode, post }: BlogFormProps) {
           label="Title *"
           type="text"
           value={formData.title}
-          onChange={(e) =>
-            setFormData({ ...formData, title: e.target.value })
-          }
+          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           placeholder="Enter blog post title..."
           required
         />
@@ -148,6 +147,24 @@ export default function BlogForm({ mode, post }: BlogFormProps) {
           placeholder="https://example.com/image.jpg"
         />
 
+        <div>
+          <label
+            htmlFor="color"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
+            Background Color
+          </label>
+          <input
+            type="color"
+            id="color"
+            value={formData.color}
+            onChange={(e) =>
+              setFormData({ ...formData, color: e.target.value })
+            }
+            className="h-10 w-20 rounded border border-gray-300 cursor-pointer"
+          />
+        </div>
+
         <div className="flex items-center">
           <input
             type="checkbox"
@@ -172,7 +189,8 @@ export default function BlogForm({ mode, post }: BlogFormProps) {
         {success && (
           <div className="p-3 bg-green-50 border border-green-200 rounded-md">
             <p className="text-sm text-green-600">
-              Blog post {mode === 'create' ? 'created' : 'updated'} successfully!
+              Blog post {mode === "create" ? "created" : "updated"}{" "}
+              successfully!
             </p>
           </div>
         )}
@@ -185,7 +203,7 @@ export default function BlogForm({ mode, post }: BlogFormProps) {
             isLoading={isLoading}
             className="flex-1"
           >
-            {mode === 'create' ? 'Create Post' : 'Update Post'}
+            {mode === "create" ? "Create Post" : "Update Post"}
           </Button>
           <Button
             type="button"
@@ -200,4 +218,3 @@ export default function BlogForm({ mode, post }: BlogFormProps) {
     </Card>
   );
 }
-

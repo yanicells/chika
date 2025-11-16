@@ -16,6 +16,8 @@ export async function createNoteComment(data: {
   content: string;
   userName?: string;
   isPrivate?: boolean;
+  imageUrl?: string;
+  color?: string;
 }) {
   try {
     const session = await getCurrentSession();
@@ -30,6 +32,8 @@ export async function createNoteComment(data: {
       userName: data.userName || null,
       isAdmin,
       content: data.content,
+      imageUrl: data.imageUrl || null,
+      color: data.color || "#ffffff",
       isPrivate: data.isPrivate || false,
       isDeleted: false,
       createdAt: new Date(),
@@ -54,6 +58,8 @@ export async function createBlogComment(data: {
   content: string;
   userName?: string;
   isPrivate?: boolean;
+  imageUrl?: string;
+  color?: string;
 }) {
   try {
     const session = await getCurrentSession();
@@ -68,6 +74,8 @@ export async function createBlogComment(data: {
       userName: data.userName || null,
       isAdmin,
       content: data.content,
+      imageUrl: data.imageUrl || null,
+      color: data.color || "#ffffff",
       isPrivate: data.isPrivate || false,
       isDeleted: false,
       createdAt: new Date(),

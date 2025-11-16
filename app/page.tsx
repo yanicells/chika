@@ -6,6 +6,8 @@ import { getPublishedBlogPosts } from "@/lib/queries/blog";
 import { isAdmin } from "@/lib/auth-helper";
 import Link from "next/link";
 import Button from "@/components/ui/button";
+import WordCloudSection from "@/components/shared/word-cloud.section";
+
 
 export default async function HomePage() {
   const notes = await getPublicNotes();
@@ -14,6 +16,7 @@ export default async function HomePage() {
 
   return (
     <Container>
+      <WordCloudSection />
       <h1 className="mt-16">Recent Notes</h1>
       <NoteList notes={notes.slice(0, 6)} isUserAdmin={adminStatus} />
       <Link href="/notes">

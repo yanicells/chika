@@ -97,6 +97,8 @@ export const comments = pgTable("comments", {
   isAdmin: boolean("isAdmin").notNull().default(false),
   isPrivate: boolean("isPrivate").notNull().default(false),
   content: text("content").notNull(),
+  imageUrl: text("imageUrl"),
+  color: text("color").notNull().default("#ffffff"),
   isDeleted: boolean("isDeleted").notNull().default(false),
   createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
 });
@@ -108,6 +110,7 @@ export const blogPosts = pgTable("blogPosts", {
   content: text("content").notNull(),
   excerpt: text("excerpt"),
   coverImageUrl: text("coverImageUrl"),
+  color: text("color").notNull().default("#ffffff"),
   isPublished: boolean("isPublished").notNull().default(false),
   isPinned: boolean("isPinned").notNull().default(false),
   isDeleted: boolean("isDeleted").notNull().default(false),
@@ -147,7 +150,7 @@ export const commentsRelations = relations(comments, ({ one, many }) => ({
 }));
 
 export const blogPostsRelations = relations(blogPosts, ({ many }) => ({
-  comments: many(comments), 
+  comments: many(comments),
   reactions: many(reactions),
 }));
 

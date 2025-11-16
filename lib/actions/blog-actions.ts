@@ -28,6 +28,7 @@ export async function createBlogPost(data: {
   content: string;
   excerpt?: string;
   coverImageUrl?: string;
+  color?: string;
   isPublished?: boolean;
 }) {
   try {
@@ -52,6 +53,7 @@ export async function createBlogPost(data: {
       content: data.content,
       excerpt: data.excerpt || null,
       coverImageUrl: data.coverImageUrl || null,
+      color: data.color || "#ffffff",
       isPublished: data.isPublished || false,
       isPinned: false,
       isDeleted: false,
@@ -80,6 +82,7 @@ export async function updateBlogPost(
     content?: string;
     excerpt?: string;
     coverImageUrl?: string;
+    color?: string;
     isPublished?: boolean;
   }
 ) {
