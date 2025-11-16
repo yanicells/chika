@@ -1,9 +1,9 @@
-import { Note } from '@/db/schema';
-import Card from '@/components/ui/card';
-import Badge from '@/components/ui/badge';
-import AdminBadge from '@/components/admin/admin-badge';
-import ReactionDisplay from '@/components/reactions/reaction-display';
-import ReactionButton from '@/components/reactions/reaction-button';
+import { Note } from "@/db/schema";
+import Card from "@/components/ui/card";
+import Badge from "@/components/ui/badge";
+import AdminBadge from "@/components/admin/admin-badge";
+import ReactionDisplay from "@/components/reactions/reaction-display";
+import ReactionButton from "@/components/reactions/reaction-button";
 import EditButton from "@/components/ui/edit-button";
 
 interface NoteDetailProps {
@@ -17,9 +17,13 @@ interface NoteDetailProps {
   isAdmin: boolean;
 }
 
-export default function NoteDetail({ note, hasReacted = false, isAdmin }: NoteDetailProps) {
-  const displayName = note.userName || 'Anonymous';
-  const backgroundColor = note.color || '#ffffff';
+export default function NoteDetail({
+  note,
+  hasReacted = false,
+  isAdmin,
+}: NoteDetailProps) {
+  const displayName = note.userName || "Anonymous";
+  const backgroundColor = note.color || "#ffffff";
 
   return (
     <Card style={{ backgroundColor }} className="max-w-4xl mx-auto">
@@ -44,34 +48,37 @@ export default function NoteDetail({ note, hasReacted = false, isAdmin }: NoteDe
           <h1 className="text-3xl font-bold text-gray-900">{note.title}</h1>
         )}
 
+        {note.imageUrl && (
+          <div>
+            <img
+              src={note.imageUrl}
+              alt={note.title || "Note image"}
+              className="w-full max-h-96 object-cover rounded-lg"
+            />
+          </div>
+        )}
+
         <div className="prose max-w-none">
           <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
             {note.content}
           </p>
         </div>
 
-        {note.imageUrl && (
-          <div>
-            <img
-              src={note.imageUrl}
-              alt={note.title || 'Note image'}
-              className="w-full max-h-96 object-cover rounded-lg"
-            />
-          </div>
-        )}
-
         <div className="flex items-center justify-between text-sm text-gray-600 pt-4 border-t border-gray-200">
           <span>By {displayName}</span>
           <div className="flex flex-col items-end gap-1">
-            <span>Created: {new Date(note.createdAt).toLocaleDateString()}</span>
-            {note.updatedAt && note.updatedAt.getTime() !== note.createdAt.getTime() && (
-              <span>Updated: {new Date(note.updatedAt).toLocaleDateString()}</span>
-            )}
+            <span>
+              Created: {new Date(note.createdAt).toLocaleDateString()}
+            </span>
+            {note.updatedAt &&
+              note.updatedAt.getTime() !== note.createdAt.getTime() && (
+                <span>
+                  Updated: {new Date(note.updatedAt).toLocaleDateString()}
+                </span>
+              )}
           </div>
         </div>
-        <div>
-          {isAdmin && <EditButton type="note" id={note.id} />}
-        </div>
+        <div>{isAdmin && <EditButton type="note" id={note.id} />}</div>
 
         <div className="flex items-center gap-4 pt-4 border-t border-gray-200">
           {note.reactions && (
@@ -89,4 +96,3 @@ export default function NoteDetail({ note, hasReacted = false, isAdmin }: NoteDe
     </Card>
   );
 }
-

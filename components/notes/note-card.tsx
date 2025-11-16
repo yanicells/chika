@@ -57,8 +57,6 @@ export default function NoteCard({ note, isUserAdmin = false }: NoteCardProps) {
           </h3>
         )}
 
-        <p className="text-gray-700 mb-3 line-clamp-3">{truncatedContent}</p>
-
         {note.imageUrl && (
           <div className="mb-3">
             <img
@@ -68,6 +66,8 @@ export default function NoteCard({ note, isUserAdmin = false }: NoteCardProps) {
             />
           </div>
         )}
+
+        <p className="text-gray-700 mb-3 line-clamp-3">{truncatedContent}</p>
 
         <div className="flex items-center justify-between text-sm text-gray-600 mb-3">
           <span>By {displayName}</span>

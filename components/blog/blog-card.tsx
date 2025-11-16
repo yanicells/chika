@@ -40,6 +40,10 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
           </div>
         </div>
 
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">
+          {post.title}
+        </h3>
+
         {post.coverImageUrl && (
           <div className="mb-4">
             <img
@@ -49,10 +53,6 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
             />
           </div>
         )}
-
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">
-          {post.title}
-        </h3>
 
         <p className="text-gray-700 mb-4 line-clamp-3">{truncatedExcerpt}</p>
 
