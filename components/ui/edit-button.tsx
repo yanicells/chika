@@ -18,7 +18,7 @@ interface EditButtonProps {
 export default function EditButton({
   type,
   id,
-  variant = "secondary",
+  variant = "primary",
   size = "sm",
   className,
 }: EditButtonProps) {
@@ -28,7 +28,7 @@ export default function EditButton({
   return (
     <Link href={href}>
       <Button variant={variant} size={size} className={className}>
-        ✏️ Edit
+        Edit
       </Button>
     </Link>
   );

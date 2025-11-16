@@ -1,7 +1,7 @@
 import { requireAdmin } from "@/lib/auth-helper";
 import AdminNav from "@/components/admin/admin-nav";
 
-export default async function AdminLayout({
+export default async function Layout({
   children,
 }: {
   children: React.ReactNode;

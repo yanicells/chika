@@ -63,7 +63,7 @@ export default function NoteCard({ note, isUserAdmin = false }: NoteCardProps) {
           </div>
 
           {note.title && (
-            <h3 className="text-lg font-semibold text-text mb-2 hover:text-blue transition-colors">
+            <h3 className="text-lg font-semibold text-text mb-2 hover:text-blue transition-colors -mt-2 -pt-2">
               {note.title}
             </h3>
           )}

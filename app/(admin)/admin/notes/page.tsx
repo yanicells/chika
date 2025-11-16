@@ -10,9 +10,7 @@ export default async function PrivateNotesPage() {
   return (
     <Container>
       <div className="py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-text mb-2">Private Notes</h1>
-          <p className="text-subtext1">View and manage private notes</p>
+        <div className="mb-12">
         </div>
 
         <AdminNotes initialNotes={allNotes} />

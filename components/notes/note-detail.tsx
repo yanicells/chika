@@ -43,7 +43,7 @@ export default function NoteDetail({
     >
       <div className="space-y-6">
         <div className="flex items-start justify-between gap-2">
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2 mb-4">
             {note.isPinned && (
               <Badge variant="warning" size="sm">
                 📌 Pinned
@@ -66,11 +66,11 @@ export default function NoteDetail({
         </div>
 
         {note.title && (
-          <h1 className="text-4xl font-bold text-text">{note.title}</h1>
+          <h1 className="text-4xl font-bold text-text -mt-8 -pt-8">{note.title}</h1>
         )}
 
         {note.imageUrl && (
-          <div>
+          <div className={note.title ? "" : "-mt-6"}>
             <img
               src={note.imageUrl}
               alt={note.title || "Note image"}
@@ -79,7 +79,11 @@ export default function NoteDetail({
           </div>
         )}
 
-        <div className="prose max-w-none">
+        <div
+          className={`prose max-w-none ${
+            !note.title && !note.imageUrl ? "-mt-8" : !note.title ? "-mt-8" : ""
+          }`}
+        >
           <p className="text-subtext1 whitespace-pre-wrap leading-relaxed">
             {note.content}
           </p>

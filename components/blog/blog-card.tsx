@@ -40,7 +40,7 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
       <Link href={`/blog/${post.slug}`} className="flex-1">
         <div className="flex-1">
           <div className="flex items-start justify-between gap-2 mb-3">
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2 mb-2">
               {post.isPinned && (
                 <Badge variant="warning" size="sm">
                   📌 Pinned
@@ -54,7 +54,7 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
             </div>
           </div>
 
-          <h3 className="text-xl font-semibold text-text mb-2 hover:text-blue transition-colors">
+          <h3 className="text-xl font-semibold text-text mb-2 hover:text-blue transition-colors -mt-4 -pt-2">
             {post.title}
           </h3>
 

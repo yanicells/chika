@@ -5,7 +5,7 @@ export default function AdminBadge() {
     <Badge
       variant="primary"
       size="sm"
-      className="bg-mauve/20 text-mauve border border-mauve/30"
+      className="bg-mauve/20 text-mauve border border-mauve/30 mb-2"
     >
       Yanicells
     </Badge>

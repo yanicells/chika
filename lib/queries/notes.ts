@@ -1,5 +1,5 @@
 import { db } from "../../db/drizzle";
-import { notes, reactions } from "../../db/schema";
+import { notes, reactions, comments } from "../../db/schema";
 import { and, desc, eq, sql } from "drizzle-orm";
 
 /**
@@ -38,11 +38,42 @@ export async function getPrivateNotes() {
  * Should only be called after auth check
  */
 export async function getAllNotes() {
-  return await db
+  const notesData = await db
     .select()
     .from(notes)
     .where(eq(notes.isDeleted, false))
     .orderBy(desc(notes.isPinned), desc(notes.createdAt));
+
+  // Get reactions and comment counts for each note
+  const notesWithData = await Promise.all(
+    notesData.map(async (note) => {
+      const reactionCounts = await db
+        .select({
+          regularCount: sql<number>`count(*) filter (where ${reactions.isAdmin} = false)`,
+          adminCount: sql<number>`count(*) filter (where ${reactions.isAdmin} = true)`,
+        })
+        .from(reactions)
+        .where(eq(reactions.noteId, note.id));
+
+      const commentCount = await db
+        .select({ count: sql<number>`count(*)` })
+        .from(comments)
+        .where(eq(comments.noteId, note.id));
+
+      return {
+        ...note,
+        reactions: {
+          regular: Number(reactionCounts[0]?.regularCount || 0),
+          admin: Number(reactionCounts[0]?.adminCount || 0),
+        },
+        _count: {
+          comments: Number(commentCount[0]?.count || 0),
+        },
+      };
+    })
+  );
+
+  return notesWithData;
 }
 
 /**
