@@ -1,13 +1,13 @@
-import React from "react";
-import { LoginForm } from "@/components/LoginForm";
+import { requireAdmin } from "@/lib/auth-helper";
 
-const Admin = () => {
+export default async function AdminDashboard() {
+  const session = await requireAdmin();
+
   return (
     <div>
-      Admin Page
-      <LoginForm />
+      <h1>Admin Dashboard</h1>
+      <p>Welcome, {session.user.email}</p>
+      {/* Stats, quick links, etc. */}
     </div>
   );
-};
-
-export default Admin;
+}

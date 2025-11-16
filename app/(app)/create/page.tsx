@@ -1,7 +1,10 @@
-import React from 'react';
+import NoteForm from "@/components/notes/note-form";
 
-const Create = () => {
-  return <div>Create Page</div>;
-};
-
-export default Create;
+export default function CreateNotePage() {
+  return (
+    <div>
+      <h1>Create a Note</h1>
+      <NoteForm />
+    </div>
+  );
+}

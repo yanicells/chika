@@ -1,12 +1,14 @@
-import React from 'react';
-import Home from '../components/Home';
+import { getPublicNotes } from "@/lib/queries/notes";
+import NoteList from "@/components/notes/note-list";
+import Container from "@/components/shared/container";
 
-const HomePage = () => {
-  return(
-    <div>
-      <Home />
-    </div>
-  )
-};
+export default async function HomePage() {
+  const notes = await getPublicNotes();
 
-export default HomePage;
+  return (
+    <Container>
+      <h1>Recent Notes</h1>
+      <NoteList notes={notes} />
+    </Container>
+  );
+}
