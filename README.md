@@ -47,14 +47,15 @@ npm install
 
 ### Environment Variables
 
-Create a `.env.local` file in the root directory and add the following:
+Create a `.env` file in the root directory and add the following:
 
 ```env
-DATABASE_URL=your_neon_database_url_here
-NEXTAUTH_SECRET=your_nextauth_secret_here
-NEXTAUTH_URL=http://localhost:3000
-UPLOADTHING_SECRET=your_uploadthing_secret_here
-UPLOADTHING_APP_ID=your_uploadthing_app_id_here
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=http://localhost:3000 
+DATABASE_URL=
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+UPLOADTHING_TOKEN=
 ```
 
 ### Database Setup
