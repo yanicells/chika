@@ -50,12 +50,12 @@ npm install
 Create a `.env` file in the root directory and add the following:
 
 ```env
-BETTER_AUTH_SECRET=
+BETTER_AUTH_SECRET=your_better_auth_secret_here
 BETTER_AUTH_URL=http://localhost:3000 
-DATABASE_URL=
-GITHUB_CLIENT_ID=
-GITHUB_CLIENT_SECRET=
-UPLOADTHING_TOKEN=
+DATABASE_URL=your_neon_database_url_here
+GITHUB_CLIENT_ID=your_github_client_id_here
+GITHUB_CLIENT_SECRET=your_github_client_secret_here
+UPLOADTHING_TOKEN=your_uploadthing_token_here
 ```
 
 ### Database Setup
