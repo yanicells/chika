@@ -1,77 +1,83 @@
+# Chika - Anonymous Notes App
 
-## File Structure
+A web application inspired by NGL where users can send anonymous or named notes. Notes can be private (visible only to me) or public, with comment functionality for public notes. Includes admin features for managing notes and a personal blog section.
+
+## Features
+
+- Send notes with title, body, and optional name (anonymous or named)
+- Notes can be private (admin-only) or public
+- View all public notes in a feed
+- Comment on public notes
+- Admin dashboard for managing private notes, editing comments, deleting notes, posting blog entries
+- Personal blog section for sharing learnings and thoughts
+- Note reactions with curated emojis
+- Color themes for notes
+- Word cloud visualization from public notes
+- Image uploads for notes
+
+## Tech Stack
+
+- **Frontend**: Next.js, React TypeScript, TailwindCSS
+- **Backend**: Next.js Server Actions
+- **Database**: Neon (Serverless PostgreSQL)
+- **ORM**: Drizzle
+- **Authentication**: Better Auth
+- **File Uploads**: Uploadthing
+- **Styling**: TailwindCSS with Catppuccin color scheme
+
+## Setup Guide
+
+### Prerequisites
+
+- Node.js (>= 18.x)
+- npm (>= 9.x)
+
+### Clone the Repository
 
 ```bash
-├── README.md
-├── app
-│   ├── (admin)
-│   │   ├── admin
-│   │   │   ├── blog
-│   │   │   │   ├── create
-│   │   │   │   │   └── page.tsx
-│   │   │   │   ├── edit
-│   │   │   │   │   └── [id]
-│   │   │   │   │       └── page.tsx
-│   │   │   │   └── page.tsx
-│   │   │   ├── layout.tsx
-│   │   │   └── page.tsx
-│   │   └── notes
-│   │       └── page.tsx
-│   ├── (app)
-│   │   ├── blog
-│   │   │   ├── [slug]
-│   │   │   │   └── page.tsx
-│   │   │   └── page.tsx
-│   │   ├── create
-│   │   │   └── page.tsx
-│   │   └── notes
-│   │       ├── [id]
-│   │       │   └── page.tsx
-│   │       └── page.tsx
-│   ├── api
-│   │   └── auth
-│   │       └── [...all]
-│   │           └── route.ts
-│   ├── favicon.ico
-│   ├── globals.css
-│   ├── layout.tsx
-│   ├── login
-│   │   └── page.tsx
-│   ├── page.tsx
-│   └── unauthorized
-│       └── page.tsx
-├── components
-│   ├── Home.tsx
-│   └── LoginForm.tsx
-├── db
-│   ├── drizzle.ts
-│   └── schema.ts
-├── drizzle.config.ts
-├── eslint.config.mjs
-├── lib
-│   ├── actions
-│   │   ├── admin-actions.ts
-│   │   ├── auth-actions.ts
-│   │   ├── blog-actions.ts
-│   │   ├── comments-actions.ts
-│   │   ├── notes-actions.ts
-│   │   └── reactions-actions.ts
-│   ├── auth-helper.ts
-│   ├── auth.ts
-│   ├── dal.ts
-│   ├── queries
-│   │   ├── blog.ts
-│   │   ├── comments.ts
-│   │   ├── notes.ts
-│   │   └── reactions.ts
-│   ├── types.ts
-│   └── utils.ts
-├── next-env.d.ts
-├── next.config.ts
-├── package-lock.json
-├── package.json
-├── postcss.config.mjs
-├── project-notes.md
-├── public
-└── tsconfig.json
+git clone https://github.com/yanicells/chika.git
+cd chika
 ```
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+### Environment Variables
+
+Create a `.env.local` file in the root directory and add the following:
+
+```env
+DATABASE_URL=your_neon_database_url_here
+NEXTAUTH_SECRET=your_nextauth_secret_here
+NEXTAUTH_URL=http://localhost:3000
+UPLOADTHING_SECRET=your_uploadthing_secret_here
+UPLOADTHING_APP_ID=your_uploadthing_app_id_here
+```
+
+### Database Setup
+
+Run the database migrations:
+
+```bash
+npm run db:push
+```
+
+### Run the Project
+
+```bash
+npm run dev
+```
+
+The app will be available at `http://localhost:3000`
+
+## Usage
+
+1. Open the landing page at `/`
+2. Send a note using the note form (choose anonymous or named, private or public)
+3. Browse public notes and add comments
+4. Admin login to access private notes and management features
+5. Explore the blog section for personal posts
+6. Use reactions and color themes to enhance notes
