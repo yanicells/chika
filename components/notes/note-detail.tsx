@@ -58,10 +58,7 @@ export default function NoteDetail({
           </div>
           {isUserAdmin && (
             <Link href={`/admin/notes/edit/${note.id}`}>
-              <Button 
-                variant="secondary" 
-                size="sm"
-              >
+              <Button variant="secondary" size="sm">
                 Edit
               </Button>
             </Link>
@@ -69,11 +66,13 @@ export default function NoteDetail({
         </div>
 
         {note.title && (
-          <h1 className="text-4xl font-bold text-text -mt-8 -pt-8">{note.title}</h1>
+          <h1 className="text-4xl font-bold text-text -mt-8 -pt-8">
+            {note.title}
+          </h1>
         )}
 
         {note.imageUrl && (
-          <div className={note.title ? "" : "-mt-6"}>
+          <div className="mb-4">
             <img
               src={note.imageUrl}
               alt={note.title || "Note image"}
@@ -82,11 +81,7 @@ export default function NoteDetail({
           </div>
         )}
 
-        <div
-          className={`prose max-w-none ${
-            !note.title && !note.imageUrl ? "-mt-8" : !note.title ? "-mt-8" : ""
-          }`}
-        >
+        <div className={`prose max-w-none ${!note.title && !note.imageUrl ? "-mt-6" : ""}`}>
           <p className="text-subtext1 whitespace-pre-wrap leading-relaxed">
             {note.content}
           </p>
