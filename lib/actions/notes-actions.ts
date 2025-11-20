@@ -43,8 +43,8 @@ export async function createNote(data: {
       updatedAt: new Date(),
     });
 
-    revalidateTag(NOTE_TAG);
-    revalidateTag(WORD_CLOUD_TAG);
+    revalidateTag(NOTE_TAG, 'default');
+    revalidateTag(WORD_CLOUD_TAG, 'default');
     revalidatePath("/");
     revalidatePath("/notes");
     revalidatePath("/admin");
@@ -84,8 +84,8 @@ export async function updateNote(
       })
       .where(eq(notes.id, noteId));
 
-    revalidateTag(NOTE_TAG);
-    revalidateTag(WORD_CLOUD_TAG);
+    revalidateTag(NOTE_TAG, 'default');
+    revalidateTag(WORD_CLOUD_TAG, 'default');
     revalidatePath("/");
     revalidatePath("/notes");
     revalidatePath("/admin");
@@ -116,8 +116,8 @@ export async function deleteNote(noteId: string) {
       })
       .where(eq(notes.id, noteId));
 
-    revalidateTag(NOTE_TAG);
-    revalidateTag(WORD_CLOUD_TAG);
+    revalidateTag(NOTE_TAG, 'default');
+    revalidateTag(WORD_CLOUD_TAG, 'default');
     revalidatePath("/");
     revalidatePath("/notes");
     revalidatePath("/admin");
@@ -147,7 +147,7 @@ export async function togglePinNote(noteId: string, isPinned: boolean) {
       })
       .where(eq(notes.id, noteId));
 
-    revalidateTag(NOTE_TAG);
+    revalidateTag(NOTE_TAG, 'default');
     revalidatePath("/");
     revalidatePath("/notes");
     revalidatePath("/admin");

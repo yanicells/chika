@@ -52,18 +52,7 @@ export default function NoteForm() {
 
       if (result.success) {
         setSuccess(true);
-        setFormData({
-          title: "",
-          content: "",
-          userName: "",
-          color: "#89b4fa",
-          isPrivate: false,
-          imageUrl: "",
-        });
-        router.refresh();
-        setTimeout(() => {
-          setSuccess(false);
-        }, 3000);
+        router.push("/notes");
       } else {
         setError(result.error || "Failed to create note");
       }
