@@ -1,5 +1,6 @@
 "use client";
 
+import ReactMarkdown from "react-markdown";
 import { Comment } from "@/db/schema";
 import Card from "@/components/ui/card";
 import Badge from "@/components/ui/badge";
@@ -81,9 +82,51 @@ export default function CommentCard({
           </span>
         </div>
 
-        <p className="text-subtext1 text-sm whitespace-pre-wrap">
-          {comment.content}
-        </p>
+        {/* Markdown Content */}
+        <div className="prose prose-invert max-w-none text-sm">
+          <ReactMarkdown
+            components={{
+              h1: ({ node, ...props }) => (
+                <h1 className="text-2xl font-bold text-text mt-4 mb-2" {...props} />
+              ),
+              h2: ({ node, ...props }) => (
+                <h2 className="text-xl font-bold text-text mt-3 mb-2" {...props} />
+              ),
+              h3: ({ node, ...props }) => (
+                <h3 className="text-lg font-bold text-text mt-2 mb-1" {...props} />
+              ),
+              p: ({ node, ...props }) => (
+                <p className="text-subtext1 mb-2 leading-relaxed" {...props} />
+              ),
+              ul: ({ node, ...props }) => (
+                <ul className="list-disc list-inside text-subtext1 mb-2 space-y-1" {...props} />
+              ),
+              ol: ({ node, ...props }) => (
+                <ol className="list-decimal list-inside text-subtext1 mb-2 space-y-1" {...props} />
+              ),
+              li: ({ node, ...props }) => (
+                <li className="text-subtext1" {...props} />
+              ),
+              code: ({ node, ...props }) => (
+                <code className="bg-surface0 text-pink px-2 py-1 rounded font-mono text-xs" {...props} />
+              ),
+              pre: ({ node, ...props }) => (
+                <pre className="bg-surface0 p-3 rounded-lg mb-2 overflow-x-auto border border-overlay0 text-xs" {...props} />
+              ),
+              blockquote: ({ node, ...props }) => (
+                <blockquote
+                  className="border-l-4 border-blue pl-3 italic text-subtext1 my-2"
+                  {...props}
+                />
+              ),
+              a: ({ node, ...props }) => (
+                <a className="text-blue hover:underline" target="_blank" rel="noopener noreferrer" {...props} />
+              ),
+            }}
+          >
+            {comment.content}
+          </ReactMarkdown>
+        </div>
 
         {comment.imageUrl && (
           <div className="mt-3">

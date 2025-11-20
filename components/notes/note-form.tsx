@@ -6,6 +6,7 @@ import Input from "@/components/ui/input";
 import Textarea from "@/components/ui/textarea";
 import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { createNote } from "@/lib/actions/notes-actions";
 import Container from "@/components/shared/container";
 import ImageUpload from "../ui/image-upload";
@@ -105,20 +106,18 @@ export default function NoteForm() {
             onChange={(e) =>
               setFormData({ ...formData, content: e.target.value })
             }
-            placeholder="Write your note here..."
+            placeholder="Write your note here... (markdown supported)"
             rows={6}
             required
           />
 
           <div className="flex items-center gap-3 p-4 bg-surface0 border border-overlay0 rounded-lg">
-            <input
-              type="checkbox"
+            <Checkbox
               id="isPrivate"
               checked={formData.isPrivate}
-              onChange={(e) =>
-                setFormData({ ...formData, isPrivate: e.target.checked })
+              onCheckedChange={(checked) =>
+                setFormData({ ...formData, isPrivate: checked === true })
               }
-              className="w-5 h-5 accent-blue rounded cursor-pointer"
             />
             <label
               htmlFor="isPrivate"

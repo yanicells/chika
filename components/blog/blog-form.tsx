@@ -7,6 +7,7 @@ import Input from "@/components/ui/input";
 import Textarea from "@/components/ui/textarea";
 import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { createBlogPost, updateBlogPost } from "@/lib/actions/blog-actions";
 import ImageUpload from "../ui/image-upload";
 import CatppuccinColorPicker from "../ui/catppuccin-color-picker";
@@ -149,17 +150,15 @@ export default function BlogForm({ mode, post }: BlogFormProps) {
             onChange={(color) => setFormData({ ...formData, color })}
           />
 
-          <div className="flex items-center">
-            <input
-              type="checkbox"
+          <div className="flex items-center gap-2">
+            <Checkbox
               id="isPublished"
               checked={formData.isPublished}
-              onChange={(e) =>
-                setFormData({ ...formData, isPublished: e.target.checked })
+              onCheckedChange={(checked) =>
+                setFormData({ ...formData, isPublished: checked === true })
               }
-              className="h-4 w-4 accent-blue rounded"
             />
-            <label htmlFor="isPublished" className="ml-2 text-sm text-text">
+            <label htmlFor="isPublished" className="text-sm font-medium text-text cursor-pointer">
               Publish this post
             </label>
           </div>

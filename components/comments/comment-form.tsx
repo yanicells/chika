@@ -6,6 +6,7 @@ import Input from "@/components/ui/input";
 import Textarea from "@/components/ui/textarea";
 import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   createNoteComment,
   createBlogComment,
@@ -171,20 +172,18 @@ export default function CommentForm({ noteId, blogPostId }: CommentFormProps) {
               onChange={(e) =>
                 setFormData({ ...formData, content: e.target.value })
               }
-              placeholder="Write your comment here..."
+              placeholder="Write your comment here... (markdown supported)"
               rows={4}
               required
             />
 
             <div className="flex items-center gap-3 p-4 bg-surface0 border border-overlay0 rounded-lg">
-              <input
-                type="checkbox"
+              <Checkbox
                 id="isPrivate"
                 checked={formData.isPrivate}
-                onChange={(e) =>
-                  setFormData({ ...formData, isPrivate: e.target.checked })
+                onCheckedChange={(checked) =>
+                  setFormData({ ...formData, isPrivate: checked === true })
                 }
-                className="w-5 h-5 accent-blue rounded cursor-pointer"
               />
               <label
                 htmlFor="isPrivate"

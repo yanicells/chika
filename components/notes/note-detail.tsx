@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
 import { Note } from "@/db/schema";
 import Card from "@/components/ui/card";
 import Badge from "@/components/ui/badge";
@@ -81,10 +82,50 @@ export default function NoteDetail({
           </div>
         )}
 
-        <div className={`prose max-w-none ${!note.title && !note.imageUrl ? "-mt-6" : ""}`}>
-          <p className="text-subtext1 whitespace-pre-wrap leading-relaxed">
+        {/* Markdown Content */}
+        <div className={`prose prose-invert max-w-none ${!note.title && !note.imageUrl ? "-mt-6" : ""}`}>
+          <ReactMarkdown
+            components={{
+              h1: ({ node, ...props }) => (
+                <h1 className="text-3xl font-bold text-text mt-6 mb-4" {...props} />
+              ),
+              h2: ({ node, ...props }) => (
+                <h2 className="text-2xl font-bold text-text mt-5 mb-3" {...props} />
+              ),
+              h3: ({ node, ...props }) => (
+                <h3 className="text-xl font-bold text-text mt-4 mb-2" {...props} />
+              ),
+              p: ({ node, ...props }) => (
+                <p className="text-subtext1 mb-4 leading-relaxed" {...props} />
+              ),
+              ul: ({ node, ...props }) => (
+                <ul className="list-disc list-inside text-subtext1 mb-4 space-y-1" {...props} />
+              ),
+              ol: ({ node, ...props }) => (
+                <ol className="list-decimal list-inside text-subtext1 mb-4 space-y-1" {...props} />
+              ),
+              li: ({ node, ...props }) => (
+                <li className="text-subtext1" {...props} />
+              ),
+              code: ({ node, ...props }) => (
+                <code className="bg-surface0 text-pink px-2 py-1 rounded font-mono text-sm" {...props} />
+              ),
+              pre: ({ node, ...props }) => (
+                <pre className="bg-surface0 p-4 rounded-lg mb-4 overflow-x-auto border border-overlay0" {...props} />
+              ),
+              blockquote: ({ node, ...props }) => (
+                <blockquote
+                  className="border-l-4 border-blue pl-4 italic text-subtext1 my-4"
+                  {...props}
+                />
+              ),
+              a: ({ node, ...props }) => (
+                <a className="text-blue hover:underline" target="_blank" rel="noopener noreferrer" {...props} />
+              ),
+            }}
+          >
             {note.content}
-          </p>
+          </ReactMarkdown>
         </div>
 
         <div className="flex items-center justify-between pt-4 border-t border-overlay0">

@@ -11,6 +11,7 @@ import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
 import Textarea from "@/components/ui/textarea";
 import Card from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import type { Note } from "@/db/schema";
 import ImageUpload from "../ui/image-upload";
 import CatppuccinColorPicker from "../ui/catppuccin-color-picker";
@@ -122,7 +123,7 @@ export default function EditNoteForm({ note }: EditNoteFormProps) {
             onChange={(e) =>
               setFormData({ ...formData, content: e.target.value })
             }
-            placeholder="Enter note content..."
+            placeholder="Enter note content... (markdown supported)"
             required
             rows={6}
           />
@@ -148,18 +149,16 @@ export default function EditNoteForm({ note }: EditNoteFormProps) {
           />
 
           <div className="flex items-center gap-2">
-            <input
+            <Checkbox
               id="isPrivate"
-              type="checkbox"
               checked={formData.isPrivate}
-              onChange={(e) =>
-                setFormData({ ...formData, isPrivate: e.target.checked })
+              onCheckedChange={(checked) =>
+                setFormData({ ...formData, isPrivate: checked === true })
               }
-              className="w-4 h-4 accent-blue rounded"
             />
             <label
               htmlFor="isPrivate"
-              className="text-sm font-medium text-text"
+              className="text-sm font-medium text-text cursor-pointer"
             >
               Private (only visible to admin)
             </label>
