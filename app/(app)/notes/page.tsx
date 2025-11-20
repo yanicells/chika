@@ -6,10 +6,6 @@ import NotesPagination from "@/components/notes/notes-pagination";
 import { isAdmin } from "@/lib/auth-helper";
 import type { FilterType } from "@/components/notes/note-filter";
 
-// Force dynamic rendering to prevent caching issues with auth state
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 interface NotesPageProps {
   searchParams: Promise<{ page?: string; filter?: string }>;
 }

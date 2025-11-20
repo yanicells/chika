@@ -9,10 +9,6 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { isAdmin } from "@/lib/auth-helper";
 
-// Force dynamic rendering to prevent session cache issues
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 export default async function HomePage() {
   const adminStatus = await isAdmin();
 
@@ -89,11 +85,7 @@ function SectionHeader({
   );
 }
 
-async function NoteFeedSection({
-  isUserAdmin,
-}: {
-  isUserAdmin: boolean;
-}) {
+async function NoteFeedSection({ isUserAdmin }: { isUserAdmin: boolean }) {
   const allNotes = await getPublicNotes();
   const pinnedNotes = allNotes.filter((note) => note.isPinned);
   const recentNotes = allNotes
@@ -108,17 +100,11 @@ async function NoteFeedSection({
   return <NoteList notes={displayNotes} isUserAdmin={isUserAdmin} />;
 }
 
-async function BlogFeedSection({
-  isUserAdmin,
-}: {
-  isUserAdmin: boolean;
-}) {
+async function BlogFeedSection({ isUserAdmin }: { isUserAdmin: boolean }) {
   const recentBlogs = (await getPublishedBlogPosts()).slice(0, 6);
 
   if (recentBlogs.length === 0) {
-    return (
-      <p className="text-center text-subtext0 py-8">No blog posts yet.</p>
-    );
+    return <p className="text-center text-subtext0 py-8">No blog posts yet.</p>;
   }
 
   return <BlogList posts={recentBlogs} isUserAdmin={isUserAdmin} />;
