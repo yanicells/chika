@@ -9,7 +9,6 @@ import { getCurrentSession } from "../auth-helper";
 
 const NOTE_TAG = "public-notes";
 const BLOG_TAG = "blogs";
-const REVALIDATE_OPTIONS = { expire: 0 } as const;
 
 /**
  * Add a reaction to a note
@@ -31,9 +30,10 @@ export async function addNoteReaction(noteId: string) {
       createdAt: new Date(),
     });
 
-    revalidateTag(NOTE_TAG, REVALIDATE_OPTIONS);
+    revalidateTag(NOTE_TAG);
     revalidatePath(`/notes/${noteId}`);
     revalidatePath("/");
+    revalidatePath("/notes");
 
     return { success: true, reactionId };
   } catch (error) {
@@ -64,9 +64,10 @@ export async function removeNoteReaction(noteId: string) {
 
     await db.delete(reactions).where(eq(reactions.id, reaction.id));
 
-    revalidateTag(NOTE_TAG, REVALIDATE_OPTIONS);
+    revalidateTag(NOTE_TAG);
     revalidatePath(`/notes/${noteId}`);
     revalidatePath("/");
+    revalidatePath("/notes");
 
     return { success: true };
   } catch (error) {
@@ -94,8 +95,11 @@ export async function addCommentReaction(commentId: string) {
       createdAt: new Date(),
     });
 
-    revalidateTag(NOTE_TAG, REVALIDATE_OPTIONS);
+    revalidateTag(NOTE_TAG);
+    revalidateTag(BLOG_TAG);
     revalidatePath("/");
+    revalidatePath("/notes");
+    revalidatePath("/blog");
 
     return { success: true, reactionId };
   } catch (error) {
@@ -126,8 +130,11 @@ export async function removeCommentReaction(commentId: string) {
 
     await db.delete(reactions).where(eq(reactions.id, reaction.id));
 
-    revalidateTag(NOTE_TAG, REVALIDATE_OPTIONS);
+    revalidateTag(NOTE_TAG);
+    revalidateTag(BLOG_TAG);
     revalidatePath("/");
+    revalidatePath("/notes");
+    revalidatePath("/blog");
 
     return { success: true };
   } catch (error) {
@@ -155,7 +162,9 @@ export async function addBlogPostReaction(blogPostId: string) {
       createdAt: new Date(),
     });
 
-    revalidateTag(BLOG_TAG, REVALIDATE_OPTIONS);
+    revalidateTag(BLOG_TAG);
+    revalidatePath("/");
+    revalidatePath("/blog");
     revalidatePath(`/blog/${blogPostId}`);
 
     return { success: true, reactionId };
@@ -187,7 +196,9 @@ export async function removeBlogPostReaction(blogPostId: string) {
 
     await db.delete(reactions).where(eq(reactions.id, reaction.id));
 
-    revalidateTag(BLOG_TAG, REVALIDATE_OPTIONS);
+    revalidateTag(BLOG_TAG);
+    revalidatePath("/");
+    revalidatePath("/blog");
     revalidatePath(`/blog/${blogPostId}`);
 
     return { success: true };
@@ -196,3 +207,4 @@ export async function removeBlogPostReaction(blogPostId: string) {
     return { success: false, error: "Failed to remove reaction" };
   }
 }
+
