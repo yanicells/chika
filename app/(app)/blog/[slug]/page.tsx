@@ -18,7 +18,7 @@ export default async function BlogPostPage({
   const { slug } = await params;
 
   return (
-    <div className="max-w-[85rem] mx-auto px-4 lg:px-8">
+    <div className="max-w-5xl mx-auto px-4 lg:px-8">
       <div className="pt-12 pb-8">
         <BackButton></BackButton>
 

@@ -55,7 +55,7 @@ export default function BlogDetail({
         <ImageDialog
           src={post.coverImageUrl}
           alt={post.title}
-          className="w-full h-64 object-cover rounded-lg mb-6 border border-overlay0"
+          className="w-full h-96 object-cover rounded-lg mb-6 border border-overlay0"
         />
       )}
 

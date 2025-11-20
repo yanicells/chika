@@ -113,7 +113,7 @@ export default function NoteDetail({
             <ImageDialog
               src={note.imageUrl}
               alt={note.title || "Note image"}
-              className="w-full max-h-96 object-cover rounded-lg"
+              className="w-full max-h-[32rem] object-cover rounded-lg"
             />
           </div>
         )}
