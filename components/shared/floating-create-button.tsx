@@ -24,13 +24,13 @@ export default function FloatingCreateButton() {
               size="lg"
               className="rounded-full w-14 h-14 sm:w-16 sm:h-16 shadow-lg hover:shadow-xl transition-shadow flex items-center justify-center"
             >
-              <span className="text-2xl sm:text-3xl font-bold leading-none">+</span>
+              <span className="text-xl sm:text-2xl font-bold leading-none">+</span>
             </Button>
           </Link>
         </TooltipTrigger>
         <TooltipContent 
           side="left" 
-          className="bg-surface0 text-text border-2 border-overlay0 px-4 py-2 text-base sm:text-lg font-medium"
+          className="bg-surface0 text-text border-2 border-overlay0 px-4 py-2 text-base sm:text-md font-medium"
         >
           Send Note
         </TooltipContent>
