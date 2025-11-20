@@ -65,8 +65,8 @@ export async function createBlogPost(data: {
       publishedAt: data.isPublished ? now : null,
     });
 
-    revalidateTag(BLOG_TAG, 'default');
-    revalidateTag(WORD_CLOUD_TAG, 'default');
+    revalidateTag(BLOG_TAG, "default");
+    revalidateTag(WORD_CLOUD_TAG, "default");
     revalidatePath("/");
     revalidatePath("/blog");
     revalidatePath("/admin/blog");
@@ -123,9 +123,9 @@ export async function updateBlogPost(
 
     await db.update(blogPosts).set(updateData).where(eq(blogPosts.id, postId));
 
-    revalidateTag(BLOG_TAG, 'default');
+    revalidateTag(BLOG_TAG, "default");
     if (data.content || data.title || data.excerpt) {
-      revalidateTag(WORD_CLOUD_TAG, 'default');
+      revalidateTag(WORD_CLOUD_TAG, "default");
     }
     revalidatePath("/");
     revalidatePath("/blog");
@@ -154,8 +154,8 @@ export async function deleteBlogPost(postId: string) {
       })
       .where(eq(blogPosts.id, postId));
 
-    revalidateTag(BLOG_TAG, 'default');
-    revalidateTag(WORD_CLOUD_TAG, 'default');
+    revalidateTag(BLOG_TAG, "default");
+    revalidateTag(WORD_CLOUD_TAG, "default");
     revalidatePath("/");
     revalidatePath("/blog");
     revalidatePath("/admin/blog");
@@ -182,7 +182,7 @@ export async function togglePinBlogPost(postId: string, isPinned: boolean) {
       })
       .where(eq(blogPosts.id, postId));
 
-    revalidateTag(BLOG_TAG, 'default');
+    revalidateTag(BLOG_TAG, "default");
     revalidatePath("/");
     revalidatePath("/blog");
     revalidatePath("/admin/blog");
@@ -221,9 +221,9 @@ export async function togglePublishBlogPost(
 
     await db.update(blogPosts).set(updateData).where(eq(blogPosts.id, postId));
 
-    revalidateTag(BLOG_TAG, 'default');
+    revalidateTag(BLOG_TAG, "default");
     if (isPublished) {
-      revalidateTag(WORD_CLOUD_TAG, 'default');
+      revalidateTag(WORD_CLOUD_TAG, "default");
     }
     revalidatePath("/");
     revalidatePath("/blog");

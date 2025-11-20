@@ -30,7 +30,7 @@ export async function addNoteReaction(noteId: string) {
       createdAt: new Date(),
     });
 
-    revalidateTag(NOTE_TAG, 'default');
+    revalidateTag(NOTE_TAG, "default");
     revalidatePath(`/notes/${noteId}`);
     revalidatePath("/");
     revalidatePath("/notes");
@@ -64,7 +64,7 @@ export async function removeNoteReaction(noteId: string) {
 
     await db.delete(reactions).where(eq(reactions.id, reaction.id));
 
-    revalidateTag(NOTE_TAG, 'default');
+    revalidateTag(NOTE_TAG, "default");
     revalidatePath(`/notes/${noteId}`);
     revalidatePath("/");
     revalidatePath("/notes");
@@ -95,8 +95,8 @@ export async function addCommentReaction(commentId: string) {
       createdAt: new Date(),
     });
 
-    revalidateTag(NOTE_TAG, 'default');
-    revalidateTag(BLOG_TAG, 'default');
+    revalidateTag(NOTE_TAG, "default");
+    revalidateTag(BLOG_TAG, "default");
     revalidatePath("/");
     revalidatePath("/notes");
     revalidatePath("/blog");
@@ -130,8 +130,8 @@ export async function removeCommentReaction(commentId: string) {
 
     await db.delete(reactions).where(eq(reactions.id, reaction.id));
 
-    revalidateTag(NOTE_TAG, 'default');
-    revalidateTag(BLOG_TAG, 'default');
+    revalidateTag(NOTE_TAG, "default");
+    revalidateTag(BLOG_TAG, "default");
     revalidatePath("/");
     revalidatePath("/notes");
     revalidatePath("/blog");
@@ -162,7 +162,7 @@ export async function addBlogPostReaction(blogPostId: string) {
       createdAt: new Date(),
     });
 
-    revalidateTag(BLOG_TAG, 'default');
+    revalidateTag(BLOG_TAG, "default");
     revalidatePath("/");
     revalidatePath("/blog");
     revalidatePath(`/blog/${blogPostId}`);
@@ -196,7 +196,7 @@ export async function removeBlogPostReaction(blogPostId: string) {
 
     await db.delete(reactions).where(eq(reactions.id, reaction.id));
 
-    revalidateTag(BLOG_TAG, 'default');
+    revalidateTag(BLOG_TAG, "default");
     revalidatePath("/");
     revalidatePath("/blog");
     revalidatePath(`/blog/${blogPostId}`);
@@ -207,4 +207,3 @@ export async function removeBlogPostReaction(blogPostId: string) {
     return { success: false, error: "Failed to remove reaction" };
   }
 }
-
