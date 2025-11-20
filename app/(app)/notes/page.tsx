@@ -28,7 +28,7 @@ export default async function NotesPage({ searchParams }: NotesPageProps) {
         {/* Page Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-text mb-2">Notes</h1>
-          <p className="text-lg text-subtext1">Chika's people have sent</p>
+          <p className="text-lg text-subtext1">Chika&apos;s people have sent</p>
         </div>
 
         {/* Notes Grid with Filters */}
