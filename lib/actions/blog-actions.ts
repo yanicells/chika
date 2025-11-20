@@ -4,9 +4,13 @@ import { db } from "../../db/drizzle";
 import { blogPosts, NewBlogPost } from "../../db/schema";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { requireAdmin } from "../auth-helper";
 import { slugExists } from "@/lib/queries/blog";
+
+const BLOG_TAG = "blogs";
+const WORD_CLOUD_TAG = "word-cloud";
+const REVALIDATE_OPTIONS = { expire: 0 } as const;
 
 /**
  * Generate a URL-friendly slug from title
@@ -62,6 +66,8 @@ export async function createBlogPost(data: {
       publishedAt: data.isPublished ? now : null,
     });
 
+    revalidateTag(BLOG_TAG, REVALIDATE_OPTIONS);
+    revalidateTag(WORD_CLOUD_TAG, REVALIDATE_OPTIONS);
     revalidatePath("/blog");
     revalidatePath("/admin/blog");
 
@@ -117,6 +123,10 @@ export async function updateBlogPost(
 
     await db.update(blogPosts).set(updateData).where(eq(blogPosts.id, postId));
 
+    revalidateTag(BLOG_TAG, REVALIDATE_OPTIONS);
+    if (data.content || data.title || data.excerpt) {
+      revalidateTag(WORD_CLOUD_TAG, REVALIDATE_OPTIONS);
+    }
     revalidatePath("/blog");
     revalidatePath("/admin/blog");
     revalidatePath(`/blog/${updateData.slug || ""}`);
@@ -143,6 +153,8 @@ export async function deleteBlogPost(postId: string) {
       })
       .where(eq(blogPosts.id, postId));
 
+    revalidateTag(BLOG_TAG, REVALIDATE_OPTIONS);
+    revalidateTag(WORD_CLOUD_TAG, REVALIDATE_OPTIONS);
     revalidatePath("/blog");
     revalidatePath("/admin/blog");
 
@@ -168,6 +180,7 @@ export async function togglePinBlogPost(postId: string, isPinned: boolean) {
       })
       .where(eq(blogPosts.id, postId));
 
+    revalidateTag(BLOG_TAG, REVALIDATE_OPTIONS);
     revalidatePath("/blog");
     revalidatePath("/admin/blog");
 
@@ -205,6 +218,10 @@ export async function togglePublishBlogPost(
 
     await db.update(blogPosts).set(updateData).where(eq(blogPosts.id, postId));
 
+    revalidateTag(BLOG_TAG, REVALIDATE_OPTIONS);
+    if (isPublished) {
+      revalidateTag(WORD_CLOUD_TAG, REVALIDATE_OPTIONS);
+    }
     revalidatePath("/blog");
     revalidatePath("/admin/blog");
 

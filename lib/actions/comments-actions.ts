@@ -4,8 +4,13 @@ import { db } from "../../db/drizzle";
 import { comments } from "../../db/schema";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { getCurrentSession } from "../auth-helper";
+
+const NOTE_TAG = "public-notes";
+const BLOG_TAG = "blogs";
+const WORD_CLOUD_TAG = "word-cloud";
+const REVALIDATE_OPTIONS = { expire: 0 } as const;
 
 /**
  * Create a comment on a note
@@ -39,6 +44,8 @@ export async function createNoteComment(data: {
       createdAt: new Date(),
     });
 
+    revalidateTag(NOTE_TAG, REVALIDATE_OPTIONS);
+    revalidateTag(WORD_CLOUD_TAG, REVALIDATE_OPTIONS);
     revalidatePath(`/notes/${data.noteId}`);
     revalidatePath("/");
 
@@ -81,6 +88,8 @@ export async function createBlogComment(data: {
       createdAt: new Date(),
     });
 
+    revalidateTag(BLOG_TAG, REVALIDATE_OPTIONS);
+    revalidateTag(WORD_CLOUD_TAG, REVALIDATE_OPTIONS);
     revalidatePath(`/blog/${data.blogPostId}`);
 
     return { success: true, commentId };
@@ -108,6 +117,9 @@ export async function updateComment(
 
     await db.update(comments).set(data).where(eq(comments.id, commentId));
 
+    revalidateTag(NOTE_TAG, REVALIDATE_OPTIONS);
+    revalidateTag(BLOG_TAG, REVALIDATE_OPTIONS);
+    revalidateTag(WORD_CLOUD_TAG, REVALIDATE_OPTIONS);
     revalidatePath("/");
 
     return { success: true };
@@ -132,6 +144,9 @@ export async function deleteComment(commentId: string) {
       .set({ isDeleted: true })
       .where(eq(comments.id, commentId));
 
+    revalidateTag(NOTE_TAG, REVALIDATE_OPTIONS);
+    revalidateTag(BLOG_TAG, REVALIDATE_OPTIONS);
+    revalidateTag(WORD_CLOUD_TAG, REVALIDATE_OPTIONS);
     revalidatePath("/");
 
     return { success: true };

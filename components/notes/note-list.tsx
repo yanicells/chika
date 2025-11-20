@@ -1,7 +1,5 @@
 import { Note } from "@/db/schema";
 import NoteCard from "./note-card";
-import Link from "next/link";
-import Button from "@/components/ui/button";
 
 interface NoteListProps {
   notes: (Note & {

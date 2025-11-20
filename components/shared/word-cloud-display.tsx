@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
 import dynamic from "next/dynamic";
 import type { Word, WordCloudProps } from "@isoterik/react-word-cloud";
+import type { WordCloudWord } from "@/lib/queries/wordcloud";
 
 // Dynamically import components
 const WordCloud = dynamic(
@@ -24,11 +24,8 @@ const AnimatedWordRenderer = dynamic(
 );
 
 interface WordCloudDisplayProps {
-  textContent: string;
+  words: WordCloudWord[];
 }
-
-// Common words to filter out (stopwords)
-const STOP_WORDS = new Set(["anonymous", "admin"]);
 
 // Array of fonts to rotate through
 const FONTS = [
@@ -45,36 +42,8 @@ const FONTS = [
  * Word Cloud Display Component
  * Shows frequently used words from notes, comments, and blog posts
  */
-export default function WordCloudDisplay({
-  textContent,
-}: WordCloudDisplayProps) {
-  const words = useMemo(() => {
-    if (!textContent) return [];
-
-    // Process text: lowercase, remove punctuation, split into words
-    const allWords = textContent
-      .toLowerCase()
-      .replace(/[^\w\s]/g, " ") // Remove punctuation
-      .split(/\s+/) // Split by whitespace
-      .filter((word) => {
-        // Filter: 4+ letters, not a stopword, not a number
-        return word.length >= 4 && !STOP_WORDS.has(word) && !/^\d+$/.test(word);
-      });
-
-    // Count word frequency
-    const wordCount = new Map<string, number>();
-    allWords.forEach((word) => {
-      wordCount.set(word, (wordCount.get(word) || 0) + 1);
-    });
-
-    // Convert to Word array format
-    const wordArray: Word[] = Array.from(wordCount.entries())
-      .map(([text, value]) => ({ text, value }))
-      .sort((a, b) => b.value - a.value) // Sort by frequency
-      .slice(0, 100); // Top 100 words
-
-    return wordArray;
-  }, [textContent]);
+export default function WordCloudDisplay({ words }: WordCloudDisplayProps) {
+  const preparedWords = (words as Word[]) || [];
 
   // Render word with animation
   const renderWord: WordCloudProps["renderWord"] = (data, ref) => (
@@ -90,7 +59,7 @@ export default function WordCloudDisplay({
     return FONTS[index % FONTS.length];
   };
 
-  if (words.length === 0) {
+  if (preparedWords.length === 0) {
     return (
       <div className="text-center py-12 text-subtext0">
         No words to display yet. Add some notes or blog posts!
@@ -102,7 +71,7 @@ export default function WordCloudDisplay({
     <div className="w-full rounded-lg p-4 overflow-hidden">
       <div className="w-full h-[500px] flex items-center justify-center">
         <WordCloud
-          words={words}
+          words={preparedWords}
           width={
             typeof window !== "undefined"
               ? Math.min(window.innerWidth - 100, 700)

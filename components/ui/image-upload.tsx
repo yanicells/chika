@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState, useRef } from "react";
@@ -59,7 +60,7 @@ export default function ImageUpload({
 
     try {
       await startUpload([file]);
-    } catch (err) {
+    } catch (_err) {
       setError("Upload failed. Please try again.");
       setIsUploading(false);
     }

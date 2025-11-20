@@ -3,13 +3,8 @@ import {
   text,
   timestamp,
   boolean,
-  integer,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
-import { isAdmin } from "@/lib/auth-helper";
-import { time } from "console";
-import { title } from "process";
-import { create } from "domain";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),

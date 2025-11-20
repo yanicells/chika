@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import Link from "next/link";
@@ -85,58 +86,58 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
           <div className="prose prose-invert max-w-none mb-4 line-clamp-3 text-subtext1">
             <ReactMarkdown
               components={{
-                p: ({ node, ...props }) => (
+                p: ({ node: _node, ...props }) => (
                   <p
                     className="text-subtext1 mb-1 leading-relaxed"
                     {...props}
                   />
                 ),
-                h1: ({ node, ...props }) => (
+                h1: ({ node: _node, ...props }) => (
                   <h1 className="text-lg font-bold text-text mb-1" {...props} />
                 ),
-                h2: ({ node, ...props }) => (
+                h2: ({ node: _node, ...props }) => (
                   <h2
                     className="text-base font-bold text-text mb-1"
                     {...props}
                   />
                 ),
-                h3: ({ node, ...props }) => (
+                h3: ({ node: _node, ...props }) => (
                   <h3 className="text-sm font-bold text-text mb-1" {...props} />
                 ),
-                ul: ({ node, ...props }) => (
+                ul: ({ node: _node, ...props }) => (
                   <ul
                     className="list-disc list-inside text-subtext1 mb-1 text-sm"
                     {...props}
                   />
                 ),
-                ol: ({ node, ...props }) => (
+                ol: ({ node: _node, ...props }) => (
                   <ol
                     className="list-decimal list-inside text-subtext1 mb-1 text-sm"
                     {...props}
                   />
                 ),
-                li: ({ node, ...props }) => (
+                li: ({ node: _node, ...props }) => (
                   <li className="text-subtext1 text-sm" {...props} />
                 ),
-                code: ({ node, ...props }) => (
+                code: ({ node: _node, ...props }) => (
                   <code
                     className="bg-surface0 text-pink px-1 py-0.5 rounded font-mono text-xs"
                     {...props}
                   />
                 ),
-                pre: ({ node, ...props }) => (
+                pre: ({ node: _node, ...props }) => (
                   <pre
                     className="bg-surface0 p-2 rounded mb-1 overflow-x-auto border border-overlay0 text-xs"
                     {...props}
                   />
                 ),
-                blockquote: ({ node, ...props }) => (
+                blockquote: ({ node: _node, ...props }) => (
                   <blockquote
                     className="border-l-2 border-blue pl-2 italic text-subtext1 my-1 text-sm"
                     {...props}
                   />
                 ),
-                a: ({ node, ...props }) => (
+                a: ({ node: _node, ...props }) => (
                   <a
                     className="text-blue hover:underline"
                     target="_blank"
@@ -144,10 +145,10 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
                     {...props}
                   />
                 ),
-                strong: ({ node, ...props }) => (
+                strong: ({ node: _node, ...props }) => (
                   <strong className="font-bold text-text" {...props} />
                 ),
-                em: ({ node, ...props }) => (
+                em: ({ node: _node, ...props }) => (
                   <em className="italic" {...props} />
                 ),
               }}

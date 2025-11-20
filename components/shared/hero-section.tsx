@@ -1,14 +1,25 @@
-"use client";
-
 import Link from "next/link";
+import { Suspense } from "react";
 import Button from "@/components/ui/button";
 import WordCloudDisplay from "./word-cloud-display";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getWordCloudData } from "@/lib/queries/wordcloud";
 
-interface HeroSectionProps {
-  textContent: string; // For word cloud
+async function WordCloudPanel() {
+  const wordData = await getWordCloudData();
+  return <WordCloudDisplay words={wordData} />;
 }
 
-export default function HeroSection({ textContent }: HeroSectionProps) {
+function WordCloudFallback() {
+  return (
+    <div className="rounded-lg border border-overlay0 bg-surface0/50 p-4">
+      <Skeleton className="h-[20px] w-32 mb-4" />
+      <Skeleton className="h-[500px] w-full rounded-md" />
+    </div>
+  );
+}
+
+export default function HeroSection() {
   return (
     <section className="py-12 px-4 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -63,9 +74,11 @@ export default function HeroSection({ textContent }: HeroSectionProps) {
 
           {/* Right Side - Word Cloud (2/3 on desktop) */}
           <div className="lg:col-span-8">
-            <div className="rounded-lg p-4">
-              <WordCloudDisplay textContent={textContent} />
-            </div>
+            <Suspense fallback={<WordCloudFallback />}>
+              <div className="rounded-lg p-4">
+                <WordCloudPanel />
+              </div>
+            </Suspense>
           </div>
         </div>
       </div>

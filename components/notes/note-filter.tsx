@@ -1,8 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import Badge from "@/components/ui/badge";
-
 export type FilterType = "all" | "admin" | "username" | "anonymous" | "pinned";
 
 interface NoteFilterProps {

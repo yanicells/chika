@@ -4,8 +4,12 @@ import { db } from "../../db/drizzle";
 import { reactions } from "../../db/schema";
 import { eq, and } from "drizzle-orm";
 import { nanoid } from "nanoid";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { getCurrentSession } from "../auth-helper";
+
+const NOTE_TAG = "public-notes";
+const BLOG_TAG = "blogs";
+const REVALIDATE_OPTIONS = { expire: 0 } as const;
 
 /**
  * Add a reaction to a note
@@ -27,6 +31,7 @@ export async function addNoteReaction(noteId: string) {
       createdAt: new Date(),
     });
 
+    revalidateTag(NOTE_TAG, REVALIDATE_OPTIONS);
     revalidatePath(`/notes/${noteId}`);
     revalidatePath("/");
 
@@ -59,6 +64,7 @@ export async function removeNoteReaction(noteId: string) {
 
     await db.delete(reactions).where(eq(reactions.id, reaction.id));
 
+    revalidateTag(NOTE_TAG, REVALIDATE_OPTIONS);
     revalidatePath(`/notes/${noteId}`);
     revalidatePath("/");
 
@@ -88,6 +94,7 @@ export async function addCommentReaction(commentId: string) {
       createdAt: new Date(),
     });
 
+    revalidateTag(NOTE_TAG, REVALIDATE_OPTIONS);
     revalidatePath("/");
 
     return { success: true, reactionId };
@@ -119,6 +126,7 @@ export async function removeCommentReaction(commentId: string) {
 
     await db.delete(reactions).where(eq(reactions.id, reaction.id));
 
+    revalidateTag(NOTE_TAG, REVALIDATE_OPTIONS);
     revalidatePath("/");
 
     return { success: true };
@@ -147,6 +155,7 @@ export async function addBlogPostReaction(blogPostId: string) {
       createdAt: new Date(),
     });
 
+    revalidateTag(BLOG_TAG, REVALIDATE_OPTIONS);
     revalidatePath(`/blog/${blogPostId}`);
 
     return { success: true, reactionId };
@@ -178,6 +187,7 @@ export async function removeBlogPostReaction(blogPostId: string) {
 
     await db.delete(reactions).where(eq(reactions.id, reaction.id));
 
+    revalidateTag(BLOG_TAG, REVALIDATE_OPTIONS);
     revalidatePath(`/blog/${blogPostId}`);
 
     return { success: true };

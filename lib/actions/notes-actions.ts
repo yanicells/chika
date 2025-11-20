@@ -4,8 +4,12 @@ import { db } from "../../db/drizzle";
 import { notes } from "../../db/schema";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { getCurrentSession } from "../auth-helper";
+
+const NOTE_TAG = "public-notes";
+const WORD_CLOUD_TAG = "word-cloud";
+const REVALIDATE_OPTIONS = { expire: 0 } as const;
 
 /**
  * Create a new note
@@ -40,6 +44,8 @@ export async function createNote(data: {
       updatedAt: new Date(),
     });
 
+    revalidateTag(NOTE_TAG, REVALIDATE_OPTIONS);
+    revalidateTag(WORD_CLOUD_TAG, REVALIDATE_OPTIONS);
     revalidatePath("/");
     revalidatePath("/admin");
 
@@ -78,6 +84,8 @@ export async function updateNote(
       })
       .where(eq(notes.id, noteId));
 
+    revalidateTag(NOTE_TAG, REVALIDATE_OPTIONS);
+    revalidateTag(WORD_CLOUD_TAG, REVALIDATE_OPTIONS);
     revalidatePath("/");
     revalidatePath("/admin");
     revalidatePath(`/notes/${noteId}`);
@@ -107,6 +115,8 @@ export async function deleteNote(noteId: string) {
       })
       .where(eq(notes.id, noteId));
 
+    revalidateTag(NOTE_TAG, REVALIDATE_OPTIONS);
+    revalidateTag(WORD_CLOUD_TAG, REVALIDATE_OPTIONS);
     revalidatePath("/");
     revalidatePath("/admin");
 
@@ -135,6 +145,7 @@ export async function togglePinNote(noteId: string, isPinned: boolean) {
       })
       .where(eq(notes.id, noteId));
 
+    revalidateTag(NOTE_TAG, REVALIDATE_OPTIONS);
     revalidatePath("/");
     revalidatePath("/admin");
 

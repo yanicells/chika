@@ -4,7 +4,6 @@ import NoteDetail from "@/components/notes/note-detail";
 import CommentList from "@/components/comments/comment-list";
 import CommentForm from "@/components/comments/comment-form";
 import { notFound } from "next/navigation";
-import Container from "@/components/shared/container";
 import { isAdmin } from "@/lib/auth-helper";
 import BackButton from "@/components/ui/back-button";
 

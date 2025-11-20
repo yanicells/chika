@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Button from "@/components/ui/button";
 
 export default function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
