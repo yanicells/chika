@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
+import Link from "next/link";
 import {
   Pagination,
   PaginationContent,
@@ -8,7 +8,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from '@/components/ui/pagination';
+} from "@/components/ui/pagination";
 
 interface BlogPaginationProps {
   currentPage: number;
@@ -31,8 +31,8 @@ export default function BlogPagination({
       range.push(i);
     }
 
-    if (currentPage - delta > 2) range.unshift('...');
-    if (currentPage + delta < totalPages - 1) range.push('...');
+    if (currentPage - delta > 2) range.unshift("...");
+    if (currentPage + delta < totalPages - 1) range.push("...");
 
     range.unshift(1);
     if (totalPages > 1) range.push(totalPages);
@@ -48,24 +48,28 @@ export default function BlogPagination({
         {/* Previous Button */}
         <PaginationItem>
           <PaginationPrevious
-            href={currentPage > 1 ? `/blog?page=${currentPage - 1}` : '#'}
-            className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
+            href={currentPage > 1 ? `/blog?page=${currentPage - 1}` : "#"}
+            size="default"
+            className={
+              currentPage === 1 ? "pointer-events-none opacity-50" : ""
+            }
           />
         </PaginationItem>
 
         {/* Page Numbers */}
         {pageNumbers.map((page, idx) => (
           <PaginationItem key={idx}>
-            {page === '...' ? (
+            {page === "..." ? (
               <span className="px-2 text-subtext0">•••</span>
             ) : (
               <PaginationLink
                 href={`/blog?page=${page}`}
                 isActive={page === currentPage}
+                size="default"
                 className={
                   page === currentPage
-                    ? 'bg-blue text-base border-blue'
-                    : 'text-text hover:text-blue'
+                    ? "bg-blue text-base border-blue"
+                    : "text-text hover:text-blue"
                 }
               >
                 {page}
@@ -78,10 +82,11 @@ export default function BlogPagination({
         <PaginationItem>
           <PaginationNext
             href={
-              currentPage < totalPages ? `/blog?page=${currentPage + 1}` : '#'
+              currentPage < totalPages ? `/blog?page=${currentPage + 1}` : "#"
             }
+            size="default"
             className={
-              currentPage === totalPages ? 'pointer-events-none opacity-50' : ''
+              currentPage === totalPages ? "pointer-events-none opacity-50" : ""
             }
           />
         </PaginationItem>
@@ -89,4 +94,3 @@ export default function BlogPagination({
     </Pagination>
   );
 }
-
