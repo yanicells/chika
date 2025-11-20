@@ -69,7 +69,8 @@ export default function NoteDetail({
                 Pinned
               </Badge>
             )}
-            {note.isAdmin && <AdminBadge />}
+            <div className="pt-2">{note.isAdmin && <AdminBadge />}</div>
+
             {note.isPrivate && (
               <Badge
                 variant="default"
