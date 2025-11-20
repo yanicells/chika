@@ -6,6 +6,10 @@ import Link from "next/link";
 import Button from "@/components/ui/button";
 import Card from "@/components/ui/card";
 
+// Force dynamic rendering for admin pages
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function AdminDashboard() {
   const session = await requireAdmin();
   const notes = await getAllNotes();

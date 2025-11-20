@@ -1,10 +1,19 @@
 "use client";
 
 import { signInSocial } from "@/lib/actions/auth-actions";
+import { useRouter } from "next/navigation";
 
 export function LoginForm() {
+  const router = useRouter();
+
   const handleGithubLogin = async () => {
-    await signInSocial("github");
+    try {
+      await signInSocial("github");
+      // After successful redirect back, refresh to get new session
+      router.refresh();
+    } catch (error) {
+      console.error("Login error:", error);
+    }
   };
 
   return (

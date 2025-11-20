@@ -8,6 +8,10 @@ import Container from "@/components/shared/container";
 import Link from "next/link";
 import { isAdmin } from "@/lib/auth-helper";
 
+// Force dynamic rendering to prevent session cache issues
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function HomePage() {
   // Get text content for word cloud
   const textContent = await getAllTextContent();

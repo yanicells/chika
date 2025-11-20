@@ -4,6 +4,10 @@ import BlogList from '@/components/blog/blog-list';
 import BlogPagination from '@/components/blog/blog-pagination';
 import { isAdmin } from '@/lib/auth-helper';
 
+// Force dynamic rendering to prevent session cache issues
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 interface BlogPageProps {
   searchParams: Promise<{ page?: string }>;
 }

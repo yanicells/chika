@@ -1,10 +1,14 @@
-import { Suspense } from 'react';
-import Container from '@/components/shared/container';
-import { getPublicNotesPaginated } from '@/lib/queries/notes';
-import FilteredNoteList from '@/components/notes/filtered-note-list';
-import NotesPagination from '@/components/notes/notes-pagination';
-import { isAdmin } from '@/lib/auth-helper';
-import type { FilterType } from '@/components/notes/note-filter';
+import { Suspense } from "react";
+import Container from "@/components/shared/container";
+import { getPublicNotesPaginated } from "@/lib/queries/notes";
+import FilteredNoteList from "@/components/notes/filtered-note-list";
+import NotesPagination from "@/components/notes/notes-pagination";
+import { isAdmin } from "@/lib/auth-helper";
+import type { FilterType } from "@/components/notes/note-filter";
+
+// Force dynamic rendering to prevent caching issues with auth state
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 interface NotesPageProps {
   searchParams: Promise<{ page?: string; filter?: string }>;
@@ -16,10 +20,22 @@ export default async function NotesPage({ searchParams }: NotesPageProps) {
   const activeFilter = (filter as FilterType) || "all";
 
   // Validate filter
-  const validFilters: FilterType[] = ["all", "admin", "username", "anonymous", "pinned"];
-  const validatedFilter = validFilters.includes(activeFilter) ? activeFilter : "all";
+  const validFilters: FilterType[] = [
+    "all",
+    "admin",
+    "username",
+    "anonymous",
+    "pinned",
+  ];
+  const validatedFilter = validFilters.includes(activeFilter)
+    ? activeFilter
+    : "all";
 
-  const { notes, totalPages } = await getPublicNotesPaginated(currentPage, 9, validatedFilter);
+  const { notes, totalPages } = await getPublicNotesPaginated(
+    currentPage,
+    9,
+    validatedFilter
+  );
   const adminStatus = await isAdmin();
 
   return (
@@ -27,23 +43,28 @@ export default async function NotesPage({ searchParams }: NotesPageProps) {
       <div className="pt-12 pb-8">
         {/* Page Header */}
 
-
         {/* Notes Grid with Filters */}
         {notes.length > 0 || validatedFilter !== "all" ? (
           <>
-            <Suspense fallback={<div className="text-center py-12 text-subtext0">Loading notes...</div>}>
-              <FilteredNoteList 
-                notes={notes} 
+            <Suspense
+              fallback={
+                <div className="text-center py-12 text-subtext0">
+                  Loading notes...
+                </div>
+              }
+            >
+              <FilteredNoteList
+                notes={notes}
                 isUserAdmin={adminStatus}
                 initialFilter={validatedFilter}
               />
             </Suspense>
-            
+
             {/* Pagination */}
             {totalPages > 0 && (
               <div className="mt-12 flex justify-center">
-                <NotesPagination 
-                  currentPage={currentPage} 
+                <NotesPagination
+                  currentPage={currentPage}
                   totalPages={totalPages}
                   filter={validatedFilter}
                 />

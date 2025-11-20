@@ -25,11 +25,13 @@ export default function AdminNav() {
 
   const handleLogout = async () => {
     try {
+      // signOut now handles redirect and cache revalidation
       await signOut();
-      router.push("/");
-      router.refresh();
     } catch (error) {
       console.error("Logout error:", error);
+      // Fallback: force navigation and refresh if signOut fails
+      router.push("/");
+      router.refresh();
     }
   };
 
