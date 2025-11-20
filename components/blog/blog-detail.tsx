@@ -27,9 +27,8 @@ export default function BlogDetail({
 
   return (
     <Card
-      className="max-w-[85rem] mx-auto border-l-8 border-t-4 relative transition-shadow duration-200"
+      className="max-w-[85rem] mx-auto border-t-4 relative transition-shadow duration-200"
       style={{
-        borderLeftColor: backgroundColor,
         borderTopColor: backgroundColor,
         backgroundColor: `${backgroundColor}20`,
       }}

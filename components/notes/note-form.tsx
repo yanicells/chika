@@ -11,6 +11,7 @@ import { createNote } from "@/lib/actions/notes-actions";
 import Container from "@/components/shared/container";
 import ImageUpload from "../ui/image-upload";
 import CatppuccinColorPicker from "../ui/catppuccin-color-picker";
+import BackButtonExtended from "../ui/back-button";
 
 export default function NoteForm() {
   const router = useRouter();
@@ -76,6 +77,7 @@ export default function NoteForm() {
 
   return (
     <Container className="mt-12 mb-16">
+      <BackButtonExtended />
       <Card>
         <h2 className="text-2xl font-bold text-text mb-4">Create New Note</h2>
 

@@ -68,15 +68,7 @@ export default function CommentCard({
     >
       <div className="space-y-2">
         <div className="flex items-start justify-between gap-2">
-          <div className="flex flex-wrap items-center gap-2">
-            {comment.isAdmin && <AdminBadge />}
-            {comment.isPrivate && (
-              <Badge variant="default" size="sm">
-                🔒 Private
-              </Badge>
-            )}
-            <span className="text-sm font-medium text-text">{displayName}</span>
-          </div>
+          <span className="text-sm font-medium text-text">{displayName}</span>
           <span className="text-xs text-subtext0 font-mono">
             {new Date(comment.createdAt).toLocaleDateString()}
           </span>
@@ -87,31 +79,52 @@ export default function CommentCard({
           <ReactMarkdown
             components={{
               h1: ({ node, ...props }) => (
-                <h1 className="text-2xl font-bold text-text mt-4 mb-2" {...props} />
+                <h1
+                  className="text-2xl font-bold text-text mt-4 mb-2"
+                  {...props}
+                />
               ),
               h2: ({ node, ...props }) => (
-                <h2 className="text-xl font-bold text-text mt-3 mb-2" {...props} />
+                <h2
+                  className="text-xl font-bold text-text mt-3 mb-2"
+                  {...props}
+                />
               ),
               h3: ({ node, ...props }) => (
-                <h3 className="text-lg font-bold text-text mt-2 mb-1" {...props} />
+                <h3
+                  className="text-lg font-bold text-text mt-2 mb-1"
+                  {...props}
+                />
               ),
               p: ({ node, ...props }) => (
                 <p className="text-subtext1 mb-2 leading-relaxed" {...props} />
               ),
               ul: ({ node, ...props }) => (
-                <ul className="list-disc list-inside text-subtext1 mb-2 space-y-1" {...props} />
+                <ul
+                  className="list-disc list-inside text-subtext1 mb-2 space-y-1"
+                  {...props}
+                />
               ),
               ol: ({ node, ...props }) => (
-                <ol className="list-decimal list-inside text-subtext1 mb-2 space-y-1" {...props} />
+                <ol
+                  className="list-decimal list-inside text-subtext1 mb-2 space-y-1"
+                  {...props}
+                />
               ),
               li: ({ node, ...props }) => (
                 <li className="text-subtext1" {...props} />
               ),
               code: ({ node, ...props }) => (
-                <code className="bg-surface0 text-pink px-2 py-1 rounded font-mono text-xs" {...props} />
+                <code
+                  className="bg-surface0 text-pink px-2 py-1 rounded font-mono text-xs"
+                  {...props}
+                />
               ),
               pre: ({ node, ...props }) => (
-                <pre className="bg-surface0 p-3 rounded-lg mb-2 overflow-x-auto border border-overlay0 text-xs" {...props} />
+                <pre
+                  className="bg-surface0 p-3 rounded-lg mb-2 overflow-x-auto border border-overlay0 text-xs"
+                  {...props}
+                />
               ),
               blockquote: ({ node, ...props }) => (
                 <blockquote
@@ -120,7 +133,12 @@ export default function CommentCard({
                 />
               ),
               a: ({ node, ...props }) => (
-                <a className="text-blue hover:underline" target="_blank" rel="noopener noreferrer" {...props} />
+                <a
+                  className="text-blue hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  {...props}
+                />
               ),
             }}
           >
@@ -152,17 +170,46 @@ export default function CommentCard({
             )}
           </div>
 
-          {isUserAdmin && (
-            <Button
-              variant="danger"
-              size="sm"
-              onClick={handleDelete}
-              disabled={isDeleting}
-              isLoading={isDeleting}
-            >
-              Delete
-            </Button>
-          )}
+          <div className="flex items-center gap-2">
+            {comment.isAdmin && (
+              <div className="pt-2">
+                <AdminBadge />
+              </div>
+            )}
+            {comment.isPrivate && (
+              <Badge
+                variant="default"
+                size="sm"
+                className="flex items-center gap-1"
+              >
+                <svg
+                  className="w-3 h-3"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                  />
+                </svg>
+                Private
+              </Badge>
+            )}
+            {isUserAdmin && (
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={handleDelete}
+                disabled={isDeleting}
+                isLoading={isDeleting}
+              >
+                Delete
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </Card>

@@ -11,7 +11,7 @@ export default function BackButtonExtended() {
     <Button
       variant="ghost"
       size="md"
-      className="my-4 px-4 py-2 text-subtext1 hover:bg-surface0 hover:text-text focus:ring-overlay0 hover:underline"
+      className="mb-4 px-4 pb-2 text-subtext1 hover:bg-surface0 hover:text-text focus:ring-overlay0 hover:underline"
       onClick={() => router.back()}
       aria-label="Go back to the previous page"
     >

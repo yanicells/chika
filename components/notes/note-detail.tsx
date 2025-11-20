@@ -46,14 +46,48 @@ export default function NoteDetail({
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2 mb-4">
             {note.isPinned && (
-              <Badge variant="warning" size="sm">
-                📌 Pinned
+              <Badge
+                variant="warning"
+                size="sm"
+                className="flex items-center gap-1"
+              >
+                <svg
+                  className="w-3 h-3"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+                  />
+                </svg>
+                Pinned
               </Badge>
             )}
             {note.isAdmin && <AdminBadge />}
             {note.isPrivate && (
-              <Badge variant="default" size="sm">
-                🔒 Private
+              <Badge
+                variant="default"
+                size="sm"
+                className="flex items-center gap-1"
+              >
+                <svg
+                  className="w-3 h-3"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                  />
+                </svg>
+                Private
               </Badge>
             )}
           </div>
@@ -83,35 +117,60 @@ export default function NoteDetail({
         )}
 
         {/* Markdown Content */}
-        <div className={`prose prose-invert max-w-none ${!note.title && !note.imageUrl ? "-mt-6" : ""}`}>
+        <div
+          className={`prose prose-invert max-w-none ${
+            !note.title && !note.imageUrl ? "-mt-6" : ""
+          }`}
+        >
           <ReactMarkdown
             components={{
               h1: ({ node, ...props }) => (
-                <h1 className="text-3xl font-bold text-text mt-6 mb-4" {...props} />
+                <h1
+                  className="text-3xl font-bold text-text mt-6 mb-4"
+                  {...props}
+                />
               ),
               h2: ({ node, ...props }) => (
-                <h2 className="text-2xl font-bold text-text mt-5 mb-3" {...props} />
+                <h2
+                  className="text-2xl font-bold text-text mt-5 mb-3"
+                  {...props}
+                />
               ),
               h3: ({ node, ...props }) => (
-                <h3 className="text-xl font-bold text-text mt-4 mb-2" {...props} />
+                <h3
+                  className="text-xl font-bold text-text mt-4 mb-2"
+                  {...props}
+                />
               ),
               p: ({ node, ...props }) => (
                 <p className="text-subtext1 mb-4 leading-relaxed" {...props} />
               ),
               ul: ({ node, ...props }) => (
-                <ul className="list-disc list-inside text-subtext1 mb-4 space-y-1" {...props} />
+                <ul
+                  className="list-disc list-inside text-subtext1 mb-4 space-y-1"
+                  {...props}
+                />
               ),
               ol: ({ node, ...props }) => (
-                <ol className="list-decimal list-inside text-subtext1 mb-4 space-y-1" {...props} />
+                <ol
+                  className="list-decimal list-inside text-subtext1 mb-4 space-y-1"
+                  {...props}
+                />
               ),
               li: ({ node, ...props }) => (
                 <li className="text-subtext1" {...props} />
               ),
               code: ({ node, ...props }) => (
-                <code className="bg-surface0 text-pink px-2 py-1 rounded font-mono text-sm" {...props} />
+                <code
+                  className="bg-surface0 text-pink px-2 py-1 rounded font-mono text-sm"
+                  {...props}
+                />
               ),
               pre: ({ node, ...props }) => (
-                <pre className="bg-surface0 p-4 rounded-lg mb-4 overflow-x-auto border border-overlay0" {...props} />
+                <pre
+                  className="bg-surface0 p-4 rounded-lg mb-4 overflow-x-auto border border-overlay0"
+                  {...props}
+                />
               ),
               blockquote: ({ node, ...props }) => (
                 <blockquote
@@ -120,7 +179,12 @@ export default function NoteDetail({
                 />
               ),
               a: ({ node, ...props }) => (
-                <a className="text-blue hover:underline" target="_blank" rel="noopener noreferrer" {...props} />
+                <a
+                  className="text-blue hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  {...props}
+                />
               ),
             }}
           >

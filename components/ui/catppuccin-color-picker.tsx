@@ -34,13 +34,13 @@ export default function CatppuccinColorPicker({
       <label className="block mb-2 text-sm font-medium text-text">
         {label}
       </label>
-      <div className="flex gap-4">
+      <div className="flex flex-wrap gap-2">
         {CATPPUCCIN_COLORS.map((color) => (
           <button
             key={color.value}
             type="button"
             onClick={() => onChange(color.value)}
-            className={`w-10 h-10 rounded-full border-2 transition-all hover:scale-110 ${
+            className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 transition-all hover:scale-110 ${
               value === color.value
                 ? "border-blue ring-2 ring-blue ring-offset-2 ring-offset-base"
                 : "border-overlay0"

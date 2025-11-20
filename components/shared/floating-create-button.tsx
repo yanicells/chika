@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import Button from '@/components/ui/button';
+import Link from "next/link";
+import Button from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
+} from "@/components/ui/tooltip";
 
 export default function FloatingCreateButton() {
   return (
@@ -24,12 +24,24 @@ export default function FloatingCreateButton() {
               size="lg"
               className="rounded-full w-14 h-14 sm:w-16 sm:h-16 shadow-lg hover:shadow-xl transition-shadow flex items-center justify-center"
             >
-              <span className="text-xl sm:text-2xl font-bold leading-none">+</span>
+              <svg
+                className="w-12 h-12 sm:w-16 sm:h-16"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
             </Button>
           </Link>
         </TooltipTrigger>
-        <TooltipContent 
-          side="left" 
+        <TooltipContent
+          side="left"
           className="bg-surface0 text-text border-2 border-overlay0 px-4 py-2 text-base sm:text-md font-medium"
         >
           Send Note
@@ -38,4 +50,3 @@ export default function FloatingCreateButton() {
     </TooltipProvider>
   );
 }
-
