@@ -1,6 +1,6 @@
 import { db } from "../../db/drizzle";
 import { blogPosts, reactions } from "../../db/schema";
-import { eq, and, desc, sql } from "drizzle-orm";
+import { eq, and, desc, sql, count } from "drizzle-orm";
 
 /**
  * Get all published blog posts (public)
@@ -157,4 +157,52 @@ export async function slugExists(slug: string, excludeId?: string) {
     .limit(1);
 
   return result.length > 0;
+}
+
+/**
+ * Get published blog posts with pagination
+ */
+export async function getPublishedBlogPostsPaginated(page: number = 1, limit: number = 6) {
+  const offset = (page - 1) * limit;
+
+  const postsList = await db
+    .select()
+    .from(blogPosts)
+    .where(
+      and(
+        eq(blogPosts.isDeleted, false),
+        eq(blogPosts.isPublished, true)
+      )
+    )
+    .orderBy(desc(blogPosts.isPinned), desc(blogPosts.publishedAt))
+    .limit(limit)
+    .offset(offset);
+
+  // Get reactions for each post
+  const postsWithReactions = await Promise.all(
+    postsList.map((post) => getBlogPostWithReactionsById(post.id))
+  );
+
+  const filteredPosts = postsWithReactions.filter((post) => post !== null);
+
+  // Get total count
+  const totalResult = await db
+    .select({ count: count() })
+    .from(blogPosts)
+    .where(
+      and(
+        eq(blogPosts.isDeleted, false),
+        eq(blogPosts.isPublished, true)
+      )
+    );
+
+  const total = totalResult[0]?.count || 0;
+  const totalPages = Math.ceil(total / limit);
+
+  return {
+    posts: filteredPosts,
+    currentPage: page,
+    totalPages,
+    total,
+  };
 }

@@ -6,7 +6,6 @@ import NoteList from "@/components/notes/note-list";
 import BlogList from "@/components/blog/blog-list";
 import Container from "@/components/shared/container";
 import Link from "next/link";
-import Button from "@/components/ui/button";
 import { isAdmin } from "@/lib/auth-helper";
 
 export default async function HomePage() {
@@ -56,11 +55,6 @@ export default async function HomePage() {
                 Chika&apos;s people have sent
               </p>
             </div>
-            <Link href="/create">
-              <Button variant="primary" size="sm">
-                + Send Note
-              </Button>
-            </Link>
           </div>
 
           {displayNotes.length > 0 ? (

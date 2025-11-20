@@ -1,11 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Note } from "@/db/schema";
 import NoteCard from "./note-card";
 import { FilterType } from "./note-filter";
-import Link from "next/link";
-import Button from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,55 +20,33 @@ interface FilteredNoteListProps {
     };
   })[];
   isUserAdmin?: boolean;
+  initialFilter?: FilterType;
 }
 
 export default function FilteredNoteList({
   notes,
   isUserAdmin = false,
+  initialFilter = "all",
 }: FilteredNoteListProps) {
-  const [activeFilter, setActiveFilter] = useState<FilterType>("all");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const activeFilter = (searchParams.get("filter") as FilterType) || initialFilter || "all";
 
-  const filteredNotes = useMemo(() => {
-    switch (activeFilter) {
-      case "admin":
-        return notes.filter((note) => note.isAdmin);
-      case "username":
-        return notes.filter(
-          (note) => note.userName && note.userName.trim() !== ""
-        );
-      case "anonymous":
-        return notes.filter(
-          (note) => !note.userName || note.userName.trim() === ""
-        );
-      case "pinned":
-        return notes.filter((note) => note.isPinned);
-      default:
-        return notes;
+  const handleFilterChange = (filter: FilterType) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (filter === "all") {
+      params.delete("filter");
+    } else {
+      params.set("filter", filter);
     }
-  }, [notes, activeFilter]);
-
-  if (notes.length === 0) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-subtext0 text-lg">
-          No notes yet. Be the first to share!
-        </p>
-      </div>
-    );
-  }
+    // Reset to page 1 when filter changes
+    params.delete("page");
+    router.push(`/notes?${params.toString()}`);
+  };
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <Link href="/create">
-          <Button
-            variant="primary"
-            className="text-xs px-2 py-1 sm:px-3 sm:py-1.5 sm:text-sm"
-          >
-            + Send Note
-          </Button>
-        </Link>
-
+      <div className="flex items-center justify-end">
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <button
@@ -91,31 +67,31 @@ export default function FilteredNoteList({
             sideOffset={8}
           >
             <DropdownMenuItem
-              onSelect={() => setActiveFilter("all")}
+              onSelect={() => handleFilterChange("all")}
               className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
             >
               All Notes
             </DropdownMenuItem>
             <DropdownMenuItem
-              onSelect={() => setActiveFilter("pinned")}
+              onSelect={() => handleFilterChange("pinned")}
               className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
             >
               Pinned
             </DropdownMenuItem>
             <DropdownMenuItem
-              onSelect={() => setActiveFilter("admin")}
+              onSelect={() => handleFilterChange("admin")}
               className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
             >
               Yanicells
             </DropdownMenuItem>
             <DropdownMenuItem
-              onSelect={() => setActiveFilter("username")}
+              onSelect={() => handleFilterChange("username")}
               className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
             >
               Not Anonymous
             </DropdownMenuItem>
             <DropdownMenuItem
-              onSelect={() => setActiveFilter("anonymous")}
+              onSelect={() => handleFilterChange("anonymous")}
               className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
             >
               Anonymous
@@ -124,15 +100,17 @@ export default function FilteredNoteList({
         </DropdownMenu>
       </div>
 
-      {filteredNotes.length === 0 ? (
+      {notes.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-subtext0 text-lg">
-            No notes found with the selected filter.
+            {activeFilter === "all" 
+              ? "No notes yet. Be the first to share!"
+              : "No notes found with the selected filter."}
           </p>
         </div>
       ) : (
         <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-0">
-          {filteredNotes.map((note) => (
+          {notes.map((note) => (
             <div key={note.id} className="break-inside-avoid mb-6">
               <NoteCard note={note} isUserAdmin={isUserAdmin} />
             </div>

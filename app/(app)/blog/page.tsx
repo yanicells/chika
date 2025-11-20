@@ -1,32 +1,43 @@
-import { getPublishedBlogPosts } from "@/lib/queries/blog";
-import BlogList from "@/components/blog/blog-list";
-import Container from "@/components/shared/container";
-import { isAdmin } from "@/lib/auth-helper";
+import Container from '@/components/shared/container';
+import { getPublishedBlogPostsPaginated } from '@/lib/queries/blog';
+import BlogList from '@/components/blog/blog-list';
+import BlogPagination from '@/components/blog/blog-pagination';
+import { isAdmin } from '@/lib/auth-helper';
 
-export default async function BlogPage() {
-  const posts = await getPublishedBlogPosts();
+interface BlogPageProps {
+  searchParams: Promise<{ page?: string }>;
+}
+
+export default async function BlogPage({ searchParams }: BlogPageProps) {
+  const { page } = await searchParams;
+  const currentPage = Number(page) || 1;
+
+  const { posts, totalPages } = await getPublishedBlogPostsPaginated(currentPage, 6);
   const adminStatus = await isAdmin();
 
   return (
-    <div className="max-w-[85rem] mx-auto px-4 lg:px-8">
+    <Container>
       <div className="pt-12 pb-8">
         {/* Page Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-text mb-2">My Blog Posts</h1>
-          <p className="text-lg text-subtext1">
-            Thoughts, learnings, and updates
-          </p>
+          <p className="text-lg text-subtext1">Thoughts, learnings, and updates</p>
         </div>
 
+        {/* Blog Grid */}
         {posts.length > 0 ? (
-          <BlogList posts={posts} isUserAdmin={adminStatus} />
+          <>
+            <BlogList posts={posts} isUserAdmin={adminStatus} />
+            
+            {/* Pagination */}
+            <div className="mt-12 flex justify-center">
+              <BlogPagination currentPage={currentPage} totalPages={totalPages} />
+            </div>
+          </>
         ) : (
           <p className="text-center text-subtext0 py-8">No blog posts yet.</p>
         )}
       </div>
-
-      {/* Bottom Spacing */}
-      <div className="pb-32" />
-    </div>
+    </Container>
   );
 }

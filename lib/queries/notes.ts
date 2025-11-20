@@ -1,6 +1,6 @@
 import { db } from "../../db/drizzle";
 import { notes, reactions, comments } from "../../db/schema";
-import { and, desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, sql, count, or, isNull, isNotNull, ne } from "drizzle-orm";
 
 /**
  * Get all public notes (not deleted, not private)
@@ -129,4 +129,71 @@ export async function getPinnedNotes() {
       )
     )
     .orderBy(desc(notes.createdAt));
+}
+
+/**
+ * Get public notes with pagination and filtering
+ */
+export async function getPublicNotesPaginated(
+  page: number = 1,
+  limit: number = 9,
+  filter: "all" | "admin" | "username" | "anonymous" | "pinned" = "all"
+) {
+  const offset = (page - 1) * limit;
+
+  // Build base conditions
+  const baseConditions = and(
+    eq(notes.isDeleted, false),
+    eq(notes.isPrivate, false)
+  );
+
+  // Add filter conditions
+  let filterConditions = baseConditions;
+  if (filter === "admin") {
+    filterConditions = and(baseConditions, eq(notes.isAdmin, true));
+  } else if (filter === "pinned") {
+    filterConditions = and(baseConditions, eq(notes.isPinned, true));
+  } else if (filter === "username") {
+    filterConditions = and(
+      baseConditions,
+      isNotNull(notes.userName),
+      ne(notes.userName, "")
+    );
+  } else if (filter === "anonymous") {
+    filterConditions = and(
+      baseConditions,
+      or(isNull(notes.userName), eq(notes.userName, ""))
+    );
+  }
+
+  const notesList = await db
+    .select()
+    .from(notes)
+    .where(filterConditions)
+    .orderBy(desc(notes.isPinned), desc(notes.createdAt))
+    .limit(limit)
+    .offset(offset);
+
+  // Get reactions for each note
+  const notesWithReactions = await Promise.all(
+    notesList.map((note) => getNoteWithReactions(note.id))
+  );
+
+  const filteredNotes = notesWithReactions.filter((note) => note !== null);
+
+  // Get total count with same filter
+  const totalResult = await db
+    .select({ count: count() })
+    .from(notes)
+    .where(filterConditions);
+
+  const total = totalResult[0]?.count || 0;
+  const totalPages = Math.ceil(total / limit);
+
+  return {
+    notes: filteredNotes,
+    currentPage: page,
+    totalPages,
+    total,
+  };
 }

@@ -34,8 +34,8 @@ export default function HeroSection({ textContent }: HeroSectionProps) {
             <div className="flex flex-row flex-wrap gap-3 justify-center lg:justify-start">
               <Link href="/create" className="flex-shrink-0">
                 <Button
-                  variant="primary"
-                  className="text-xs px-2 py-1 sm:px-3 sm:py-1.5 md:text-md lg:text-lg"
+                  variant="ghost"
+                  className="text-xs px-2 py-1 sm:px-3 sm:py-1.5 md:text-md lg:text-lg bg-base text-subtext0 hover:text-text hover:bg-surface0 border border-overlay0"
                 >
                   + Send Note
                 </Button>
@@ -43,8 +43,8 @@ export default function HeroSection({ textContent }: HeroSectionProps) {
 
               <Link href="/notes" className="flex-shrink-0">
                 <Button
-                  variant="secondary"
-                  className="text-xs px-2 py-1 sm:px-3 sm:py-1.5 md:text-md lg:text-lg"
+                  variant="ghost"
+                  className="text-xs px-2 py-1 sm:px-3 sm:py-1.5 md:text-md lg:text-lg bg-base text-text hover:text-blue border border-overlay0 hover:border-blue"
                 >
                   Notes
                 </Button>
@@ -52,8 +52,8 @@ export default function HeroSection({ textContent }: HeroSectionProps) {
 
               <Link href="/blog" className="flex-shrink-0">
                 <Button
-                  variant="secondary"
-                  className="text-xs px-2 py-1 sm:px-3 sm:py-1.5 md:text-md lg:text-lg"
+                  variant="ghost"
+                  className="text-xs px-2 py-1 sm:px-3 sm:py-1.5 md:text-md lg:text-lg bg-base text-text hover:text-blue border border-overlay0 hover:border-blue"
                 >
                   Blog
                 </Button>

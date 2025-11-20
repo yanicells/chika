@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Home from "@/components/Home";
+import FloatingCreateButton from "@/components/shared/floating-create-button";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -30,6 +31,7 @@ export default function RootLayout({
       >
         <Home />
         {children}
+        <FloatingCreateButton />
       </body>
     </html>
   );

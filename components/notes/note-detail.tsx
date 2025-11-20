@@ -58,7 +58,11 @@ export default function NoteDetail({
           </div>
           {isUserAdmin && (
             <Link href={`/admin/notes/edit/${note.id}`}>
-              <Button variant="secondary" size="sm">
+              <Button 
+                variant="ghost" 
+                size="sm"
+                className="bg-base text-text hover:text-blue border border-overlay0 hover:border-blue"
+              >
                 Edit
               </Button>
             </Link>
