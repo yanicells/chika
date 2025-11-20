@@ -24,7 +24,7 @@ export default function FloatingCreateButton() {
               size="lg"
               className="rounded-full w-14 h-14 sm:w-16 sm:h-16 shadow-lg hover:shadow-xl transition-shadow flex items-center justify-center"
             >
-              <span className="text-4xl sm:text-5xl font-bold leading-none">+</span>
+              <span className="text-2xl sm:text-3xl font-bold leading-none">+</span>
             </Button>
           </Link>
         </TooltipTrigger>
