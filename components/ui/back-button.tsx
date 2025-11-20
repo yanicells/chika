@@ -1,10 +1,22 @@
-"use client"
+"use client";
 
-import Button from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import Button from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
-export default function BackButton() {
+export default function BackButtonExtended() {
   const router = useRouter();
 
-  return <Button className="my-4" onClick={() => router.back()}>Back</Button>;
+  return (
+    <Button
+      variant="ghost"
+      size="md"
+      className="my-4 px-4 py-2 text-subtext1 hover:bg-surface0 hover:text-text focus:ring-overlay0 hover:underline"
+      onClick={() => router.back()}
+      aria-label="Go back to the previous page"
+    >
+      <ArrowLeft className="h-5 w-5 mr-1" />
+      Back
+    </Button>
+  );
 }

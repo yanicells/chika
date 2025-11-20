@@ -6,6 +6,7 @@ import CommentForm from "@/components/comments/comment-form";
 import { notFound } from "next/navigation";
 import Container from "@/components/shared/container";
 import { isAdmin } from "@/lib/auth-helper";
+import BackButton from "@/components/ui/back-button";
 
 export default async function BlogPostPage({
   params,
@@ -26,6 +27,7 @@ export default async function BlogPostPage({
     <div className="max-w-[85rem] mx-auto px-4 lg:px-8">
       <div className="pt-12 pb-8">
         {/* Blog Post Detail */}
+        <BackButton></BackButton>
         <BlogDetail post={post} isUserAdmin={adminStatus} />
 
         {/* Comments Section - More spacing */}
