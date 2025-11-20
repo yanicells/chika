@@ -11,12 +11,7 @@ async function WordCloudPanel() {
 }
 
 function WordCloudFallback() {
-  return (
-    <div className="rounded-lg border border-overlay0 bg-surface0/50 p-4">
-      <Skeleton className="h-[20px] w-32 mb-4" />
-      <Skeleton className="h-[500px] w-full rounded-md" />
-    </div>
-  );
+  return <div className="h-[500px]" />;
 }
 
 export default function HeroSection() {

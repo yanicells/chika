@@ -21,4 +21,3 @@ export function withCache<Args extends unknown[], Result>(
     tags: options.tags,
   });
 }
-
