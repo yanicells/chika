@@ -5,6 +5,7 @@ import { BlogPost } from "@/db/schema";
 import Card from "@/components/ui/card";
 import AdminBadge from "@/components/admin/admin-badge";
 import ReactionButton from "@/components/reactions/reaction-button";
+import ImageDialog from "@/components/ui/image-dialog";
 
 interface BlogDetailProps {
   post: BlogPost & {
@@ -51,7 +52,7 @@ export default function BlogDetail({
 
       {/* Cover Image */}
       {post.coverImageUrl && (
-        <img
+        <ImageDialog
           src={post.coverImageUrl}
           alt={post.title}
           className="w-full h-64 object-cover rounded-lg mb-6 border border-overlay0"
@@ -63,31 +64,52 @@ export default function BlogDetail({
         <ReactMarkdown
           components={{
             h1: ({ node: _node, ...props }) => (
-              <h1 className="text-3xl font-bold text-text mt-6 mb-4" {...props} />
+              <h1
+                className="text-3xl font-bold text-text mt-6 mb-4"
+                {...props}
+              />
             ),
             h2: ({ node: _node, ...props }) => (
-              <h2 className="text-2xl font-bold text-text mt-5 mb-3" {...props} />
+              <h2
+                className="text-2xl font-bold text-text mt-5 mb-3"
+                {...props}
+              />
             ),
             h3: ({ node: _node, ...props }) => (
-              <h3 className="text-xl font-bold text-text mt-4 mb-2" {...props} />
+              <h3
+                className="text-xl font-bold text-text mt-4 mb-2"
+                {...props}
+              />
             ),
             p: ({ node: _node, ...props }) => (
               <p className="text-subtext1 mb-4 leading-relaxed" {...props} />
             ),
             ul: ({ node: _node, ...props }) => (
-              <ul className="list-disc list-inside text-subtext1 mb-4 space-y-1" {...props} />
+              <ul
+                className="list-disc list-inside text-subtext1 mb-4 space-y-1"
+                {...props}
+              />
             ),
             ol: ({ node: _node, ...props }) => (
-              <ol className="list-decimal list-inside text-subtext1 mb-4 space-y-1" {...props} />
+              <ol
+                className="list-decimal list-inside text-subtext1 mb-4 space-y-1"
+                {...props}
+              />
             ),
             li: ({ node: _node, ...props }) => (
               <li className="text-subtext1" {...props} />
             ),
             code: ({ node: _node, ...props }) => (
-              <code className="bg-surface0 text-pink px-2 py-1 rounded font-mono text-sm" {...props} />
+              <code
+                className="bg-surface0 text-pink px-2 py-1 rounded font-mono text-sm"
+                {...props}
+              />
             ),
             pre: ({ node: _node, ...props }) => (
-              <pre className="bg-surface0 p-4 rounded-lg mb-4 overflow-x-auto border border-overlay0" {...props} />
+              <pre
+                className="bg-surface0 p-4 rounded-lg mb-4 overflow-x-auto border border-overlay0"
+                {...props}
+              />
             ),
             blockquote: ({ node: _node, ...props }) => (
               <blockquote
@@ -96,7 +118,12 @@ export default function BlogDetail({
               />
             ),
             a: ({ node: _node, ...props }) => (
-              <a className="text-blue hover:underline" target="_blank" rel="noopener noreferrer" {...props} />
+              <a
+                className="text-blue hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+                {...props}
+              />
             ),
           }}
         >

@@ -9,6 +9,7 @@ import Badge from "@/components/ui/badge";
 import Button from "@/components/ui/button";
 import AdminBadge from "@/components/admin/admin-badge";
 import ReactionButton from "@/components/reactions/reaction-button";
+import ImageDialog from "@/components/ui/image-dialog";
 
 interface NoteDetailProps {
   note: Note & {
@@ -109,7 +110,7 @@ export default function NoteDetail({
 
         {note.imageUrl && (
           <div className="mb-4">
-            <img
+            <ImageDialog
               src={note.imageUrl}
               alt={note.title || "Note image"}
               className="w-full max-h-96 object-cover rounded-lg"

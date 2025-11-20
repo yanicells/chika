@@ -10,6 +10,7 @@ import AdminBadge from "@/components/admin/admin-badge";
 import ReactionButton from "@/components/reactions/reaction-button";
 import { deleteComment } from "@/lib/actions/comments-actions";
 import { useState } from "react";
+import ImageDialog from "@/components/ui/image-dialog";
 
 interface CommentCardProps {
   comment: Comment & {
@@ -149,7 +150,7 @@ export default function CommentCard({
 
         {comment.imageUrl && (
           <div className="mt-3">
-            <img
+            <ImageDialog
               src={comment.imageUrl}
               alt="Comment attachment"
               className="max-w-md w-full h-auto rounded-lg border border-overlay0 object-cover"
