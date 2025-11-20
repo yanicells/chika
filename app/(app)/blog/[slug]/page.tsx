@@ -73,6 +73,11 @@ async function BlogPostContent({ slug }: { slug: string }) {
           <CommentForm blogPostId={post.id} />
         </div>
       </div>
+
+      {/* Bottom Back Button */}
+      <div className="mt-12">
+        <BackButton />
+      </div>
     </>
   );
 }

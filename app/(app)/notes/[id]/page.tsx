@@ -73,6 +73,11 @@ async function NoteContent({ id }: { id: string }) {
           <CommentForm noteId={id} />
         </div>
       </div>
+
+      {/* Bottom Back Button */}
+      <div className="mt-12">
+        <BackButton />
+      </div>
     </>
   );
 }
