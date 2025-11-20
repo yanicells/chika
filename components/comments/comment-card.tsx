@@ -153,7 +153,7 @@ export default function CommentCard({
             <ImageDialog
               src={comment.imageUrl}
               alt="Comment attachment"
-              className="max-w-md w-full h-auto rounded-lg border border-overlay0 object-cover"
+              className="max-w-md w-full max-h-64 h-auto rounded-lg border border-overlay0 object-cover"
             />
           </div>
         )}
