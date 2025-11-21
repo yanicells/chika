@@ -157,34 +157,25 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
             </ReactMarkdown>
           </div>
 
-          <div className="text-sm text-subtext0 mb-3 font-mono">
-            {post.publishedAt
-              ? new Date(post.publishedAt).toLocaleDateString()
-              : new Date(post.createdAt).toLocaleDateString()}
+          <div className="flex items-center justify-between text-sm text-subtext0 mb-3 font-mono">
+            <span>
+              {post.publishedAt
+                ? new Date(post.publishedAt).toLocaleDateString()
+                : new Date(post.createdAt).toLocaleDateString()}
+            </span>
+            {post.reactions && (
+              <ReactionButton
+                type="blogPost"
+                id={post.id}
+                initialCount={post.reactions}
+                color={backgroundColor}
+                isAdmin={isUserAdmin}
+                hasReacted={false}
+              />
+            )}
           </div>
         </div>
       </Link>
-
-      {(post.reactions || (!post.isPublished && isUserAdmin)) && (
-        <div className="flex items-center justify-between mb-3">
-          {post.reactions && (
-            <ReactionButton
-              type="blogPost"
-              id={post.id}
-              initialCount={post.reactions}
-              color={backgroundColor}
-              isAdmin={isUserAdmin}
-              hasReacted={false}
-            />
-          )}
-          {!post.isPublished && isUserAdmin && (
-            <Badge variant="default" size="sm">
-              Draft
-            </Badge>
-          )}
-        </div>
-      )}
-
       {isUserAdmin && (
         <div className="mt-auto pt-4 border-t border-overlay0">
           <EditButton type="blog" id={post.id} />

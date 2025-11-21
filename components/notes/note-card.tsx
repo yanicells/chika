@@ -45,56 +45,84 @@ export default function NoteCard({ note, isUserAdmin = false }: NoteCardProps) {
     >
       <Link href={`/notes/${note.id}`} className="flex-1">
         <div className="flex-1">
-          {note.isPinned && (
-            <div className="mb-2">
-              <Badge
-                variant="warning"
-                size="sm"
-                className="flex items-center gap-1"
-              >
-                <svg
-                  className="w-3 h-3"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
-                  />
-                </svg>
-                Pinned
-              </Badge>
-            </div>
-          )}
-
-          <div className="flex items-start justify-between gap-2 mb-2">
-            <div className="flex flex-wrap items-center gap-2">
-              {note.isPrivate && (
-                <Badge
-                  variant="default"
-                  size="sm"
-                  className="flex items-center gap-1"
-                >
-                  <svg
-                    className="w-3 h-3"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+          <div className="flex justify-between items-center mb-2">
+            {note.isPinned ? (
+              <>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge
+                    variant="warning"
+                    size="sm"
+                    className="flex items-center gap-1"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                    />
-                  </svg>
-                  Private
-                </Badge>
-              )}
-            </div>
+                    <svg
+                      className="w-3 h-3"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+                      />
+                    </svg>
+                    Pinned
+                  </Badge>
+                  {note.isPrivate && (
+                    <Badge
+                      variant="default"
+                      size="sm"
+                      className="flex items-center gap-1"
+                    >
+                      <svg
+                        className="w-3 h-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                        />
+                      </svg>
+                      Private
+                    </Badge>
+                  )}
+                </div>
+                <div className="pt-1.5">{note.isAdmin && <AdminBadge />}</div>
+              </>
+            ) : (
+              <>
+                <div className="flex flex-wrap items-center gap-2">
+                  {note.isAdmin && <AdminBadge />}
+                  {note.isPrivate && (
+                    <Badge
+                      variant="default"
+                      size="sm"
+                      className="flex items-center gap-1"
+                    >
+                      <svg
+                        className="w-3 h-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                        />
+                      </svg>
+                      Private
+                    </Badge>
+                  )}
+                </div>
+              </>
+            )}
           </div>
 
           {note.title && (
@@ -189,32 +217,22 @@ export default function NoteCard({ note, isUserAdmin = false }: NoteCardProps) {
           </div>
 
           <div className="flex items-center justify-between text-sm text-subtext0 mb-3 font-mono">
-            <span>{displayName}</span>
-            <span>{new Date(note.createdAt).toLocaleDateString()}</span>
+            <span>
+              {displayName} | {new Date(note.createdAt).toLocaleDateString()}
+            </span>
+            {note.reactions && (
+              <ReactionButton
+                type="note"
+                id={note.id}
+                initialCount={note.reactions}
+                color={backgroundColor}
+                isAdmin={isUserAdmin}
+                hasReacted={false}
+              />
+            )}
           </div>
         </div>
       </Link>
-
-      {(note.reactions || note.isAdmin) && (
-        <div className="mb-0 flex items-center justify-between">
-          {note.reactions && (
-            <ReactionButton
-              type="note"
-              id={note.id}
-              initialCount={note.reactions}
-              color={backgroundColor}
-              isAdmin={isUserAdmin}
-              hasReacted={false}
-            />
-          )}
-          {note.isAdmin && (
-            <div className="pt-3">
-              <AdminBadge />
-            </div>
-          )}
-        </div>
-      )}
-
       {isUserAdmin && (
         <div className="mt-auto pt-3 border-t border-overlay0">
           <EditButton type="note" id={note.id} />

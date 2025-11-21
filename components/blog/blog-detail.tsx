@@ -47,7 +47,6 @@ export default function BlogDetail({
             {new Date(post.publishedAt || post.createdAt).toLocaleDateString()}
           </p>
         </div>
-        <AdminBadge />
       </div>
 
       {/* Cover Image */}
@@ -132,7 +131,10 @@ export default function BlogDetail({
       </div>
 
       {/* Reaction Button */}
-      <div className="flex items-center gap-4 pt-4 border-t border-overlay0">
+      <div className="flex justify-between items-center pt-4 border-t border-overlay0">
+        <div className="pt-1.5">
+          <AdminBadge />
+        </div>
         <ReactionButton
           type="blogPost"
           id={post.id}
@@ -140,7 +142,8 @@ export default function BlogDetail({
           color={backgroundColor}
           isAdmin={isUserAdmin}
           hasReacted={hasReacted}
-        />
+        />{" "}
+        {/* Far Right */}
       </div>
     </Card>
   );
