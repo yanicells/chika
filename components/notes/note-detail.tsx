@@ -110,7 +110,7 @@ export default function NoteDetail({
         )}
 
         {note.imageUrl && (
-          <div className="mb-4">
+          <div className={`mb-4 ${!note.title ? "-mt-6" : ""}`}>
             <ImageDialog
               src={note.imageUrl}
               alt={note.title || "Note image"}
