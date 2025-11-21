@@ -156,7 +156,7 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
               {truncatedExcerpt}
             </ReactMarkdown>
           </div>
-
+          <div className="h-px bg-gray-500 w-full mb-4"></div>
           <div className="flex items-center justify-between text-sm text-subtext0 mb-3 font-mono">
             <span>
               {post.publishedAt

@@ -215,6 +215,7 @@ export default function NoteCard({ note, isUserAdmin = false }: NoteCardProps) {
               {truncatedContent}
             </ReactMarkdown>
           </div>
+          <div className="h-px bg-gray-500 w-full mb-4"></div>
 
           <div className="flex items-center justify-between text-sm text-subtext0 mb-3 font-mono">
             <span>
