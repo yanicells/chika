@@ -71,7 +71,7 @@ export default function CommentCard({
       <div className="space-y-2">
         <div className="flex items-start justify-between gap-2">
           <span className="text-sm font-medium text-text">{displayName}</span>
-          <span className="text-xs text-subtext0 font-mono">
+          <span className="text-xs text-subtext0 font-mono pt-1">
             {new Date(comment.createdAt).toLocaleDateString()}
           </span>
         </div>
