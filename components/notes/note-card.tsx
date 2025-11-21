@@ -215,25 +215,28 @@ export default function NoteCard({ note, isUserAdmin = false }: NoteCardProps) {
               {truncatedContent}
             </ReactMarkdown>
           </div>
-          <div className="h-px bg-gray-500 w-full mb-4"></div>
-
-          <div className="flex items-center justify-between text-sm text-subtext0 mb-3 font-mono">
-            <span>
-              {displayName} | {new Date(note.createdAt).toLocaleDateString()}
-            </span>
-            {note.reactions && (
-              <ReactionButton
-                type="note"
-                id={note.id}
-                initialCount={note.reactions}
-                color={backgroundColor}
-                isAdmin={isUserAdmin}
-                hasReacted={false}
-              />
-            )}
-          </div>
         </div>
       </Link>
+
+      <div className="h-px bg-gray-500 w-full mb-4"></div>
+      <div className="px-4 pb-3">
+        <div className="flex items-center justify-between text-sm text-subtext0 font-mono">
+          <span>
+            {displayName} | {new Date(note.createdAt).toLocaleDateString()}
+          </span>
+          {note.reactions && (
+            <ReactionButton
+              type="note"
+              id={note.id}
+              initialCount={note.reactions}
+              color={backgroundColor}
+              isAdmin={isUserAdmin}
+              hasReacted={false}
+            />
+          )}
+        </div>
+      </div>
+
       {isUserAdmin && (
         <div className="mt-auto pt-3 border-t border-overlay0">
           <EditButton type="note" id={note.id} />

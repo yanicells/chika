@@ -156,26 +156,30 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
               {truncatedExcerpt}
             </ReactMarkdown>
           </div>
-          <div className="h-px bg-gray-500 w-full mb-4"></div>
-          <div className="flex items-center justify-between text-sm text-subtext0 mb-3 font-mono">
-            <span>
-              {post.publishedAt
-                ? new Date(post.publishedAt).toLocaleDateString()
-                : new Date(post.createdAt).toLocaleDateString()}
-            </span>
-            {post.reactions && (
-              <ReactionButton
-                type="blogPost"
-                id={post.id}
-                initialCount={post.reactions}
-                color={backgroundColor}
-                isAdmin={isUserAdmin}
-                hasReacted={false}
-              />
-            )}
-          </div>
         </div>
       </Link>
+      <div className="h-px bg-gray-500 w-full mb-4"></div>
+
+      <div className="px-4 pb-3">
+        <div className="flex items-center justify-between text-sm text-subtext0 font-mono">
+          <span>
+            {post.publishedAt
+              ? new Date(post.publishedAt).toLocaleDateString()
+              : new Date(post.createdAt).toLocaleDateString()}
+          </span>
+          {post.reactions && (
+            <ReactionButton
+              type="blogPost"
+              id={post.id}
+              initialCount={post.reactions}
+              color={backgroundColor}
+              isAdmin={isUserAdmin}
+              hasReacted={false}
+            />
+          )}
+        </div>
+      </div>
+
       {isUserAdmin && (
         <div className="mt-auto pt-4 border-t border-overlay0">
           <EditButton type="blog" id={post.id} />
