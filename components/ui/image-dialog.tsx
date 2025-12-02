@@ -1,7 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 
 interface ImageDialogProps {
   src: string;
@@ -19,17 +19,14 @@ export default function ImageDialog({ src, alt, className }: ImageDialogProps) {
   return (
     <>
       {/* Thumbnail - clickable */}
-      <div
-        className={`relative cursor-pointer ${className || ""}`}
+      <img
+        src={src}
+        alt={alt}
+        className={`cursor-pointer hover:opacity-90 transition-opacity ${
+          className || ""
+        }`}
         onClick={() => setIsOpen(true)}
-      >
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          className="hover:opacity-90 transition-opacity object-cover"
-        />
-      </div>
+      />
 
       {/* Fullscreen Dialog */}
       {isOpen && (
@@ -60,17 +57,12 @@ export default function ImageDialog({ src, alt, className }: ImageDialogProps) {
             </button>
 
             {/* Full-size image */}
-            <div
-              className="relative w-[90vw] h-[85vh]"
+            <img
+              src={src}
+              alt={alt}
+              className="max-w-[90vw] max-h-[85vh] object-contain rounded-lg"
               onClick={(e) => e.stopPropagation()}
-            >
-              <Image
-                src={src}
-                alt={alt}
-                fill
-                className="object-contain rounded-lg"
-              />
-            </div>
+            />
           </div>
         </div>
       )}

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import ReactMarkdown from "react-markdown";
 import { BlogPost } from "@/db/schema";
