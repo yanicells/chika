@@ -83,7 +83,7 @@ export default function ReactionButton({
   };
 
   // Icon color: card color when reacted, gray when not
-  const iconColor = hasReacted ? color : "#6c7086";
+  const iconColor = hasReacted ? color : "#9da0b0";
 
   return (
     <button
