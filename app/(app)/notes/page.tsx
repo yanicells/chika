@@ -128,28 +128,53 @@ function NotesGridFallback() {
     <div className="space-y-6">
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-text mb-2">Notes</h1>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-2">
           <p className="text-lg text-subtext1">Chika&apos;s people have sent</p>
-          <button
-            type="button"
-            disabled
-            className="inline-flex items-center gap-2 px-2 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm bg-surface0 border-2 border-overlay0 rounded-lg text-text opacity-50 cursor-not-allowed"
-          >
-            All Notes
-            <svg
-              className="w-4 h-4 text-overlay0"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          <div className="flex items-center gap-2">
+            {/* Sort Dropdown Skeleton */}
+            <button
+              type="button"
+              disabled
+              className="inline-flex items-center gap-2 px-2 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm bg-surface0 border-2 border-overlay0 rounded-lg text-text opacity-50 cursor-not-allowed"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </button>
+              Default
+              <svg
+                className="w-4 h-4 text-overlay0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+
+            {/* Filter Dropdown Skeleton */}
+            <button
+              type="button"
+              disabled
+              className="inline-flex items-center gap-2 px-2 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm bg-surface0 border-2 border-overlay0 rounded-lg text-text opacity-50 cursor-not-allowed"
+            >
+              All Notes
+              <svg
+                className="w-4 h-4 text-overlay0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
