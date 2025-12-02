@@ -3,6 +3,7 @@ import { notes, reactions, comments } from "../../db/schema";
 import {
   and,
   desc,
+  asc,
   eq,
   sql,
   count,
@@ -12,6 +13,15 @@ import {
   ne,
 } from "drizzle-orm";
 import { withCache } from "@/lib/cache";
+
+type SortType =
+  | "default"
+  | "most-comments"
+  | "least-comments"
+  | "most-likes"
+  | "least-likes"
+  | "newest"
+  | "oldest";
 
 /**
  * Get all public notes (not deleted, not private)
@@ -42,11 +52,11 @@ export const getPublicNotes = withCache(
  */
 export const getPrivateNotes = withCache(
   async () => {
-  const notesData = await db
-    .select()
-    .from(notes)
+    const notesData = await db
+      .select()
+      .from(notes)
       .where(and(eq(notes.isDeleted, false), eq(notes.isPrivate, true)))
-    .orderBy(desc(notes.isPinned), desc(notes.createdAt));
+      .orderBy(desc(notes.isPinned), desc(notes.createdAt));
 
     return notesData;
   },
@@ -175,7 +185,8 @@ export const getPublicNotesPaginated = withCache(
   async (
     page: number = 1,
     limit: number = 9,
-    filter: "all" | "admin" | "username" | "anonymous" | "pinned" = "all"
+    filter: "all" | "admin" | "username" | "anonymous" | "pinned" = "all",
+    sort: SortType = "default"
   ) => {
     const offset = (page - 1) * limit;
 
@@ -204,20 +215,71 @@ export const getPublicNotesPaginated = withCache(
       );
     }
 
-    const notesList = await db
-      .select()
+    // Build query with aggregated counts for sorting
+    const notesWithCounts = await db
+      .select({
+        id: notes.id,
+        title: notes.title,
+        content: notes.content,
+        userName: notes.userName,
+        isAdmin: notes.isAdmin,
+        isPinned: notes.isPinned,
+        isPrivate: notes.isPrivate,
+        isDeleted: notes.isDeleted,
+        imageUrl: notes.imageUrl,
+        color: notes.color,
+        createdAt: notes.createdAt,
+        updatedAt: notes.updatedAt,
+        commentCount: sql<number>`count(distinct ${comments.id})`.as(
+          "comment_count"
+        ),
+        reactionCount: sql<number>`count(distinct ${reactions.id})`.as(
+          "reaction_count"
+        ),
+      })
       .from(notes)
+      .leftJoin(comments, eq(notes.id, comments.noteId))
+      .leftJoin(reactions, eq(notes.id, reactions.noteId))
       .where(filterConditions)
-      .orderBy(desc(notes.isPinned), desc(notes.createdAt))
+      .groupBy(notes.id)
+      .orderBy(
+        ...(sort === "most-comments"
+          ? [desc(sql`comment_count`)]
+          : sort === "least-comments"
+          ? [asc(sql`comment_count`)]
+          : sort === "most-likes"
+          ? [desc(sql`reaction_count`)]
+          : sort === "least-likes"
+          ? [asc(sql`reaction_count`)]
+          : sort === "newest"
+          ? [desc(notes.createdAt)]
+          : sort === "oldest"
+          ? [asc(notes.createdAt)]
+          : [desc(notes.isPinned), desc(notes.createdAt)])
+      )
       .limit(limit)
       .offset(offset);
 
-    // Get reactions for each note
+    // Get detailed reactions for each note
     const notesWithReactions = await Promise.all(
-      notesList.map((note) => getNoteWithReactions(note.id))
-    );
+      notesWithCounts.map(async (note) => {
+        const reactionCounts = await db
+          .select({
+            regularCount: sql<number>`count(*) filter (where ${reactions.isAdmin} = false)`,
+            adminCount: sql<number>`count(*) filter (where ${reactions.isAdmin} = true)`,
+          })
+          .from(reactions)
+          .where(eq(reactions.noteId, note.id));
 
-    const filteredNotes = notesWithReactions.filter((note) => note !== null);
+        return {
+          ...note,
+          reactions: {
+            regular: Number(reactionCounts[0]?.regularCount || 0),
+            admin: Number(reactionCounts[0]?.adminCount || 0),
+          },
+        };
+      })
+    );
 
     // Get total count with same filter
     const totalResult = await db
@@ -229,7 +291,7 @@ export const getPublicNotesPaginated = withCache(
     const totalPages = Math.ceil(total / limit);
 
     return {
-      notes: filteredNotes,
+      notes: notesWithReactions,
       currentPage: page,
       totalPages,
       total,

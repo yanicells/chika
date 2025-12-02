@@ -12,6 +12,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDownIcon } from "lucide-react";
 
+type SortType =
+  | "default"
+  | "most-comments"
+  | "least-comments"
+  | "most-likes"
+  | "least-likes"
+  | "newest"
+  | "oldest";
+
 interface FilteredNoteListProps {
   notes: (Note & {
     reactions?: {
@@ -33,6 +42,7 @@ export default function FilteredNoteList({
   const searchParams = useSearchParams();
   const activeFilter =
     (searchParams.get("filter") as FilterType) || initialFilter || "all";
+  const activeSort = (searchParams.get("sort") as SortType) || "default";
 
   const handleFilterChange = (filter: FilterType) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -46,63 +56,145 @@ export default function FilteredNoteList({
     router.push(`/notes?${params.toString()}`);
   };
 
+  const handleSortChange = (sort: SortType) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (sort === "default") {
+      params.delete("sort");
+    } else {
+      params.set("sort", sort);
+    }
+    // Reset to page 1 when sort changes
+    params.delete("page");
+    router.push(`/notes?${params.toString()}`);
+  };
+
   return (
     <div className="space-y-6">
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-text mb-2">Notes</h1>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-2">
           <p className="text-lg text-subtext1">Chika&apos;s people have sent</p>
-          <DropdownMenu modal={false}>
-            <DropdownMenuTrigger asChild>
-              <button
-                type="button"
-                className="inline-flex items-center gap-2 px-2 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm bg-surface0 border-2 border-overlay0 rounded-lg text-text hover:border-subtext0 focus:outline-none focus:border-blue cursor-pointer"
+          <div className="flex items-center gap-2">
+            {/* Sort Dropdown */}
+            <DropdownMenu modal={false}>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-2 px-2 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm bg-surface0 border-2 border-overlay0 rounded-lg text-text hover:border-subtext0 focus:outline-none focus:border-blue cursor-pointer"
+                >
+                  {activeSort === "default" && "Default"}
+                  {activeSort === "most-comments" && "Most Comments"}
+                  {activeSort === "least-comments" && "Least Comments"}
+                  {activeSort === "most-likes" && "Most Likes"}
+                  {activeSort === "least-likes" && "Least Likes"}
+                  {activeSort === "newest" && "Newest"}
+                  {activeSort === "oldest" && "Oldest"}
+                  <ChevronDownIcon className="w-4 h-4 text-overlay0" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="bg-surface0 border-2 border-overlay0 rounded-lg z-50 min-w-[160px]"
+                align="end"
+                sideOffset={8}
               >
-                {activeFilter === "all" && "All Notes"}
-                {activeFilter === "pinned" && "Pinned"}
-                {activeFilter === "admin" && "Yanicells"}
-                {activeFilter === "username" && "Not Anonymous"}
-                {activeFilter === "anonymous" && "Anonymous"}
-                <ChevronDownIcon className="w-4 h-4 text-overlay0" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              className="bg-surface0 border-2 border-overlay0 rounded-lg z-50 min-w-[160px]"
-              align="end"
-              sideOffset={8}
-            >
-              <DropdownMenuItem
-                onSelect={() => handleFilterChange("all")}
-                className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
+                <DropdownMenuItem
+                  onSelect={() => handleSortChange("default")}
+                  className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
+                >
+                  Default
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() => handleSortChange("most-comments")}
+                  className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
+                >
+                  Most Comments
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() => handleSortChange("least-comments")}
+                  className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
+                >
+                  Least Comments
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() => handleSortChange("most-likes")}
+                  className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
+                >
+                  Most Likes
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() => handleSortChange("least-likes")}
+                  className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
+                >
+                  Least Likes
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() => handleSortChange("newest")}
+                  className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
+                >
+                  Newest
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() => handleSortChange("oldest")}
+                  className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
+                >
+                  Oldest
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Filter Dropdown */}
+            <DropdownMenu modal={false}>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-2 px-2 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm bg-surface0 border-2 border-overlay0 rounded-lg text-text hover:border-subtext0 focus:outline-none focus:border-blue cursor-pointer"
+                >
+                  {activeFilter === "all" && "All Notes"}
+                  {activeFilter === "pinned" && "Pinned"}
+                  {activeFilter === "admin" && "Yanicells"}
+                  {activeFilter === "username" && "Not Anonymous"}
+                  {activeFilter === "anonymous" && "Anonymous"}
+                  <ChevronDownIcon className="w-4 h-4 text-overlay0" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="bg-surface0 border-2 border-overlay0 rounded-lg z-50 min-w-[160px]"
+                align="end"
+                sideOffset={8}
               >
-                All Notes
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={() => handleFilterChange("pinned")}
-                className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
-              >
-                Pinned
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={() => handleFilterChange("admin")}
-                className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
-              >
-                Yanicells
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={() => handleFilterChange("username")}
-                className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
-              >
-                Not Anonymous
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={() => handleFilterChange("anonymous")}
-                className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
-              >
-                Anonymous
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                <DropdownMenuItem
+                  onSelect={() => handleFilterChange("all")}
+                  className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
+                >
+                  All Notes
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() => handleFilterChange("pinned")}
+                  className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
+                >
+                  Pinned
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() => handleFilterChange("admin")}
+                  className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
+                >
+                  Yanicells
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() => handleFilterChange("username")}
+                  className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
+                >
+                  Not Anonymous
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() => handleFilterChange("anonymous")}
+                  className="text-sm text-text hover:bg-blue hover:text-base focus:bg-blue focus:text-base cursor-pointer"
+                >
+                  Anonymous
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
       </div>
 

@@ -9,16 +9,27 @@ import {
 } from "@/components/ui/pagination";
 import type { FilterType } from "@/components/notes/note-filter";
 
+type SortType =
+  | "default"
+  | "most-comments"
+  | "least-comments"
+  | "most-likes"
+  | "least-likes"
+  | "newest"
+  | "oldest";
+
 interface NotesPaginationProps {
   currentPage: number;
   totalPages: number;
   filter?: FilterType;
+  sort?: SortType;
 }
 
 export default function NotesPagination({
   currentPage,
   totalPages,
   filter = "all",
+  sort = "default",
 }: NotesPaginationProps) {
   // Generate page numbers to display (show 5 pages max)
   const getPageNumbers = () => {
@@ -43,7 +54,7 @@ export default function NotesPagination({
 
   const pageNumbers = getPageNumbers();
 
-  // Build URL with filter preserved
+  // Build URL with filter and sort preserved
   const buildUrl = (page: number) => {
     const params = new URLSearchParams();
     if (page > 1) {
@@ -51,6 +62,9 @@ export default function NotesPagination({
     }
     if (filter && filter !== "all") {
       params.set("filter", filter);
+    }
+    if (sort && sort !== "default") {
+      params.set("sort", sort);
     }
     const queryString = params.toString();
     return queryString ? `/notes?${queryString}` : "/notes";

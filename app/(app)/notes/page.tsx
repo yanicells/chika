@@ -8,14 +8,24 @@ import NoteCardSkeleton from "@/components/notes/note-card-skeleton";
 import { isAdmin } from "@/lib/auth-helper";
 import type { FilterType } from "@/components/notes/note-filter";
 
+type SortType =
+  | "default"
+  | "most-comments"
+  | "least-comments"
+  | "most-likes"
+  | "least-likes"
+  | "newest"
+  | "oldest";
+
 interface NotesPageProps {
-  searchParams: Promise<{ page?: string; filter?: string }>;
+  searchParams: Promise<{ page?: string; filter?: string; sort?: string }>;
 }
 
 export default async function NotesPage({ searchParams }: NotesPageProps) {
-  const { page, filter } = await searchParams;
+  const { page, filter, sort } = await searchParams;
   const currentPage = Number(page) || 1;
   const activeFilter = (filter as FilterType) || "all";
+  const activeSort = (sort as SortType) || "default";
 
   // Validate filter
   const validFilters: FilterType[] = [
@@ -29,6 +39,20 @@ export default async function NotesPage({ searchParams }: NotesPageProps) {
     ? activeFilter
     : "all";
 
+  // Validate sort
+  const validSorts: SortType[] = [
+    "default",
+    "most-comments",
+    "least-comments",
+    "most-likes",
+    "least-likes",
+    "newest",
+    "oldest",
+  ];
+  const validatedSort = validSorts.includes(activeSort)
+    ? activeSort
+    : "default";
+
   return (
     <Container>
       <div className="pt-12 pb-8">
@@ -36,6 +60,7 @@ export default async function NotesPage({ searchParams }: NotesPageProps) {
           <NotesContent
             currentPage={currentPage}
             validatedFilter={validatedFilter}
+            validatedSort={validatedSort}
           />
         </Suspense>
       </div>
@@ -46,14 +71,17 @@ export default async function NotesPage({ searchParams }: NotesPageProps) {
 async function NotesContent({
   currentPage,
   validatedFilter,
+  validatedSort,
 }: {
   currentPage: number;
   validatedFilter: FilterType;
+  validatedSort: SortType;
 }) {
   const { notes, totalPages } = await getPublicNotesPaginated(
     currentPage,
     9,
-    validatedFilter
+    validatedFilter,
+    validatedSort
   );
   const adminStatus = await isAdmin();
 
@@ -87,6 +115,7 @@ async function NotesContent({
             currentPage={currentPage}
             totalPages={totalPages}
             filter={validatedFilter}
+            sort={validatedSort}
           />
         </div>
       )}
