@@ -16,6 +16,7 @@ interface NoteCardProps {
       regular: number;
       admin: number;
     };
+    commentCount?: number;
   };
   isUserAdmin?: boolean;
 }
@@ -26,7 +27,7 @@ export default function NoteCard({ note, isUserAdmin = false }: NoteCardProps) {
       ? `${note.content.substring(0, 150)}...`
       : note.content;
 
-  const displayName = note.userName || "Anonymous";
+  const displayName = note.userName || "Anon";
   const backgroundColor = note.color || "#ffffff";
 
   return (
@@ -224,16 +225,36 @@ export default function NoteCard({ note, isUserAdmin = false }: NoteCardProps) {
           <span>
             {displayName} | {new Date(note.createdAt).toLocaleDateString()}
           </span>
-          {note.reactions && (
-            <ReactionButton
-              type="note"
-              id={note.id}
-              initialCount={note.reactions}
-              color={backgroundColor}
-              isAdmin={isUserAdmin}
-              hasReacted={false}
-            />
-          )}
+          <div className="flex items-center gap-3">
+            {note.commentCount !== undefined && (
+              <div className="flex items-center gap-1 text-subtext0">
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                  />
+                </svg>
+                <span>{note.commentCount}</span>
+              </div>
+            )}
+            {note.reactions && (
+              <ReactionButton
+                type="note"
+                id={note.id}
+                initialCount={note.reactions}
+                color={backgroundColor}
+                isAdmin={isUserAdmin}
+                hasReacted={false}
+              />
+            )}
+          </div>
         </div>
       </div>
 

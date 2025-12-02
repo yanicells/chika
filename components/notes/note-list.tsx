@@ -7,6 +7,7 @@ interface NoteListProps {
       regular: number;
       admin: number;
     };
+    commentCount?: number;
   })[];
   isUserAdmin?: boolean;
 }

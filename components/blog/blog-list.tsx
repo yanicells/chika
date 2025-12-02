@@ -2,7 +2,13 @@ import { BlogPost } from "@/db/schema";
 import BlogCard from "./blog-card";
 
 interface BlogListProps {
-  posts: BlogPost[];
+  posts: (BlogPost & {
+    reactions?: {
+      regular: number;
+      admin: number;
+    };
+    commentCount?: number;
+  })[];
   isUserAdmin?: boolean;
 }
 

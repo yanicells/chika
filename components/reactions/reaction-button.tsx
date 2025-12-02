@@ -97,7 +97,7 @@ export default function ReactionButton({
         {isAdmin ? (
           // ADMIN SEES: Star (always star for admin user)
           <svg
-            className={`w-6 h-6 transition-all duration-300 ${
+            className={`w-5 h-5 transition-all duration-300 ${
               isAnimating ? "animate-bounce scale-125" : ""
             } ${hasReacted ? "scale-110" : "scale-100 group-hover:scale-110"}`}
             fill={iconColor}
@@ -110,7 +110,7 @@ export default function ReactionButton({
         ) : (
           // REGULAR USER SEES: Heart (always heart for regular users)
           <svg
-            className={`w-6 h-6 transition-all duration-300 ${
+            className={`w-5 h-5 transition-all duration-300 ${
               isAnimating ? "animate-bounce scale-125" : ""
             } ${hasReacted ? "scale-110" : "scale-100 group-hover:scale-110"}`}
             fill={hasReacted ? iconColor : "none"}
@@ -131,7 +131,7 @@ export default function ReactionButton({
           <div className="absolute inset-0 flex items-center justify-center">
             {isAdmin ? (
               <svg
-                className="w-6 h-6 animate-ping opacity-75"
+                className="w-5 h-5 animate-ping opacity-75"
                 fill={color}
                 viewBox="0 0 24 24"
               >
@@ -139,7 +139,7 @@ export default function ReactionButton({
               </svg>
             ) : (
               <svg
-                className="w-6 h-6 animate-ping opacity-75"
+                className="w-5 h-5 animate-ping opacity-75"
                 fill={color}
                 viewBox="0 0 24 24"
               >

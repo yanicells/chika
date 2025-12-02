@@ -1,6 +1,10 @@
 import HeroSection from "@/components/shared/hero-section";
 import { getPublicNotes } from "@/lib/queries/notes";
 import { getPublishedBlogPosts } from "@/lib/queries/blog";
+import {
+  getCommentsWithReactions,
+  getBlogCommentsWithReactions,
+} from "@/lib/queries/comments";
 import NoteList from "@/components/notes/note-list";
 import BlogList from "@/components/blog/blog-list";
 import NoteCardSkeleton from "@/components/notes/note-card-skeleton";
@@ -97,7 +101,18 @@ async function NoteFeedSection({ isUserAdmin }: { isUserAdmin: boolean }) {
     return <p className="text-center text-subtext0 py-8">No notes yet.</p>;
   }
 
-  return <NoteList notes={displayNotes} isUserAdmin={isUserAdmin} />;
+  // Fetch comment counts for all notes
+  const notesWithComments = await Promise.all(
+    displayNotes.map(async (note) => {
+      const comments = await getCommentsWithReactions(note.id);
+      return {
+        ...note,
+        commentCount: comments.length,
+      };
+    })
+  );
+
+  return <NoteList notes={notesWithComments} isUserAdmin={isUserAdmin} />;
 }
 
 async function BlogFeedSection({ isUserAdmin }: { isUserAdmin: boolean }) {
@@ -107,7 +122,18 @@ async function BlogFeedSection({ isUserAdmin }: { isUserAdmin: boolean }) {
     return <p className="text-center text-subtext0 py-8">No blog posts yet.</p>;
   }
 
-  return <BlogList posts={recentBlogs} isUserAdmin={isUserAdmin} />;
+  // Fetch comment counts for all blog posts
+  const postsWithComments = await Promise.all(
+    recentBlogs.map(async (post) => {
+      const comments = await getBlogCommentsWithReactions(post.id);
+      return {
+        ...post,
+        commentCount: comments.length,
+      };
+    })
+  );
+
+  return <BlogList posts={postsWithComments} isUserAdmin={isUserAdmin} />;
 }
 
 function NoteFeedFallback() {

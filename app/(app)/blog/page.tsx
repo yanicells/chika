@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import Container from "@/components/shared/container";
 import { getPublishedBlogPostsPaginated } from "@/lib/queries/blog";
+import { getBlogCommentsWithReactions } from "@/lib/queries/comments";
 import BlogList from "@/components/blog/blog-list";
 import BlogCardSkeleton from "@/components/blog/blog-card-skeleton";
 import BlogPagination from "@/components/blog/blog-pagination";
@@ -40,13 +41,24 @@ async function BlogContent({ currentPage }: { currentPage: number }) {
   );
   const adminStatus = await isAdmin();
 
-  if (posts.length === 0) {
+  // Fetch comment counts for all blog posts
+  const postsWithComments = await Promise.all(
+    posts.map(async (post) => {
+      const comments = await getBlogCommentsWithReactions(post.id);
+      return {
+        ...post,
+        commentCount: comments.length,
+      };
+    })
+  );
+
+  if (postsWithComments.length === 0) {
     return <p className="text-center text-subtext0 py-8">No blog posts yet.</p>;
   }
 
   return (
     <>
-      <BlogList posts={posts} isUserAdmin={adminStatus} />
+      <BlogList posts={postsWithComments} isUserAdmin={adminStatus} />
 
       {/* Pagination */}
       <div className="mt-12 flex justify-center">

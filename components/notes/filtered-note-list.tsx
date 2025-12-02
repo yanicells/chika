@@ -18,6 +18,7 @@ interface FilteredNoteListProps {
       regular: number;
       admin: number;
     };
+    commentCount?: number;
   })[];
   isUserAdmin?: boolean;
   initialFilter?: FilterType;

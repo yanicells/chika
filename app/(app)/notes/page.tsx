@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import Container from "@/components/shared/container";
 import { getPublicNotesPaginated } from "@/lib/queries/notes";
+import { getCommentsWithReactions } from "@/lib/queries/comments";
 import FilteredNoteList from "@/components/notes/filtered-note-list";
 import NotesPagination from "@/components/notes/notes-pagination";
 import NoteCardSkeleton from "@/components/notes/note-card-skeleton";
@@ -56,14 +57,25 @@ async function NotesContent({
   );
   const adminStatus = await isAdmin();
 
-  if (notes.length === 0 && validatedFilter === "all") {
+  // Fetch comment counts for all notes
+  const notesWithComments = await Promise.all(
+    notes.map(async (note) => {
+      const comments = await getCommentsWithReactions(note.id);
+      return {
+        ...note,
+        commentCount: comments.length,
+      };
+    })
+  );
+
+  if (notesWithComments.length === 0 && validatedFilter === "all") {
     return <p className="text-center text-subtext0 py-8">No notes yet.</p>;
   }
 
   return (
     <>
       <FilteredNoteList
-        notes={notes}
+        notes={notesWithComments}
         isUserAdmin={adminStatus}
         initialFilter={validatedFilter}
       />
