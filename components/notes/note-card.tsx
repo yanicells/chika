@@ -1,7 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import { Note } from "@/db/schema";
 import Card from "@/components/ui/card";
@@ -132,11 +132,12 @@ export default function NoteCard({ note, isUserAdmin = false }: NoteCardProps) {
           )}
 
           {note.imageUrl && (
-            <div className="mb-3">
-              <img
+            <div className="mb-3 relative h-48">
+              <Image
                 src={note.imageUrl}
                 alt={note.title || "Note image"}
-                className="w-full h-48 object-cover rounded-md"
+                fill
+                className="object-cover rounded-md"
               />
             </div>
           )}

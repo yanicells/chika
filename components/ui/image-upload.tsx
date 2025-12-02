@@ -1,7 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState, useRef } from "react";
+import Image from "next/image";
 import { useUploadThing } from "@/lib/uploadthing";
 import Button from "./button";
 
@@ -81,11 +81,12 @@ export default function ImageUpload({
 
       {/* Image Preview */}
       {value && (
-        <div className="relative w-full max-w-md">
-          <img
+        <div className="relative w-full max-w-md h-48">
+          <Image
             src={value}
             alt="Upload preview"
-            className="w-full h-48 object-cover rounded-lg border-2 border-overlay0"
+            fill
+            className="object-cover rounded-lg border-2 border-overlay0"
           />
           <Button
             type="button"

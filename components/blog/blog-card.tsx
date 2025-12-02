@@ -1,7 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import { BlogPost } from "@/db/schema";
 import Card from "@/components/ui/card";
@@ -73,11 +73,12 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
           </h3>
 
           {post.coverImageUrl && (
-            <div className="mb-4">
-              <img
+            <div className="mb-4 relative h-48">
+              <Image
                 src={post.coverImageUrl}
                 alt={post.title}
-                className="w-full h-48 object-cover rounded-md"
+                fill
+                className="object-cover rounded-md"
               />
             </div>
           )}
