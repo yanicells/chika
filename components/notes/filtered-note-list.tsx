@@ -71,10 +71,10 @@ export default function FilteredNoteList({
   return (
     <div className="space-y-6">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-text mb-2">Notes</h1>
-        <div className="flex items-center justify-between gap-2">
+        <h1 className="text-4xl font-bold text-text mb-4">Notes</h1>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-2">
           <p className="text-lg text-subtext1">Chika&apos;s people have sent</p>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
             {/* Sort Dropdown */}
             <DropdownMenu modal={false}>
               <DropdownMenuTrigger asChild>
