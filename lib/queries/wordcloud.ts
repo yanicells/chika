@@ -8,7 +8,7 @@ export type WordCloudWord = {
   value: number;
 };
 
-const STOP_WORDS = new Set(["anonymous", "admin", "that", "with", "this", "from", "they", "have", "your", "what", "when", "there", "about", "which", "would", "these", "could", "should", "their", "other", "some", "more", "also", "like", "just", "than", "then", "them", "were", "been", "into", "only", "over", "such", "most", "many", "much"]);
+const STOP_WORDS = new Set(["anonymous", "admin", "that", "with", "this", "from", "they", "have", "your", "what", "when", "there", "about", "which", "would", "these", "could", "should", "their", "other", "some", "more", "also", "like", "just", "than", "then", "them", "were", "been", "into", "only", "over", "such", "most", "many", "much", "where", "will", "here", "each", "keep"]);
 
 /**
  * Convert large amounts of text into the top 100 word-cloud entries.
