@@ -20,7 +20,7 @@ export function LoginForm() {
     <div className="flex items-center justify-center min-h-screen">
       <button
         onClick={handleGithubLogin}
-        className="flex items-center gap-3 px-6 py-3 bg-[#24292F] text-white rounded-lg hover:bg-[#2c3137] transition-colors font-medium"
+      className="flex items-center gap-3 px-6 py-3 bg-[#24292F] text-white rounded-lg hover:bg-[#2c3137] transition-colors font-medium"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
