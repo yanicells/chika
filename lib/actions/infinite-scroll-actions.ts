@@ -2,7 +2,10 @@
 
 import { getPublicNotesPaginated } from "@/lib/queries/notes";
 import { getPublishedBlogPostsPaginated } from "@/lib/queries/blog";
-import { getCommentsWithReactions, getBlogCommentsWithReactions } from "@/lib/queries/comments";
+import {
+  getCommentsWithReactions,
+  getBlogCommentsWithReactions,
+} from "@/lib/queries/comments";
 import type { FilterType } from "@/components/notes/note-filter";
 
 type SortType =
@@ -48,15 +51,15 @@ export async function fetchNotesInfinite(
   cursor: string | null,
   filter: FilterType = "all",
   sort: SortType = "default",
-  limit: number = 9
+  limit: number = 9,
 ): Promise<FetchNotesResult> {
   const page = cursor ? parseInt(cursor, 10) : 1;
-  
+
   const { notes, totalPages } = await getPublicNotesPaginated(
     page,
     limit,
     filter,
-    sort
+    sort,
   );
 
   // Fetch comment counts in parallel for all notes
@@ -67,7 +70,7 @@ export async function fetchNotesInfinite(
         ...note,
         commentCount: comments.length,
       };
-    })
+    }),
   );
 
   const hasMore = page < totalPages;
@@ -117,11 +120,14 @@ export interface FetchBlogPostsResult {
  */
 export async function fetchBlogPostsInfinite(
   cursor: string | null,
-  limit: number = 6
+  limit: number = 6,
 ): Promise<FetchBlogPostsResult> {
   const page = cursor ? parseInt(cursor, 10) : 1;
 
-  const { posts, totalPages } = await getPublishedBlogPostsPaginated(page, limit);
+  const { posts, totalPages } = await getPublishedBlogPostsPaginated(
+    page,
+    limit,
+  );
 
   // Fetch comment counts in parallel for all posts
   const postsWithComments = await Promise.all(
@@ -131,7 +137,7 @@ export async function fetchBlogPostsInfinite(
         ...post,
         commentCount: comments.length,
       };
-    })
+    }),
   );
 
   const hasMore = page < totalPages;
