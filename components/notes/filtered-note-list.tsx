@@ -1,8 +1,10 @@
 "use client";
 
+import { useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Note } from "@/db/schema";
 import NoteCard from "./note-card";
+import NoteCardSkeleton from "./note-card-skeleton";
 import { FilterType } from "./note-filter";
 import {
   DropdownMenu,
@@ -11,6 +13,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDownIcon } from "lucide-react";
+import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
+import {
+  fetchNotesInfinite,
+  type NoteWithMeta,
+} from "@/lib/actions/infinite-scroll-actions";
 
 type SortType =
   | "default"
@@ -31,18 +38,39 @@ interface FilteredNoteListProps {
   })[];
   isUserAdmin?: boolean;
   initialFilter?: FilterType;
+  initialHasMore: boolean;
+  initialCursor: string | null;
 }
 
 export default function FilteredNoteList({
   notes,
   isUserAdmin = false,
   initialFilter = "all",
+  initialHasMore,
+  initialCursor,
 }: FilteredNoteListProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const activeFilter =
     (searchParams.get("filter") as FilterType) || initialFilter || "all";
   const activeSort = (searchParams.get("sort") as SortType) || "default";
+
+  // Infinite scroll setup
+  const fetchMore = useCallback(
+    async (cursor: string | null) => {
+      return fetchNotesInfinite(cursor, activeFilter, activeSort);
+    },
+    [activeFilter, activeSort]
+  );
+
+  const { items, isLoading, hasMore, sentinelRef } =
+    useInfiniteScroll<NoteWithMeta>({
+      initialItems: notes as NoteWithMeta[],
+      fetchMore,
+      initialCursor,
+      initialHasMore,
+      rootMargin: "600px",
+    });
 
   const handleFilterChange = (filter: FilterType) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -198,7 +226,7 @@ export default function FilteredNoteList({
         </div>
       </div>
 
-      {notes.length === 0 ? (
+      {items.length === 0 && !isLoading ? (
         <div className="text-center py-12">
           <p className="text-subtext0 text-lg">
             {activeFilter === "all"
@@ -207,13 +235,45 @@ export default function FilteredNoteList({
           </p>
         </div>
       ) : (
-        <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-0">
-          {notes.map((note) => (
-            <div key={note.id} className="break-inside-avoid mb-6">
-              <NoteCard note={note} isUserAdmin={isUserAdmin} />
+        <>
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-0">
+            {items.map((note) => (
+              <div key={note.id} className="break-inside-avoid mb-6">
+                <NoteCard
+                  note={note as Note & { reactions?: { regular: number; admin: number }; commentCount?: number }}
+                  isUserAdmin={isUserAdmin}
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Loading indicator */}
+          {isLoading && (
+            <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-0 mt-6">
+              {Array.from({ length: 3 }).map((_, index) => (
+                <div key={`loading-skeleton-${index}`} className="break-inside-avoid mb-6">
+                  <NoteCardSkeleton />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          )}
+
+          {/* Sentinel element for intersection observer */}
+          {hasMore && !isLoading && (
+            <div
+              ref={sentinelRef}
+              className="h-4 w-full"
+              aria-hidden="true"
+            />
+          )}
+
+          {/* End of content indicator */}
+          {!hasMore && items.length > 0 && (
+            <div className="text-center py-8">
+              <p className="text-subtext0 text-sm">You&apos;ve reached the end!</p>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
