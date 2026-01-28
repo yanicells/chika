@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function BlogCardSkeleton() {
   return (
-    <Card className="h-full border-t-4 border-overlay0 bg-surface0/60">
+    <Card className="h-full border-t-4 border-overlay0 bg-surface0/60 animate-pulse">
       <div className="flex flex-col gap-4">
         <Skeleton className="h-5 w-32" />
         <Skeleton className="h-8 w-5/6" />
