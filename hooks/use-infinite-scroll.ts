@@ -51,7 +51,7 @@ export function useInfiniteScroll<T>({
   const [hasMore, setHasMore] = useState(initialHasMore);
   const [error, setError] = useState<Error | null>(null);
   const [isPending, startTransition] = useTransition();
-  
+
   const observerRef = useRef<IntersectionObserver | null>(null);
   const isLoadingRef = useRef(false);
 
@@ -66,19 +66,21 @@ export function useInfiniteScroll<T>({
   const loadMore = useCallback(async () => {
     // Prevent multiple simultaneous fetches
     if (isLoadingRef.current || !hasMore) return;
-    
+
     isLoadingRef.current = true;
-    
+
     startTransition(async () => {
       try {
         const result = await fetchMore(cursor);
-        
+
         setItems((prev) => [...prev, ...result.items]);
         setCursor(result.nextCursor);
         setHasMore(result.hasMore);
         setError(null);
       } catch (err) {
-        setError(err instanceof Error ? err : new Error("Failed to load more items"));
+        setError(
+          err instanceof Error ? err : new Error("Failed to load more items"),
+        );
       } finally {
         isLoadingRef.current = false;
       }
@@ -105,12 +107,12 @@ export function useInfiniteScroll<T>({
         {
           rootMargin,
           threshold,
-        }
+        },
       );
 
       observerRef.current.observe(node);
     },
-    [hasMore, loadMore, rootMargin, threshold]
+    [hasMore, loadMore, rootMargin, threshold],
   );
 
   // Cleanup observer on unmount
@@ -122,12 +124,15 @@ export function useInfiniteScroll<T>({
     };
   }, []);
 
-  const reset = useCallback((newItems: T[], newCursor: string | null, newHasMore: boolean) => {
-    setItems(newItems);
-    setCursor(newCursor);
-    setHasMore(newHasMore);
-    setError(null);
-  }, []);
+  const reset = useCallback(
+    (newItems: T[], newCursor: string | null, newHasMore: boolean) => {
+      setItems(newItems);
+      setCursor(newCursor);
+      setHasMore(newHasMore);
+      setError(null);
+    },
+    [],
+  );
 
   return {
     items,
