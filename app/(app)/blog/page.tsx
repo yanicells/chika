@@ -39,7 +39,7 @@ async function BlogContent() {
         ...post,
         commentCount: comments.length,
       };
-    })
+    }),
   );
 
   // Calculate infinite scroll props

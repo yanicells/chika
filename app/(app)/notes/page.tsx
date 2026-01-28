@@ -77,7 +77,7 @@ async function NotesContent({
     1,
     9,
     validatedFilter,
-    validatedSort
+    validatedSort,
   );
   const adminStatus = await isAdmin();
 
@@ -89,7 +89,7 @@ async function NotesContent({
         ...note,
         commentCount: comments.length,
       };
-    })
+    }),
   );
 
   // Calculate infinite scroll props
