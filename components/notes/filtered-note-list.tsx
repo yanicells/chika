@@ -79,9 +79,8 @@ export default function FilteredNoteList({
     } else {
       params.set("filter", filter);
     }
-    // Reset to page 1 when filter changes
-    params.delete("page");
-    router.push(`/notes?${params.toString()}`);
+    const queryString = params.toString();
+    router.push(queryString ? `/notes?${queryString}` : "/notes");
   };
 
   const handleSortChange = (sort: SortType) => {
@@ -91,9 +90,8 @@ export default function FilteredNoteList({
     } else {
       params.set("sort", sort);
     }
-    // Reset to page 1 when sort changes
-    params.delete("page");
-    router.push(`/notes?${params.toString()}`);
+    const queryString = params.toString();
+    router.push(queryString ? `/notes?${queryString}` : "/notes");
   };
 
   return (
