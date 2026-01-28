@@ -47,7 +47,7 @@ export default function InfiniteNoteList({
     async (cursor: string | null) => {
       return fetchNotesInfinite(cursor, filter, sort);
     },
-    [filter, sort]
+    [filter, sort],
   );
 
   const { items, isLoading, hasMore, sentinelRef } =
@@ -76,7 +76,12 @@ export default function InfiniteNoteList({
         {items.map((note) => (
           <div key={note.id} className="break-inside-avoid mb-6">
             <NoteCard
-              note={note as Note & { reactions?: { regular: number; admin: number }; commentCount?: number }}
+              note={
+                note as Note & {
+                  reactions?: { regular: number; admin: number };
+                  commentCount?: number;
+                }
+              }
               isUserAdmin={isUserAdmin}
             />
           </div>
@@ -87,7 +92,10 @@ export default function InfiniteNoteList({
       {isLoading && (
         <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-0">
           {Array.from({ length: 3 }).map((_, index) => (
-            <div key={`loading-skeleton-${index}`} className="break-inside-avoid mb-6">
+            <div
+              key={`loading-skeleton-${index}`}
+              className="break-inside-avoid mb-6"
+            >
               <NoteCardSkeleton />
             </div>
           ))}
@@ -96,11 +104,7 @@ export default function InfiniteNoteList({
 
       {/* Sentinel element for intersection observer */}
       {hasMore && !isLoading && (
-        <div
-          ref={sentinelRef}
-          className="h-4 w-full"
-          aria-hidden="true"
-        />
+        <div ref={sentinelRef} className="h-4 w-full" aria-hidden="true" />
       )}
 
       {/* End of content indicator */}
