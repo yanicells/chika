@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Note } from "@/db/schema";
 import NoteCard from "./note-card";
@@ -38,6 +38,7 @@ interface FilteredNoteListProps {
   })[];
   isUserAdmin?: boolean;
   initialFilter?: FilterType;
+  initialSort?: SortType;
   initialHasMore: boolean;
   initialCursor: string | null;
 }
@@ -46,22 +47,36 @@ export default function FilteredNoteList({
   notes,
   isUserAdmin = false,
   initialFilter = "all",
+  initialSort = "default",
   initialHasMore,
   initialCursor,
 }: FilteredNoteListProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const activeFilter =
-    (searchParams.get("filter") as FilterType) || initialFilter || "all";
-  const activeSort = (searchParams.get("sort") as SortType) || "default";
 
-  // Infinite scroll setup
+  // Track hydration to prevent layout shifts
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
+  // Use props for display (they come from server and match the key)
+  // searchParams is used for navigation handlers only
+  const activeFilter = initialFilter;
+  const activeSort = initialSort;
+
+  // Infinite scroll setup - uses props (initialFilter/initialSort) which are stable
+  // because the component remounts when they change (via key prop)
   const fetchMore = useCallback(
     async (cursor: string | null) => {
-      return fetchNotesInfinite(cursor, activeFilter, activeSort);
+      return fetchNotesInfinite(cursor, initialFilter, initialSort);
     },
-    [activeFilter, activeSort],
+    [initialFilter, initialSort],
   );
+
+  // Memoize getItemKey to prevent unnecessary re-renders
+  const getItemKey = useCallback((item: NoteWithMeta) => item.id, []);
 
   const { items, isLoading, hasMore, sentinelRef } =
     useInfiniteScroll<NoteWithMeta>({
@@ -70,7 +85,26 @@ export default function FilteredNoteList({
       initialCursor,
       initialHasMore,
       rootMargin: "600px",
+      getItemKey,
     });
+
+  // Memoize the rendered notes to prevent unnecessary re-renders
+  // which cause layout recalculations in CSS columns
+  const renderedNotes = useMemo(() => {
+    return items.map((note) => (
+      <div key={note.id} className="break-inside-avoid mb-6">
+        <NoteCard
+          note={
+            note as Note & {
+              reactions?: { regular: number; admin: number };
+              commentCount?: number;
+            }
+          }
+          isUserAdmin={isUserAdmin}
+        />
+      </div>
+    ));
+  }, [items, isUserAdmin]);
 
   const handleFilterChange = (filter: FilterType) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -234,20 +268,20 @@ export default function FilteredNoteList({
         </div>
       ) : (
         <>
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-0">
-            {items.map((note) => (
-              <div key={note.id} className="break-inside-avoid mb-6">
-                <NoteCard
-                  note={
-                    note as Note & {
-                      reactions?: { regular: number; admin: number };
-                      commentCount?: number;
-                    }
-                  }
-                  isUserAdmin={isUserAdmin}
-                />
-              </div>
-            ))}
+          {/* 
+            CSS columns masonry with stabilization:
+            - contain: layout prevents external layout recalculations
+            - will-change: contents hints browser to optimize for content changes
+            - opacity transition on hydration prevents visual flash
+          */}
+          <div
+            className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-0 transition-opacity duration-150"
+            style={{
+              contain: "layout",
+              opacity: isHydrated ? 1 : 0.99,
+            }}
+          >
+            {renderedNotes}
 
             {/* Loading skeletons inline with masonry */}
             {isLoading &&

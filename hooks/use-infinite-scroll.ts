@@ -19,6 +19,8 @@ interface UseInfiniteScrollOptions<T> {
   rootMargin?: string;
   /** Threshold for intersection observer */
   threshold?: number;
+  /** Function to get unique key from item (for deduplication) */
+  getItemKey?: (item: T) => string;
 }
 
 interface UseInfiniteScrollReturn<T> {
@@ -34,8 +36,6 @@ interface UseInfiniteScrollReturn<T> {
   sentinelRef: (node: HTMLDivElement | null) => void;
   /** Manually trigger loading more items */
   loadMore: () => void;
-  /** Reset the infinite scroll state with new items */
-  reset: (newItems: T[], newCursor: string | null, newHasMore: boolean) => void;
 }
 
 export function useInfiniteScroll<T>({
@@ -45,7 +45,9 @@ export function useInfiniteScroll<T>({
   initialHasMore,
   rootMargin = "400px",
   threshold = 0,
+  getItemKey = (item: T) => (item as { id: string }).id,
 }: UseInfiniteScrollOptions<T>): UseInfiniteScrollReturn<T> {
+  // State is initialized from props - component should be keyed to reset on filter/sort change
   const [items, setItems] = useState<T[]>(initialItems);
   const [cursor, setCursor] = useState<string | null>(initialCursor);
   const [hasMore, setHasMore] = useState(initialHasMore);
@@ -54,14 +56,8 @@ export function useInfiniteScroll<T>({
 
   const observerRef = useRef<IntersectionObserver | null>(null);
   const isLoadingRef = useRef(false);
-
-  // Reset state when initial items change (e.g., filter/sort change)
-  useEffect(() => {
-    setItems(initialItems);
-    setCursor(initialCursor);
-    setHasMore(initialHasMore);
-    setError(null);
-  }, [initialItems, initialCursor, initialHasMore]);
+  // Track seen IDs to prevent duplicates - using ref to avoid re-renders
+  const seenIdsRef = useRef<Set<string>>(new Set(initialItems.map(getItemKey)));
 
   const loadMore = useCallback(async () => {
     // Prevent multiple simultaneous fetches
@@ -73,7 +69,17 @@ export function useInfiniteScroll<T>({
       try {
         const result = await fetchMore(cursor);
 
-        setItems((prev) => [...prev, ...result.items]);
+        // Deduplicate items by checking against seen IDs
+        const newUniqueItems = result.items.filter((item) => {
+          const key = getItemKey(item);
+          if (seenIdsRef.current.has(key)) {
+            return false;
+          }
+          seenIdsRef.current.add(key);
+          return true;
+        });
+
+        setItems((prev) => [...prev, ...newUniqueItems]);
         setCursor(result.nextCursor);
         setHasMore(result.hasMore);
         setError(null);
@@ -85,7 +91,7 @@ export function useInfiniteScroll<T>({
         isLoadingRef.current = false;
       }
     });
-  }, [cursor, fetchMore, hasMore]);
+  }, [cursor, fetchMore, hasMore, getItemKey]);
 
   const sentinelRef = useCallback(
     (node: HTMLDivElement | null) => {
@@ -124,16 +130,6 @@ export function useInfiniteScroll<T>({
     };
   }, []);
 
-  const reset = useCallback(
-    (newItems: T[], newCursor: string | null, newHasMore: boolean) => {
-      setItems(newItems);
-      setCursor(newCursor);
-      setHasMore(newHasMore);
-      setError(null);
-    },
-    [],
-  );
-
   return {
     items,
     isLoading: isPending,
@@ -141,6 +137,5 @@ export function useInfiniteScroll<T>({
     error,
     sentinelRef,
     loadMore,
-    reset,
   };
 }

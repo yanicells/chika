@@ -13,19 +13,19 @@ export const getPublishedBlogPosts = withCache(
       .select()
       .from(blogPosts)
       .where(
-        and(eq(blogPosts.isDeleted, false), eq(blogPosts.isPublished, true))
+        and(eq(blogPosts.isDeleted, false), eq(blogPosts.isPublished, true)),
       )
       .orderBy(desc(blogPosts.isPinned), desc(blogPosts.publishedAt));
 
     // Use helper function to get reactions for each post
     const postsWithReactions = await Promise.all(
-      posts.map((post) => getBlogPostWithReactionsById(post.id))
+      posts.map((post) => getBlogPostWithReactionsById(post.id)),
     );
 
     return postsWithReactions.filter((post) => post !== null);
   },
   ["getPublishedBlogPosts"],
-  { tags: ["blogs"] }
+  { tags: ["blogs"] },
 );
 
 /**
@@ -40,7 +40,7 @@ export const getAllBlogPosts = withCache(
       .orderBy(desc(blogPosts.isPinned), desc(blogPosts.createdAt));
   },
   ["getAllBlogPosts"],
-  { tags: ["blogs"] }
+  { tags: ["blogs"] },
 );
 
 /**
@@ -55,15 +55,15 @@ export const getBlogPostBySlug = withCache(
         and(
           eq(blogPosts.slug, slug),
           eq(blogPosts.isDeleted, false),
-          eq(blogPosts.isPublished, true)
-        )
+          eq(blogPosts.isPublished, true),
+        ),
       )
       .limit(1);
 
     return result[0] || null;
   },
   ["getBlogPostBySlug"],
-  { tags: ["blogs"] }
+  { tags: ["blogs"] },
 );
 
 /**
@@ -80,7 +80,7 @@ export const getBlogPostById = withCache(
     return result[0] || null;
   },
   ["getBlogPostById"],
-  { tags: ["blogs"] }
+  { tags: ["blogs"] },
 );
 
 /**
@@ -108,7 +108,7 @@ const getBlogPostWithReactionsById = withCache(
     };
   },
   ["getBlogPostWithReactionsById"],
-  { tags: ["blogs"] }
+  { tags: ["blogs"] },
 );
 
 /**
@@ -136,7 +136,7 @@ export const getBlogPostWithReactions = withCache(
     };
   },
   ["getBlogPostWithReactions"],
-  { tags: ["blogs"] }
+  { tags: ["blogs"] },
 );
 
 /**
@@ -151,13 +151,13 @@ export const getPinnedBlogPosts = withCache(
         and(
           eq(blogPosts.isDeleted, false),
           eq(blogPosts.isPublished, true),
-          eq(blogPosts.isPinned, true)
-        )
+          eq(blogPosts.isPinned, true),
+        ),
       )
       .orderBy(desc(blogPosts.publishedAt));
   },
   ["getPinnedBlogPosts"],
-  { tags: ["blogs"] }
+  { tags: ["blogs"] },
 );
 
 /**
@@ -169,12 +169,12 @@ export const getDraftBlogPosts = withCache(
       .select()
       .from(blogPosts)
       .where(
-        and(eq(blogPosts.isDeleted, false), eq(blogPosts.isPublished, false))
+        and(eq(blogPosts.isDeleted, false), eq(blogPosts.isPublished, false)),
       )
       .orderBy(desc(blogPosts.createdAt));
   },
   ["getDraftBlogPosts"],
-  { tags: ["blogs"] }
+  { tags: ["blogs"] },
 );
 
 /**
@@ -187,7 +187,7 @@ export async function slugExists(slug: string, excludeId?: string) {
     .where(
       excludeId
         ? and(eq(blogPosts.slug, slug), sql`${blogPosts.id} != ${excludeId}`)
-        : eq(blogPosts.slug, slug)
+        : eq(blogPosts.slug, slug),
     )
     .limit(1);
 
@@ -205,18 +205,20 @@ export const getPublishedBlogPostsPaginated = withCache(
       .select()
       .from(blogPosts)
       .where(
-        and(
-          eq(blogPosts.isDeleted, false),
-          eq(blogPosts.isPublished, true)
-        )
+        and(eq(blogPosts.isDeleted, false), eq(blogPosts.isPublished, true)),
       )
-      .orderBy(desc(blogPosts.isPinned), desc(blogPosts.publishedAt))
+      // Secondary sort by ID ensures stable ordering for pagination
+      .orderBy(
+        desc(blogPosts.isPinned),
+        desc(blogPosts.publishedAt),
+        desc(blogPosts.id),
+      )
       .limit(limit)
       .offset(offset);
 
     // Get reactions for each post
     const postsWithReactions = await Promise.all(
-      postsList.map((post) => getBlogPostWithReactionsById(post.id))
+      postsList.map((post) => getBlogPostWithReactionsById(post.id)),
     );
 
     const filteredPosts = postsWithReactions.filter((post) => post !== null);
@@ -226,10 +228,7 @@ export const getPublishedBlogPostsPaginated = withCache(
       .select({ count: count() })
       .from(blogPosts)
       .where(
-        and(
-          eq(blogPosts.isDeleted, false),
-          eq(blogPosts.isPublished, true)
-        )
+        and(eq(blogPosts.isDeleted, false), eq(blogPosts.isPublished, true)),
       );
 
     const total = totalResult[0]?.count || 0;
@@ -243,5 +242,5 @@ export const getPublishedBlogPostsPaginated = withCache(
     };
   },
   ["getPublishedBlogPostsPaginated"],
-  { tags: ["blogs"] }
+  { tags: ["blogs"] },
 );

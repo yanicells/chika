@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import { BlogPost } from "@/db/schema";
 import BlogCard from "./blog-card";
 import BlogCardSkeleton from "./blog-card-skeleton";
@@ -29,9 +29,19 @@ export default function InfiniteBlogList({
   initialCursor,
   isUserAdmin = false,
 }: InfiniteBlogListProps) {
+  // Track hydration to prevent layout shifts
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
   const fetchMore = useCallback(async (cursor: string | null) => {
     return fetchBlogPostsInfinite(cursor);
   }, []);
+
+  // Memoize getItemKey to prevent unnecessary re-renders
+  const getItemKey = useCallback((item: BlogPostWithMeta) => item.id, []);
 
   const { items, isLoading, hasMore, sentinelRef } =
     useInfiniteScroll<BlogPostWithMeta>({
@@ -39,8 +49,26 @@ export default function InfiniteBlogList({
       fetchMore,
       initialCursor,
       initialHasMore,
-      rootMargin: "600px", // Start loading before reaching the end
+      rootMargin: "600px",
+      getItemKey,
     });
+
+  // Memoize the rendered posts to prevent unnecessary re-renders
+  const renderedPosts = useMemo(() => {
+    return items.map((post) => (
+      <div key={post.id} className="break-inside-avoid mb-6">
+        <BlogCard
+          post={
+            post as BlogPost & {
+              reactions?: { regular: number; admin: number };
+              commentCount?: number;
+            }
+          }
+          isUserAdmin={isUserAdmin}
+        />
+      </div>
+    ));
+  }, [items, isUserAdmin]);
 
   if (items.length === 0 && !isLoading) {
     return (
@@ -54,21 +82,15 @@ export default function InfiniteBlogList({
 
   return (
     <div className="space-y-6">
-      {/* Blog Posts Grid */}
-      <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-0">
-        {items.map((post) => (
-          <div key={post.id} className="break-inside-avoid mb-6">
-            <BlogCard
-              post={
-                post as BlogPost & {
-                  reactions?: { regular: number; admin: number };
-                  commentCount?: number;
-                }
-              }
-              isUserAdmin={isUserAdmin}
-            />
-          </div>
-        ))}
+      {/* Blog Posts Grid with layout stabilization */}
+      <div
+        className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-0 transition-opacity duration-150"
+        style={{
+          contain: "layout",
+          opacity: isHydrated ? 1 : 0.99,
+        }}
+      >
+        {renderedPosts}
 
         {/* Loading skeletons inline with masonry */}
         {isLoading &&

@@ -37,13 +37,13 @@ export const getPublicNotes = withCache(
 
     // Use existing getNoteWithReactions for each note
     const notesWithReactions = await Promise.all(
-      notesData.map((note) => getNoteWithReactions(note.id))
+      notesData.map((note) => getNoteWithReactions(note.id)),
     );
 
     return notesWithReactions.filter((note) => note !== null);
   },
   ["getPublicNotes"],
-  { tags: ["public-notes"] }
+  { tags: ["public-notes"] },
 );
 
 /**
@@ -61,7 +61,7 @@ export const getPrivateNotes = withCache(
     return notesData;
   },
   ["getPrivateNotes"],
-  { tags: ["public-notes"] }
+  { tags: ["public-notes"] },
 );
 
 /**
@@ -102,13 +102,13 @@ export const getAllNotes = withCache(
             comments: Number(commentCount[0]?.count || 0),
           },
         };
-      })
+      }),
     );
 
     return notesWithData;
   },
   ["getAllNotes"],
-  { tags: ["public-notes"] }
+  { tags: ["public-notes"] },
 );
 
 /**
@@ -126,7 +126,7 @@ export const getNoteById = withCache(
     return result[0] || null;
   },
   ["getNoteById"],
-  { tags: ["public-notes"] }
+  { tags: ["public-notes"] },
 );
 
 /**
@@ -154,7 +154,7 @@ export const getNoteWithReactions = withCache(
     };
   },
   ["getNoteWithReactions"],
-  { tags: ["public-notes"] }
+  { tags: ["public-notes"] },
 );
 
 /**
@@ -169,13 +169,13 @@ export const getPinnedNotes = withCache(
         and(
           eq(notes.isDeleted, false),
           eq(notes.isPrivate, false),
-          eq(notes.isPinned, true)
-        )
+          eq(notes.isPinned, true),
+        ),
       )
       .orderBy(desc(notes.createdAt));
   },
   ["getPinnedNotes"],
-  { tags: ["public-notes"] }
+  { tags: ["public-notes"] },
 );
 
 /**
@@ -186,14 +186,14 @@ export const getPublicNotesPaginated = withCache(
     page: number = 1,
     limit: number = 9,
     filter: "all" | "admin" | "username" | "anonymous" | "pinned" = "all",
-    sort: SortType = "default"
+    sort: SortType = "default",
   ) => {
     const offset = (page - 1) * limit;
 
     // Build base conditions
     const baseConditions = and(
       eq(notes.isDeleted, false),
-      eq(notes.isPrivate, false)
+      eq(notes.isPrivate, false),
     );
 
     // Add filter conditions
@@ -206,12 +206,12 @@ export const getPublicNotesPaginated = withCache(
       filterConditions = and(
         baseConditions,
         isNotNull(notes.userName),
-        ne(notes.userName, "")
+        ne(notes.userName, ""),
       );
     } else if (filter === "anonymous") {
       filterConditions = and(
         baseConditions,
-        or(isNull(notes.userName), eq(notes.userName, ""))
+        or(isNull(notes.userName), eq(notes.userName, "")),
       );
     }
 
@@ -231,10 +231,10 @@ export const getPublicNotesPaginated = withCache(
         createdAt: notes.createdAt,
         updatedAt: notes.updatedAt,
         commentCount: sql<number>`count(distinct ${comments.id})`.as(
-          "comment_count"
+          "comment_count",
         ),
         reactionCount: sql<number>`count(distinct ${reactions.id})`.as(
-          "reaction_count"
+          "reaction_count",
         ),
       })
       .from(notes)
@@ -243,19 +243,25 @@ export const getPublicNotesPaginated = withCache(
       .where(filterConditions)
       .groupBy(notes.id)
       .orderBy(
+        // Secondary sort by ID ensures stable ordering for pagination
+        // This prevents duplicates when items have the same count/date
         ...(sort === "most-comments"
-          ? [desc(sql`comment_count`)]
+          ? [desc(sql`comment_count`), desc(notes.id)]
           : sort === "least-comments"
-          ? [asc(sql`comment_count`)]
-          : sort === "most-likes"
-          ? [desc(sql`reaction_count`)]
-          : sort === "least-likes"
-          ? [asc(sql`reaction_count`)]
-          : sort === "newest"
-          ? [desc(notes.createdAt)]
-          : sort === "oldest"
-          ? [asc(notes.createdAt)]
-          : [desc(notes.isPinned), desc(notes.createdAt)])
+            ? [asc(sql`comment_count`), desc(notes.id)]
+            : sort === "most-likes"
+              ? [desc(sql`reaction_count`), desc(notes.id)]
+              : sort === "least-likes"
+                ? [asc(sql`reaction_count`), desc(notes.id)]
+                : sort === "newest"
+                  ? [desc(notes.createdAt), desc(notes.id)]
+                  : sort === "oldest"
+                    ? [asc(notes.createdAt), desc(notes.id)]
+                    : [
+                        desc(notes.isPinned),
+                        desc(notes.createdAt),
+                        desc(notes.id),
+                      ]),
       )
       .limit(limit)
       .offset(offset);
@@ -278,7 +284,7 @@ export const getPublicNotesPaginated = withCache(
             admin: Number(reactionCounts[0]?.adminCount || 0),
           },
         };
-      })
+      }),
     );
 
     // Get total count with same filter
@@ -298,5 +304,5 @@ export const getPublicNotesPaginated = withCache(
     };
   },
   ["getPublicNotesPaginated"],
-  { tags: ["public-notes"] }
+  { tags: ["public-notes"] },
 );

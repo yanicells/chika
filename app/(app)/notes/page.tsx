@@ -102,9 +102,11 @@ async function NotesContent({
 
   return (
     <FilteredNoteList
+      key={`${validatedFilter}-${validatedSort}`}
       notes={notesWithComments}
       isUserAdmin={adminStatus}
       initialFilter={validatedFilter}
+      initialSort={validatedSort}
       initialHasMore={hasMore}
       initialCursor={nextCursor}
     />
