@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState, useEffect } from "react";
+import { useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Note } from "@/db/schema";
 import NoteCard from "./note-card";
@@ -53,13 +53,6 @@ export default function FilteredNoteList({
 }: FilteredNoteListProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-
-  // Track hydration to prevent layout shifts
-  const [isHydrated, setIsHydrated] = useState(false);
-
-  useEffect(() => {
-    setIsHydrated(true);
-  }, []);
 
   // Use props for display (they come from server and match the key)
   // searchParams is used for navigation handlers only
@@ -153,7 +146,7 @@ export default function FilteredNoteList({
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="bg-surface0 border-2 border-overlay0 rounded-lg z-50 min-w-[160px]"
+                className="bg-surface0 border-2 border-overlay0 rounded-lg z-50 min-w-40"
                 align="end"
                 sideOffset={8}
               >
@@ -218,7 +211,7 @@ export default function FilteredNoteList({
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="bg-surface0 border-2 border-overlay0 rounded-lg z-50 min-w-[160px]"
+                className="bg-surface0 border-2 border-overlay0 rounded-lg z-50 min-w-40"
                 align="end"
                 sideOffset={8}
               >
@@ -271,15 +264,10 @@ export default function FilteredNoteList({
           {/* 
             CSS columns masonry with stabilization:
             - contain: layout prevents external layout recalculations
-            - will-change: contents hints browser to optimize for content changes
-            - opacity transition on hydration prevents visual flash
           */}
           <div
-            className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-0 transition-opacity duration-150"
-            style={{
-              contain: "layout",
-              opacity: isHydrated ? 1 : 0.99,
-            }}
+            className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-0"
+            style={{ contain: "layout" }}
           >
             {renderedNotes}
 

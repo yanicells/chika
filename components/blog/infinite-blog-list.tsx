@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState, useEffect } from "react";
+import { useCallback, useMemo } from "react";
 import { BlogPost } from "@/db/schema";
 import BlogCard from "./blog-card";
 import BlogCardSkeleton from "./blog-card-skeleton";
@@ -29,13 +29,6 @@ export default function InfiniteBlogList({
   initialCursor,
   isUserAdmin = false,
 }: InfiniteBlogListProps) {
-  // Track hydration to prevent layout shifts
-  const [isHydrated, setIsHydrated] = useState(false);
-
-  useEffect(() => {
-    setIsHydrated(true);
-  }, []);
-
   const fetchMore = useCallback(async (cursor: string | null) => {
     return fetchBlogPostsInfinite(cursor);
   }, []);
@@ -84,11 +77,8 @@ export default function InfiniteBlogList({
     <div className="space-y-6">
       {/* Blog Posts Grid with layout stabilization */}
       <div
-        className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-0 transition-opacity duration-150"
-        style={{
-          contain: "layout",
-          opacity: isHydrated ? 1 : 0.99,
-        }}
+        className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-0"
+        style={{ contain: "layout" }}
       >
         {renderedPosts}
 
