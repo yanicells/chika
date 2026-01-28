@@ -3,7 +3,6 @@ import Container from "@/components/shared/container";
 import { getPublicNotesPaginated } from "@/lib/queries/notes";
 import { getCommentsWithReactions } from "@/lib/queries/comments";
 import FilteredNoteList from "@/components/notes/filtered-note-list";
-import NotesPagination from "@/components/notes/notes-pagination";
 import NoteCardSkeleton from "@/components/notes/note-card-skeleton";
 import { isAdmin } from "@/lib/auth-helper";
 import type { FilterType } from "@/components/notes/note-filter";
@@ -18,12 +17,11 @@ type SortType =
   | "oldest";
 
 interface NotesPageProps {
-  searchParams: Promise<{ page?: string; filter?: string; sort?: string }>;
+  searchParams: Promise<{ filter?: string; sort?: string }>;
 }
 
 export default async function NotesPage({ searchParams }: NotesPageProps) {
-  const { page, filter, sort } = await searchParams;
-  const currentPage = Number(page) || 1;
+  const { filter, sort } = await searchParams;
   const activeFilter = (filter as FilterType) || "all";
   const activeSort = (sort as SortType) || "default";
 
@@ -58,7 +56,6 @@ export default async function NotesPage({ searchParams }: NotesPageProps) {
       <div className="pt-12 pb-8">
         <Suspense fallback={<NotesGridFallback />}>
           <NotesContent
-            currentPage={currentPage}
             validatedFilter={validatedFilter}
             validatedSort={validatedSort}
           />
@@ -69,23 +66,22 @@ export default async function NotesPage({ searchParams }: NotesPageProps) {
 }
 
 async function NotesContent({
-  currentPage,
   validatedFilter,
   validatedSort,
 }: {
-  currentPage: number;
   validatedFilter: FilterType;
   validatedSort: SortType;
 }) {
+  // Always start with page 1 for infinite scroll
   const { notes, totalPages } = await getPublicNotesPaginated(
-    currentPage,
+    1,
     9,
     validatedFilter,
     validatedSort
   );
   const adminStatus = await isAdmin();
 
-  // Fetch comment counts for all notes
+  // Fetch comment counts for all notes in parallel
   const notesWithComments = await Promise.all(
     notes.map(async (note) => {
       const comments = await getCommentsWithReactions(note.id);
@@ -96,30 +92,22 @@ async function NotesContent({
     })
   );
 
+  // Calculate infinite scroll props
+  const hasMore = totalPages > 1;
+  const nextCursor = hasMore ? "2" : null;
+
   if (notesWithComments.length === 0 && validatedFilter === "all") {
     return <p className="text-center text-subtext0 py-8">No notes yet.</p>;
   }
 
   return (
-    <>
-      <FilteredNoteList
-        notes={notesWithComments}
-        isUserAdmin={adminStatus}
-        initialFilter={validatedFilter}
-      />
-
-      {/* Pagination */}
-      {totalPages > 0 && (
-        <div className="mt-12 flex justify-center">
-          <NotesPagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            filter={validatedFilter}
-            sort={validatedSort}
-          />
-        </div>
-      )}
-    </>
+    <FilteredNoteList
+      notes={notesWithComments}
+      isUserAdmin={adminStatus}
+      initialFilter={validatedFilter}
+      initialHasMore={hasMore}
+      initialCursor={nextCursor}
+    />
   );
 }
 

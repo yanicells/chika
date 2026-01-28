@@ -2,19 +2,11 @@ import { Suspense } from "react";
 import Container from "@/components/shared/container";
 import { getPublishedBlogPostsPaginated } from "@/lib/queries/blog";
 import { getBlogCommentsWithReactions } from "@/lib/queries/comments";
-import BlogList from "@/components/blog/blog-list";
+import InfiniteBlogList from "@/components/blog/infinite-blog-list";
 import BlogCardSkeleton from "@/components/blog/blog-card-skeleton";
-import BlogPagination from "@/components/blog/blog-pagination";
 import { isAdmin } from "@/lib/auth-helper";
 
-interface BlogPageProps {
-  searchParams: Promise<{ page?: string }>;
-}
-
-export default async function BlogPage({ searchParams }: BlogPageProps) {
-  const { page } = await searchParams;
-  const currentPage = Number(page) || 1;
-
+export default async function BlogPage() {
   return (
     <Container>
       <div className="pt-12 pb-8">
@@ -27,21 +19,19 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         </div>
 
         <Suspense fallback={<BlogGridFallback />}>
-          <BlogContent currentPage={currentPage} />
+          <BlogContent />
         </Suspense>
       </div>
     </Container>
   );
 }
 
-async function BlogContent({ currentPage }: { currentPage: number }) {
-  const { posts, totalPages } = await getPublishedBlogPostsPaginated(
-    currentPage,
-    6
-  );
+async function BlogContent() {
+  // Always start with page 1 for infinite scroll
+  const { posts, totalPages } = await getPublishedBlogPostsPaginated(1, 6);
   const adminStatus = await isAdmin();
 
-  // Fetch comment counts for all blog posts
+  // Fetch comment counts for all blog posts in parallel
   const postsWithComments = await Promise.all(
     posts.map(async (post) => {
       const comments = await getBlogCommentsWithReactions(post.id);
@@ -52,19 +42,21 @@ async function BlogContent({ currentPage }: { currentPage: number }) {
     })
   );
 
+  // Calculate infinite scroll props
+  const hasMore = totalPages > 1;
+  const nextCursor = hasMore ? "2" : null;
+
   if (postsWithComments.length === 0) {
     return <p className="text-center text-subtext0 py-8">No blog posts yet.</p>;
   }
 
   return (
-    <>
-      <BlogList posts={postsWithComments} isUserAdmin={adminStatus} />
-
-      {/* Pagination */}
-      <div className="mt-12 flex justify-center">
-        <BlogPagination currentPage={currentPage} totalPages={totalPages} />
-      </div>
-    </>
+    <InfiniteBlogList
+      initialPosts={postsWithComments}
+      initialHasMore={hasMore}
+      initialCursor={nextCursor}
+      isUserAdmin={adminStatus}
+    />
   );
 }
 
