@@ -46,22 +46,18 @@ export default function InfiniteBlogList({
       getItemKey,
     });
 
-  // Memoize the rendered posts to prevent unnecessary re-renders
-  const renderedPosts = useMemo(() => {
-    return items.map((post) => (
-      <div key={post.id} className="break-inside-avoid mb-6">
-        <BlogCard
-          post={
-            post as BlogPost & {
-              reactions?: { regular: number; admin: number };
-              commentCount?: number;
-            }
-          }
-          isUserAdmin={isUserAdmin}
-        />
-      </div>
-    ));
-  }, [items, isUserAdmin]);
+  // Distribute items into columns using round-robin assignment
+  // This ensures items stay in their assigned column and don't reflow when new items load
+  const columns = useMemo(() => {
+    const columnCount = 3;
+    const cols: BlogPostWithMeta[][] = Array.from({ length: columnCount }, () => []);
+    
+    items.forEach((item, index) => {
+      cols[index % columnCount].push(item);
+    });
+    
+    return cols;
+  }, [items]);
 
   if (items.length === 0 && !isLoading) {
     return (
@@ -75,23 +71,81 @@ export default function InfiniteBlogList({
 
   return (
     <div className="space-y-6">
-      {/* Blog Posts Grid with layout stabilization */}
-      <div
-        className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-0"
-        style={{ contain: "layout" }}
-      >
-        {renderedPosts}
-
-        {/* Loading skeletons inline with masonry */}
+      {/* 
+        Flexbox-based masonry with stable column assignment:
+        - Items are pre-assigned to columns via round-robin
+        - Adding new items doesn't cause existing items to reflow
+      */}
+      
+      {/* Mobile: single column */}
+      <div className="flex flex-col gap-6 md:hidden">
+        {items.map((post) => (
+          <div key={post.id} className="w-full">
+            <BlogCard
+              post={
+                post as BlogPost & {
+                  reactions?: { regular: number; admin: number };
+                  commentCount?: number;
+                }
+              }
+              isUserAdmin={isUserAdmin}
+            />
+          </div>
+        ))}
         {isLoading &&
           Array.from({ length: 3 }).map((_, index) => (
-            <div
-              key={`loading-skeleton-${index}`}
-              className="break-inside-avoid mb-6"
-            >
-              <BlogCardSkeleton />
-            </div>
+            <BlogCardSkeleton key={`skeleton-mobile-${index}`} />
           ))}
+      </div>
+
+      {/* Tablet: 2 columns */}
+      <div className="hidden md:flex lg:hidden gap-6 items-start">
+        {[0, 1].map((colIndex) => (
+          <div key={colIndex} className="flex-1 flex flex-col gap-6">
+            {items
+              .filter((_, i) => i % 2 === colIndex)
+              .map((post) => (
+                <div key={post.id} className="w-full">
+                  <BlogCard
+                    post={
+                      post as BlogPost & {
+                        reactions?: { regular: number; admin: number };
+                        commentCount?: number;
+                      }
+                    }
+                    isUserAdmin={isUserAdmin}
+                  />
+                </div>
+              ))}
+            {isLoading && colIndex < 2 && (
+              <BlogCardSkeleton key={`skeleton-tablet-${colIndex}`} />
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop: 3 columns */}
+      <div className="hidden lg:flex gap-6 items-start">
+        {columns.map((columnItems, colIndex) => (
+          <div key={colIndex} className="flex-1 flex flex-col gap-6">
+            {columnItems.map((post) => (
+              <div key={post.id} className="w-full">
+                <BlogCard
+                  post={
+                    post as BlogPost & {
+                      reactions?: { regular: number; admin: number };
+                      commentCount?: number;
+                    }
+                  }
+                  isUserAdmin={isUserAdmin}
+                />
+              </div>
+            ))}
+            {isLoading && (
+              <BlogCardSkeleton key={`skeleton-desktop-${colIndex}`} />
+            )}
+          </div>
+        ))}
       </div>
 
       {/* Loading spinner for visual feedback */}

@@ -28,7 +28,7 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
 
   return (
     <Card
-      className="h-full flex flex-col border-t-4 relative transition-shadow duration-200"
+      className="flex flex-col border-t-4 relative transition-shadow duration-200"
       style={{
         borderTopColor: backgroundColor,
         backgroundColor: `${backgroundColor}20`,
@@ -40,8 +40,8 @@ export default function BlogCard({ post, isUserAdmin = false }: BlogCardProps) {
         e.currentTarget.style.boxShadow = "";
       }}
     >
-      <Link href={`/blog/${post.slug}`} className="flex-1">
-        <div className="flex-1">
+      <Link href={`/blog/${post.slug}`}>
+        <div>
           <div className="flex items-start justify-between gap-2 mb-3">
             <div className="flex flex-wrap items-center gap-2 mb-2">
               {post.isPinned && (

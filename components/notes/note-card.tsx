@@ -32,7 +32,7 @@ export default function NoteCard({ note, isUserAdmin = false }: NoteCardProps) {
 
   return (
     <Card
-      className="h-full flex flex-col border-t-4 relative transition-shadow duration-200"
+      className="flex flex-col border-t-4 relative transition-shadow duration-200"
       style={{
         borderTopColor: backgroundColor,
         backgroundColor: `${backgroundColor}20`,
@@ -44,8 +44,8 @@ export default function NoteCard({ note, isUserAdmin = false }: NoteCardProps) {
         e.currentTarget.style.boxShadow = "";
       }}
     >
-      <Link href={`/notes/${note.id}`} className="flex-1">
-        <div className="flex-1">
+      <Link href={`/notes/${note.id}`}>
+        <div>
           <div className="flex justify-between items-center mb-2">
             {note.isPinned ? (
               <>
