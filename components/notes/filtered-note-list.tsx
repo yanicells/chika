@@ -85,12 +85,15 @@ export default function FilteredNoteList({
   // This ensures items stay in their assigned column and don't reflow when new items load
   const columns = useMemo(() => {
     const columnCount = 3; // lg:columns-3
-    const cols: NoteWithMeta[][] = Array.from({ length: columnCount }, () => []);
-    
+    const cols: NoteWithMeta[][] = Array.from(
+      { length: columnCount },
+      () => [],
+    );
+
     items.forEach((item, index) => {
       cols[index % columnCount].push(item);
     });
-    
+
     return cols;
   }, [items]);
 
@@ -262,7 +265,7 @@ export default function FilteredNoteList({
             - Adding new items doesn't cause existing items to reflow
             - Each column is independent, preventing layout jumps
           */}
-          
+
           {/* Mobile: single column */}
           <div className="flex flex-col gap-6 md:hidden">
             {items.map((note) => (

@@ -50,12 +50,15 @@ export default function InfiniteBlogList({
   // This ensures items stay in their assigned column and don't reflow when new items load
   const columns = useMemo(() => {
     const columnCount = 3;
-    const cols: BlogPostWithMeta[][] = Array.from({ length: columnCount }, () => []);
-    
+    const cols: BlogPostWithMeta[][] = Array.from(
+      { length: columnCount },
+      () => [],
+    );
+
     items.forEach((item, index) => {
       cols[index % columnCount].push(item);
     });
-    
+
     return cols;
   }, [items]);
 
@@ -76,7 +79,7 @@ export default function InfiniteBlogList({
         - Items are pre-assigned to columns via round-robin
         - Adding new items doesn't cause existing items to reflow
       */}
-      
+
       {/* Mobile: single column */}
       <div className="flex flex-col gap-6 md:hidden">
         {items.map((post) => (
