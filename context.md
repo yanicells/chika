@@ -7,6 +7,7 @@
 The project is built with **Next.js 16** using the App Router, **React 19**, **TypeScript**, and **TailwindCSS** with the **Catppuccin Mocha** color theme. It uses **Neon** (serverless PostgreSQL) as the database, **Drizzle ORM** for database operations, **Better Auth** for GitHub OAuth authentication, and **Uploadthing** for image uploads.
 
 The application has two main user types:
+
 1. **Public Users**: Can view public notes/blogs, send notes, and comment on public content
 2. **Admin**: Can access private notes, manage all content (CRUD operations), create blog posts, and has special badges on their content
 
@@ -17,7 +18,7 @@ The application has two main user types:
 - **Entry Point**: `app/layout.tsx` → `app/page.tsx`
 - **Build Command**: `npm run build`
 - **Run Command**: `npm run dev`
-- **Database Commands**: 
+- **Database Commands**:
   - `npm run db:push` - Push schema changes
   - `npm run db:studio` - Open Drizzle Studio
 
@@ -25,7 +26,7 @@ The application has two main user types:
 
 ```env
 BETTER_AUTH_SECRET=your_better_auth_secret_here
-BETTER_AUTH_URL=http://localhost:3000 
+BETTER_AUTH_URL=http://localhost:3000
 DATABASE_URL=your_neon_database_url_here
 GITHUB_CLIENT_ID=your_github_client_id_here
 GITHUB_CLIENT_SECRET=your_github_client_secret_here
@@ -188,6 +189,7 @@ The application follows a **Server-First Architecture** using Next.js App Router
 ### Core Components
 
 #### Notes System
+
 - **Location**: `components/notes/`, `lib/actions/notes-actions.ts`, `lib/queries/notes.ts`
 - **Purpose**: Core note functionality (create, view, edit, delete, filter, sort)
 - **Key Files**:
@@ -199,6 +201,7 @@ The application follows a **Server-First Architecture** using Next.js App Router
 - **Used By**: Home page, Notes page, Admin notes page
 
 #### Blog System
+
 - **Location**: `components/blog/`, `lib/actions/blog-actions.ts`, `lib/queries/blog.ts`
 - **Purpose**: Personal blog with markdown support
 - **Key Files**:
@@ -210,6 +213,7 @@ The application follows a **Server-First Architecture** using Next.js App Router
 - **Used By**: Home page, Blog page, Admin blog management
 
 #### Comments System
+
 - **Location**: `components/comments/`, `lib/actions/comments-actions.ts`, `lib/queries/comments.ts`
 - **Purpose**: Comments on notes and blog posts
 - **Key Files**:
@@ -220,6 +224,7 @@ The application follows a **Server-First Architecture** using Next.js App Router
 - **Used By**: Note detail page, Blog post page
 
 #### Reactions System
+
 - **Location**: `components/reactions/`, `lib/actions/reactions-actions.ts`, `lib/queries/reactions.ts`
 - **Purpose**: Heart reaction system for notes, comments, and blog posts
 - **Key Files**:
@@ -229,6 +234,7 @@ The application follows a **Server-First Architecture** using Next.js App Router
 - **Used By**: Note cards, Comment cards, Blog cards
 
 #### Authentication System
+
 - **Location**: `lib/auth.ts`, `lib/auth-helper.ts`, `lib/actions/auth-actions.ts`
 - **Purpose**: GitHub OAuth authentication with role-based access
 - **Key Files**:
@@ -316,90 +322,97 @@ User redirected to /notes with session cookie
 ### Tables
 
 #### `user` (Better Auth)
-| Field | Type | Description |
-|-------|------|-------------|
-| id | text | Primary key |
-| name | text | User's display name |
-| email | text | Unique email address |
-| emailVerified | boolean | Email verification status |
-| image | text | Profile image URL |
-| role | text | User role (`user` or `admin`) |
-| createdAt | timestamp | Account creation time |
-| updatedAt | timestamp | Last update time |
+
+| Field         | Type      | Description                   |
+| ------------- | --------- | ----------------------------- |
+| id            | text      | Primary key                   |
+| name          | text      | User's display name           |
+| email         | text      | Unique email address          |
+| emailVerified | boolean   | Email verification status     |
+| image         | text      | Profile image URL             |
+| role          | text      | User role (`user` or `admin`) |
+| createdAt     | timestamp | Account creation time         |
+| updatedAt     | timestamp | Last update time              |
 
 #### `session` (Better Auth)
-| Field | Type | Description |
-|-------|------|-------------|
-| id | text | Primary key |
-| token | text | Session token |
+
+| Field     | Type      | Description     |
+| --------- | --------- | --------------- |
+| id        | text      | Primary key     |
+| token     | text      | Session token   |
 | expiresAt | timestamp | Expiration time |
-| userId | text | FK → user.id |
+| userId    | text      | FK → user.id    |
 
 #### `account` (Better Auth)
-| Field | Type | Description |
-|-------|------|-------------|
-| id | text | Primary key |
+
+| Field      | Type | Description             |
+| ---------- | ---- | ----------------------- |
+| id         | text | Primary key             |
 | providerId | text | OAuth provider (github) |
-| accountId | text | Provider's user ID |
-| userId | text | FK → user.id |
+| accountId  | text | Provider's user ID      |
+| userId     | text | FK → user.id            |
 
 #### `notes`
-| Field | Type | Description |
-|-------|------|-------------|
-| id | text | Primary key (nanoid) |
-| title | text | Optional note title |
-| content | text | Note body (markdown) |
-| userName | text | Optional sender name |
-| isAdmin | boolean | Created by admin? |
-| imageUrl | text | Optional image URL |
-| color | text | Border/accent color hex |
-| isPrivate | boolean | Private note flag |
-| isPinned | boolean | Pinned to top |
-| isDeleted | boolean | Soft delete flag |
-| createdAt | timestamp | Creation time |
-| updatedAt | timestamp | Last update time |
+
+| Field     | Type      | Description             |
+| --------- | --------- | ----------------------- |
+| id        | text      | Primary key (nanoid)    |
+| title     | text      | Optional note title     |
+| content   | text      | Note body (markdown)    |
+| userName  | text      | Optional sender name    |
+| isAdmin   | boolean   | Created by admin?       |
+| imageUrl  | text      | Optional image URL      |
+| color     | text      | Border/accent color hex |
+| isPrivate | boolean   | Private note flag       |
+| isPinned  | boolean   | Pinned to top           |
+| isDeleted | boolean   | Soft delete flag        |
+| createdAt | timestamp | Creation time           |
+| updatedAt | timestamp | Last update time        |
 
 #### `comments`
-| Field | Type | Description |
-|-------|------|-------------|
-| id | text | Primary key (nanoid) |
-| noteId | text | FK → notes.id (nullable) |
-| blogPostId | text | FK → blogPosts.id (nullable) |
-| userName | text | Optional commenter name |
-| isAdmin | boolean | Comment by admin? |
-| content | text | Comment body |
-| imageUrl | text | Optional image URL |
-| color | text | Accent color hex |
-| isPrivate | boolean | Private comment flag |
-| isDeleted | boolean | Soft delete flag |
-| createdAt | timestamp | Creation time |
+
+| Field      | Type      | Description                  |
+| ---------- | --------- | ---------------------------- |
+| id         | text      | Primary key (nanoid)         |
+| noteId     | text      | FK → notes.id (nullable)     |
+| blogPostId | text      | FK → blogPosts.id (nullable) |
+| userName   | text      | Optional commenter name      |
+| isAdmin    | boolean   | Comment by admin?            |
+| content    | text      | Comment body                 |
+| imageUrl   | text      | Optional image URL           |
+| color      | text      | Accent color hex             |
+| isPrivate  | boolean   | Private comment flag         |
+| isDeleted  | boolean   | Soft delete flag             |
+| createdAt  | timestamp | Creation time                |
 
 #### `blogPosts`
-| Field | Type | Description |
-|-------|------|-------------|
-| id | text | Primary key (nanoid) |
-| title | text | Post title |
-| slug | text | URL slug (unique) |
-| content | text | Post body (markdown) |
-| excerpt | text | Optional summary |
-| coverImageUrl | text | Optional cover image |
-| color | text | Accent color hex |
-| isPublished | boolean | Published status |
-| isPinned | boolean | Pinned to top |
-| isDeleted | boolean | Soft delete flag |
-| createdAt | timestamp | Creation time |
-| updatedAt | timestamp | Last update time |
-| publishedAt | timestamp | Publish time |
+
+| Field         | Type      | Description          |
+| ------------- | --------- | -------------------- |
+| id            | text      | Primary key (nanoid) |
+| title         | text      | Post title           |
+| slug          | text      | URL slug (unique)    |
+| content       | text      | Post body (markdown) |
+| excerpt       | text      | Optional summary     |
+| coverImageUrl | text      | Optional cover image |
+| color         | text      | Accent color hex     |
+| isPublished   | boolean   | Published status     |
+| isPinned      | boolean   | Pinned to top        |
+| isDeleted     | boolean   | Soft delete flag     |
+| createdAt     | timestamp | Creation time        |
+| updatedAt     | timestamp | Last update time     |
+| publishedAt   | timestamp | Publish time         |
 
 #### `reactions`
-| Field | Type | Description |
-|-------|------|-------------|
-| id | text | Primary key (nanoid) |
-| noteId | text | FK → notes.id (nullable) |
-| commentId | text | FK → comments.id (nullable) |
-| blogPostId | text | FK → blogPosts.id (nullable) |
-| isAdmin | boolean | Reaction by admin? |
-| createdAt | timestamp | Reaction time |
+
+| Field      | Type      | Description                  |
+| ---------- | --------- | ---------------------------- |
+| id         | text      | Primary key (nanoid)         |
+| noteId     | text      | FK → notes.id (nullable)     |
+| commentId  | text      | FK → comments.id (nullable)  |
+| blogPostId | text      | FK → blogPosts.id (nullable) |
+| isAdmin    | boolean   | Reaction by admin?           |
+| createdAt  | timestamp | Reaction time                |
 
 ### Relationships
 
@@ -432,6 +445,7 @@ export type Reaction = typeof reactions.$inferSelect;
 ### Auth Endpoints (Better Auth)
 
 All auth handled by Better Auth at `/api/auth/[...all]`:
+
 - **GET/POST** `/api/auth/*` - Better Auth catch-all handler
 
 ### Uploadthing Endpoints
@@ -445,41 +459,41 @@ All auth handled by Better Auth at `/api/auth/[...all]`:
 
 #### Notes Actions (`lib/actions/notes-actions.ts`)
 
-| Action | Access | Description |
-|--------|--------|-------------|
-| `createNote(data)` | Public | Create a new note |
-| `updateNote(id, data)` | Admin | Update a note |
-| `deleteNote(id)` | Admin | Soft delete a note |
-| `togglePinNote(id)` | Admin | Toggle pin status |
+| Action                 | Access | Description        |
+| ---------------------- | ------ | ------------------ |
+| `createNote(data)`     | Public | Create a new note  |
+| `updateNote(id, data)` | Admin  | Update a note      |
+| `deleteNote(id)`       | Admin  | Soft delete a note |
+| `togglePinNote(id)`    | Admin  | Toggle pin status  |
 
 #### Blog Actions (`lib/actions/blog-actions.ts`)
 
-| Action | Access | Description |
-|--------|--------|-------------|
-| `createBlogPost(data)` | Admin | Create a blog post |
-| `updateBlogPost(id, data)` | Admin | Update a blog post |
-| `deleteBlogPost(id)` | Admin | Soft delete a blog post |
-| `togglePinBlogPost(id)` | Admin | Toggle pin status |
+| Action                     | Access | Description             |
+| -------------------------- | ------ | ----------------------- |
+| `createBlogPost(data)`     | Admin  | Create a blog post      |
+| `updateBlogPost(id, data)` | Admin  | Update a blog post      |
+| `deleteBlogPost(id)`       | Admin  | Soft delete a blog post |
+| `togglePinBlogPost(id)`    | Admin  | Toggle pin status       |
 
 #### Comments Actions (`lib/actions/comments-actions.ts`)
 
-| Action | Access | Description |
-|--------|--------|-------------|
-| `createNoteComment(data)` | Public | Comment on a note |
+| Action                    | Access | Description            |
+| ------------------------- | ------ | ---------------------- |
+| `createNoteComment(data)` | Public | Comment on a note      |
 | `createBlogComment(data)` | Public | Comment on a blog post |
-| `updateComment(id, data)` | Admin | Update a comment |
-| `deleteComment(id)` | Admin | Soft delete a comment |
+| `updateComment(id, data)` | Admin  | Update a comment       |
+| `deleteComment(id)`       | Admin  | Soft delete a comment  |
 
 #### Reactions Actions (`lib/actions/reactions-actions.ts`)
 
-| Action | Access | Description |
-|--------|--------|-------------|
-| `addNoteReaction(noteId)` | Public | Add reaction to note |
-| `removeNoteReaction(noteId)` | Public | Remove reaction from note |
-| `addCommentReaction(commentId)` | Public | Add reaction to comment |
-| `removeCommentReaction(commentId)` | Public | Remove reaction |
-| `addBlogPostReaction(postId)` | Public | Add reaction to blog post |
-| `removeBlogPostReaction(postId)` | Public | Remove reaction |
+| Action                             | Access | Description               |
+| ---------------------------------- | ------ | ------------------------- |
+| `addNoteReaction(noteId)`          | Public | Add reaction to note      |
+| `removeNoteReaction(noteId)`       | Public | Remove reaction from note |
+| `addCommentReaction(commentId)`    | Public | Add reaction to comment   |
+| `removeCommentReaction(commentId)` | Public | Remove reaction           |
+| `addBlogPostReaction(postId)`      | Public | Add reaction to blog post |
+| `removeBlogPostReaction(postId)`   | Public | Remove reaction           |
 
 ## Module Dependency Map
 
@@ -529,19 +543,19 @@ components/
 
 ### Third-Party Dependencies
 
-| Package | Purpose | Used In |
-|---------|---------|---------|
-| `better-auth` | GitHub OAuth authentication | lib/auth.ts, auth-helper.ts |
-| `drizzle-orm` | Type-safe database ORM | db/*, lib/queries/*, lib/actions/* |
-| `@neondatabase/serverless` | Serverless Postgres | db/drizzle.ts |
-| `nanoid` | Generate unique IDs | lib/actions/* |
-| `react-markdown` | Render markdown content | note-detail, blog-detail |
-| `uploadthing` | File uploads | api/uploadthing, image-upload.tsx |
-| `@isoterik/react-word-cloud` | Word cloud visualization | word-cloud-display.tsx |
-| `@vercel/analytics` | Usage analytics | app/layout.tsx |
-| `lucide-react` | Icons | Various UI components |
-| `@radix-ui/*` | Accessible UI primitives | ui/dropdown-menu, checkbox, tooltip |
-| `clsx` + `tailwind-merge` | Class name utilities | lib/utils.ts |
+| Package                      | Purpose                     | Used In                             |
+| ---------------------------- | --------------------------- | ----------------------------------- |
+| `better-auth`                | GitHub OAuth authentication | lib/auth.ts, auth-helper.ts         |
+| `drizzle-orm`                | Type-safe database ORM      | db/_, lib/queries/_, lib/actions/\* |
+| `@neondatabase/serverless`   | Serverless Postgres         | db/drizzle.ts                       |
+| `nanoid`                     | Generate unique IDs         | lib/actions/\*                      |
+| `react-markdown`             | Render markdown content     | note-detail, blog-detail            |
+| `uploadthing`                | File uploads                | api/uploadthing, image-upload.tsx   |
+| `@isoterik/react-word-cloud` | Word cloud visualization    | word-cloud-display.tsx              |
+| `@vercel/analytics`          | Usage analytics             | app/layout.tsx                      |
+| `lucide-react`               | Icons                       | Various UI components               |
+| `@radix-ui/*`                | Accessible UI primitives    | ui/dropdown-menu, checkbox, tooltip |
+| `clsx` + `tailwind-merge`    | Class name utilities        | lib/utils.ts                        |
 
 ## Common Operations
 
@@ -595,7 +609,7 @@ export async function createYourThing(data: YourData) {
   try {
     // For admin-only actions:
     await requireAdmin();
-    
+
     // Or for public actions with admin detection:
     const session = await getCurrentSession();
     const isAdmin = session?.user?.role === "admin";
@@ -623,6 +637,7 @@ export async function createYourThing(data: YourData) {
 ### Test Structure
 
 Currently no automated tests are set up. Consider adding:
+
 - **Unit Tests**: Jest/Vitest for utility functions
 - **Integration Tests**: Testing Library for components
 - **E2E Tests**: Playwright/Cypress for user flows
@@ -662,14 +677,14 @@ npm run build
 
 ### Environment Variables
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `DATABASE_URL` | Yes | Neon PostgreSQL connection string |
-| `BETTER_AUTH_SECRET` | Yes | Random secret for auth |
-| `BETTER_AUTH_URL` | Yes | App URL (e.g., `https://your-app.vercel.app`) |
-| `GITHUB_CLIENT_ID` | Yes | GitHub OAuth app client ID |
-| `GITHUB_CLIENT_SECRET` | Yes | GitHub OAuth app secret |
-| `UPLOADTHING_TOKEN` | Yes | Uploadthing API token |
+| Variable               | Required | Description                                   |
+| ---------------------- | -------- | --------------------------------------------- |
+| `DATABASE_URL`         | Yes      | Neon PostgreSQL connection string             |
+| `BETTER_AUTH_SECRET`   | Yes      | Random secret for auth                        |
+| `BETTER_AUTH_URL`      | Yes      | App URL (e.g., `https://your-app.vercel.app`) |
+| `GITHUB_CLIENT_ID`     | Yes      | GitHub OAuth app client ID                    |
+| `GITHUB_CLIENT_SECRET` | Yes      | GitHub OAuth app secret                       |
+| `UPLOADTHING_TOKEN`    | Yes      | Uploadthing API token                         |
 
 ## Security & Authentication
 
@@ -690,6 +705,7 @@ npm run build
 ### Admin Access
 
 To make a user admin, manually update the database:
+
 ```sql
 UPDATE "user" SET role = 'admin' WHERE email = 'your-email@example.com';
 ```
@@ -726,6 +742,7 @@ UPDATE "user" SET role = 'admin' WHERE email = 'your-email@example.com';
 ### Common Patterns
 
 1. **Server Component with Data**:
+
    ```tsx
    export default async function Page() {
      const data = await getYourData();
@@ -734,6 +751,7 @@ UPDATE "user" SET role = 'admin' WHERE email = 'your-email@example.com';
    ```
 
 2. **Client Component with Action**:
+
    ```tsx
    "use client";
    const [isLoading, setIsLoading] = useState(false);
@@ -757,14 +775,14 @@ UPDATE "user" SET role = 'admin' WHERE email = 'your-email@example.com';
 
 ### Common Issues
 
-| Issue | Solution |
-|-------|----------|
-| Auth not working | Check `BETTER_AUTH_URL` matches your domain |
+| Issue                     | Solution                                             |
+| ------------------------- | ---------------------------------------------------- |
+| Auth not working          | Check `BETTER_AUTH_URL` matches your domain          |
 | Database connection fails | Verify `DATABASE_URL` is correct and Neon is running |
-| Images not uploading | Check `UPLOADTHING_TOKEN` is valid |
-| Stale data after mutation | Ensure `revalidateTag` is called in server action |
-| Admin routes accessible | Check `requireAdmin()` is in admin layout |
-| CSS not loading | Check Catppuccin variables in `globals.css` |
+| Images not uploading      | Check `UPLOADTHING_TOKEN` is valid                   |
+| Stale data after mutation | Ensure `revalidateTag` is called in server action    |
+| Admin routes accessible   | Check `requireAdmin()` is in admin layout            |
+| CSS not loading           | Check Catppuccin variables in `globals.css`          |
 
 ### Debug Tips
 
@@ -811,6 +829,7 @@ UPDATE "user" SET role = 'admin' WHERE email = 'your-email@example.com';
 **Date**: January 31, 2026
 
 **Changes**:
+
 - Initial comprehensive documentation
 - Covers full architecture, components, database schema
 - Includes development guidelines and troubleshooting

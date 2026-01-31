@@ -9,6 +9,7 @@ Anonymous notes + personal blog app using **Next.js 16 App Router**, **React 19*
 ## Critical Patterns
 
 ### Server Actions Pattern (All Mutations)
+
 ```typescript
 // lib/actions/[feature]-actions.ts
 "use server";
@@ -18,9 +19,9 @@ import { requireAdmin, getCurrentSession } from "@/lib/auth-helper";
 export async function createThing(data) {
   const session = await getCurrentSession();
   const isAdmin = session?.user?.role === "admin";
-  
+
   await db.insert(table).values({ id: nanoid(), ...data, isAdmin });
-  
+
   revalidateTag("public-notes"); // or "blogs"
   revalidatePath("/affected-path");
   return { success: true };
@@ -28,32 +29,36 @@ export async function createThing(data) {
 ```
 
 ### Cached Queries Pattern (All Reads)
+
 ```typescript
 // lib/queries/[feature].ts
 import { withCache } from "@/lib/cache";
 
 export const getData = withCache(
-  async () => { /* db query */ },
+  async () => {
+    /* db query */
+  },
   ["cacheKey"],
-  { tags: ["public-notes"] } // Invalidated by actions
+  { tags: ["public-notes"] }, // Invalidated by actions
 );
 ```
 
 ### Component Structure
+
 - **Server Components** (default): Data fetching, auth checks
 - **Client Components** (`"use client"`): Forms, interactivity, `useState`/`useEffect`
 - Use `<Suspense fallback={<Skeleton />}>` for async server components
 
 ## File Organization
 
-| Path | Purpose |
-|------|---------|
-| `lib/actions/*.ts` | Server actions (writes) - always `"use server"` |
-| `lib/queries/*.ts` | Cached queries (reads) - use `withCache()` |
-| `components/[feature]/` | Feature-specific components |
-| `components/ui/` | Base UI (shadcn-style) |
-| `components/shared/` | Cross-feature components |
-| `db/schema.ts` | Drizzle schema + type exports |
+| Path                    | Purpose                                         |
+| ----------------------- | ----------------------------------------------- |
+| `lib/actions/*.ts`      | Server actions (writes) - always `"use server"` |
+| `lib/queries/*.ts`      | Cached queries (reads) - use `withCache()`      |
+| `components/[feature]/` | Feature-specific components                     |
+| `components/ui/`        | Base UI (shadcn-style)                          |
+| `components/shared/`    | Cross-feature components                        |
+| `db/schema.ts`          | Drizzle schema + type exports                   |
 
 ## Key Conventions
 
